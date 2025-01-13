@@ -6,7 +6,6 @@ import {
   Server,
   Globe,
   Palette,
-  Database,
   Code,
   AppWindow,
   Terminal,

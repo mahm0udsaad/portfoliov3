@@ -2,7 +2,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { ExternalLink, Menu, ArrowBigDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import TechBadge, { SkillCard } from "@/components/ui/techBadge";
@@ -84,7 +83,11 @@ export default function Home() {
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tech.map((tech) => (
-                      <TechBadge key={tech} tech={tech} />
+                      <TechBadge
+                        key={tech}
+                        tech={tech}
+                        className="custom-class"
+                      />
                     ))}
                   </div>
                   <div className="flex gap-4 justify-end items-end h-full">
