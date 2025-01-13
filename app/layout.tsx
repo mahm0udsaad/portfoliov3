@@ -10,6 +10,23 @@ export const metadata: Metadata = {
     "Explore the portfolio of a Full-Stack Developer specializing in web and mobile app development. Discover projects, skills, and services to help you build your next digital solution.",
   keywords:
     "Full-Stack Developer, Web Development, Mobile App Development, Portfolio, JavaScript, React, Node.js, TypeScript, Next.js, Software Engineer, Freelance Developer",
+  openGraph: {
+    title: "Mahmoud Saad Portfolio Website | Web & Mobile App Developer",
+    description:
+      "Explore the portfolio of a Full-Stack Developer specializing in web and mobile app development. Discover projects, skills, and services to help you build your next digital solution.",
+    url: "https://mahmoudsaad.site",
+    siteName: "Mahmoud Saad Portfolio",
+    images: [
+      {
+        url: "/website.jpg",
+        width: 800,
+        height: 600,
+        alt: "Website",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function RootLayout({
