@@ -1,16 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  Github,
-  ExternalLink,
-  Menu,
-  Linkedin,
-  ArrowBigDown,
-} from "lucide-react";
+import { ExternalLink, Menu, ArrowBigDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
