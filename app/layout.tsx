@@ -10,8 +10,6 @@ export const metadata: Metadata = {
     "Explore the portfolio of a Full-Stack Developer specializing in web and mobile app development. Discover projects, skills, and services to help you build your next digital solution.",
   keywords:
     "Full-Stack Developer, Web Development, Mobile App Development, Portfolio, JavaScript, React, Node.js, TypeScript, Next.js, Software Engineer, Freelance Developer",
-  viewport: "width=device-width, initial-scale=1.0",
-  robots: "index, follow",
 };
 
 export default function RootLayout({

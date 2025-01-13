@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
-
+import TechBadge, { SkillCard } from "@/components/ui/techBadge";
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
@@ -14,9 +14,9 @@ export default function Home() {
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <Link href="/" className="text-xl font-bold">
             <Image
-              width={150}
+              width={50}
               height={100}
-              src={"/logo.svg"}
+              src={"/logo.png"}
               alt={"logo"}
               className="rounded-lg"
             />
@@ -36,7 +36,7 @@ export default function Home() {
                 Hello, I'm a Full-Stack Developer 👋
               </h1>
               <p className="text-xl md:text-2xl max-w-2xl mb-8">
-                I develop ideas and help build a better world through software.
+                I Deliver End-to-End Software Development Solutions
               </p>
               <div className="flex gap-2">
                 <Link
@@ -84,16 +84,14 @@ export default function Home() {
                   </p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {project.tech.map((tech) => (
-                      <Badge key={tech} variant="secondary">
-                        {tech}
-                      </Badge>
+                      <TechBadge key={tech} tech={tech} />
                     ))}
                   </div>
                   <div className="flex gap-4 justify-end items-end h-full">
                     {project.deploy !== "#" && (
                       <Link
                         href={project.deploy}
-                        target=""
+                        target="_blank"
                         className="text-muted-foreground hover:text-foreground"
                       >
                         <ExternalLink className="h-5 w-5" />
@@ -123,12 +121,7 @@ export default function Home() {
               <h3 className="text-2xl font-semibold mb-4">Skills</h3>
               <div className="grid grid-cols-3 gap-4">
                 {skills.map((skill) => (
-                  <div
-                    key={skill}
-                    className="flex items-center p-2 bg-background rounded-lg"
-                  >
-                    <span className="font-medium">{skill}</span>
-                  </div>
+                  <SkillCard key={skill} skill={skill} />
                 ))}
               </div>
             </div>
@@ -172,7 +165,7 @@ const projects = [
   {
     title: "Resume Builder",
     image: "/projects/cohr.jpg",
-    tech: ["Next.js", "Google Auth", "PDF Generation"],
+    tech: ["Next.js", "SSG", "React-PDF", "PDF Generation"],
     description:
       "Web-based tool for dynamic resume building and downloading with Google Sign-In authentication. Implemented serverless functions to reduce operational costs.",
     github: "#",
@@ -181,7 +174,7 @@ const projects = [
   {
     title: "AbreezGroup Website",
     image: "/projects/abreez-site.jpg",
-    tech: ["Next.js", "Framer Motion", "Tailwind CSS"],
+    tech: ["Next.js", "SSG", "Framer Motion", "Tailwind CSS"],
     description:
       "Designed a user-friendly and visually appealing interface for an eco-friendly product Website. Effectively displayed products using a clean and modern design, ensuring easy navigation and a pleasant user experience.",
     github: "#",
@@ -240,11 +233,14 @@ const projects = [
 
 const skills = [
   "Next.js",
+  "Expo",
   "React",
+  "AI",
   "Tailwind CSS",
   "Prisma",
   "Node.js",
   "Express.js",
   "RESTful APIs",
   "Figma",
+  "Nginx",
 ];
