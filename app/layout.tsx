@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     images: [
       {
         url: "https://cloud.sooqsquare.com/apps/sharingpath/nextcloud/upload/website.jpg",
-        width: 800,
+        width: 600,
         height: 600,
         alt: "Website",
       },
