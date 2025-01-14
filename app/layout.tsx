@@ -26,6 +26,20 @@ export const metadata: Metadata = {
     locale: "en_US",
     type: "website",
   },
+  twitter: {
+    card: "summary_large_image",
+    title: "Mahmoud Saad Portfolio Website | Web & Mobile App Developer",
+    description:
+      "Explore the portfolio of a Full-Stack Developer specializing in web and mobile app development. Discover projects, skills, and services to help you build your next digital solution.",
+    images: [
+      {
+        url: "https://cloud.sooqsquare.com/apps/sharingpath/nextcloud/upload/website.jpg",
+        width: 600,
+        height: 600,
+        alt: "Website",
+      },
+    ],
+  },
 };
 
 export default function RootLayout({

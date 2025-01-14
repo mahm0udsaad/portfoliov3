@@ -28,6 +28,11 @@ const techConfig = {
     icon: "/icons/react-svgrepo-com.svg",
     type: "svg",
   },
+  ReactNative: {
+    color: "bg-blue-100/80 hover:bg-blue-200/80 text-sky-500",
+    icon: "/icons/react-svgrepo-com.svg",
+    type: "svg",
+  },
   "Tailwind CSS": {
     color: "bg-cyan-100/80 hover:bg-cyan-200/80 text-cyan-700",
     icon: "/icons/tailwind-css-svgrepo-com.svg",
@@ -178,7 +183,7 @@ export const SkillCard = ({ skill }) => {
       ) : (
         <config.icon className="w-6 h-6" />
       )}
-      <span className="font-medium">{skill}</span>
+      <span className="font-medium text-center text-sm">{skill}</span>
     </div>
   );
 };

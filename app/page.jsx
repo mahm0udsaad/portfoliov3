@@ -51,7 +51,7 @@ export default function Home() {
                 <Link href={"#contact"}>
                   <Button>Contact</Button>
                 </Link>
-                <Link href={"/resume.pdf"} target="_blank">
+                <Link href={"/Mahmoud_Saad Resume.pdf"} target="_blank">
                   <Button variant="outline">
                     Download CV
                     <ExternalLink className="ml-2 h-4 w-4" />
@@ -69,15 +69,27 @@ export default function Home() {
           <h2 className="text-4xl font-bold mb-12">Latest Projects</h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {projects.map((project) => (
-              <Card key={project.title} className="overflow-hidden group ">
-                <div className="aspect-video relative">
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform"
-                  />
-                </div>
+              <Card
+                key={project.title}
+                className="overflow-hidden group relative"
+              >
+                <Link
+                  href={project.deploy}
+                  target="_blank"
+                  className="text-muted-foreground hover:text-foreground hover:bg-gray-100/80"
+                >
+                  <div className="aspect-video relative">
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      className="object-cover group-hover:opacity-75 transition-opacity"
+                    />
+                    <div className="absolute z-5 inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                      <ExternalLink className="h-8 w-8 text-white bg-black/70 p-2 rounded-full" />
+                    </div>
+                  </div>
+                </Link>
                 <div className="p-6">
                   <h3 className="text-xl font-semibold mb-2">
                     {project.title}
@@ -90,20 +102,9 @@ export default function Home() {
                       <TechBadge
                         key={tech}
                         tech={tech}
-                        className="custom-class "
+                        className="custom-class"
                       />
                     ))}
-                  </div>
-                  <div className="flex gap-4 justify-end items-end h-full">
-                    {project.deploy !== "#" && (
-                      <Link
-                        href={project.deploy}
-                        target="_blank"
-                        className="text-muted-foreground hover:text-foreground"
-                      >
-                        <ExternalLink className="h-5 w-5" />
-                      </Link>
-                    )}
                   </div>
                 </div>
               </Card>
@@ -178,7 +179,10 @@ export default function Home() {
               </svg>
             </Button>
           </Link>
-          <Link target="_blank" href={"www.linkedin.com/in/mahm0us-saad"}>
+          <Link
+            target="_blank"
+            href={"https://www.linkedin.com/in/mahm0us-saad"}
+          >
             <Button variant="secondary" size="icon">
               <Linkedin className="h-5 w-5" />
             </Button>
@@ -287,10 +291,11 @@ const projects = [
 const skills = [
   "Figma",
   "Next.js",
-  "Expo",
   "React",
-  "AI",
+  "Expo",
+  "ReactNative",
   "Tailwind CSS",
+  "AI",
   "Prisma",
   "Node.js",
   "Express.js",
