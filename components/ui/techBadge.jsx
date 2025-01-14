@@ -24,7 +24,7 @@ const techConfig = {
     type: "svg",
   },
   React: {
-    color: "bg-blue-100/80 hover:bg-blue-200/80 text-blue-600",
+    color: "bg-blue-100/80 hover:bg-blue-200/80 text-sky-500",
     icon: "/icons/react-svgrepo-com.svg",
     type: "svg",
   },
@@ -34,7 +34,7 @@ const techConfig = {
     type: "svg",
   },
   Prisma: {
-    color: "bg-purple-100/80 hover:bg-purple-200/80 text-purple-700",
+    color: "bg-gray-100/80 hover:bg-gray-200/80 text-black",
     icon: "/icons/prisma-svgrepo-com.svg",
     type: "svg",
   },
@@ -163,7 +163,7 @@ export const SkillCard = ({ skill }) => {
   return (
     <div
       className={cn(
-        "flex items-center gap-2 p-3 rounded-lg transition-colors",
+        "flex items-center gap-2 p-3 rounded-lg transition-colors flex-col sm:flex-row",
         config.color,
       )}
     >

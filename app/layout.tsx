@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -18,7 +17,7 @@ export const metadata: Metadata = {
     siteName: "Mahmoud Saad Portfolio",
     images: [
       {
-        url: "/website.jpg",
+        url: "https://cloud.sooqsquare.com/apps/sharingpath/nextcloud/upload/website.jpg",
         width: 800,
         height: 600,
         alt: "Website",
