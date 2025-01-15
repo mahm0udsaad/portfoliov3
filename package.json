@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.1.1",
@@ -14,6 +15,7 @@
     "clsx": "^2.1.1",
     "lucide-react": "^0.471.0",
     "next": "14.2.16",
+    "next-sitemap": "^4.2.3",
     "nodemailer": "^6.9.16",
     "react": "^18",
     "react-dom": "^18",

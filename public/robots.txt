@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://mahmoudsaad.site
+
+# Sitemaps
+Sitemap: https://mahmoudsaad.site/sitemap.xml
