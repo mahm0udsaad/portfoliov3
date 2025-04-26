@@ -1,16 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
-import {
-  ExternalLink,
-  Menu,
-  ArrowBigDown,
-  Github,
-  Linkedin,
-} from "lucide-react";
+import { ExternalLink, ArrowBigDown, Github, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import TechBadge, { SkillCard } from "@/components/ui/techBadge";
+
 export default function Home() {
   return (
     <div className="min-h-screen bg-background">
@@ -210,6 +205,15 @@ export default function Home() {
 
 const projects = [
   {
+    title: "E-commerce Website",
+    image: "/projects/joulaa.jpg",
+    tech: ["Next.js", "SSG", "Tailwind CSS", "Supabase"],
+    description:
+      "E-commerce website with Next.js and Tailwind CSS for a modern and responsive design.",
+    github: "#",
+    deploy: "https://joulaa.com/",
+  },
+  {
     title: "Resume Builder",
     image: "/projects/cohr.jpg",
     tech: ["Next.js", "SSG", "React-PDF", "PDF Generation"],
@@ -296,9 +300,9 @@ const skills = [
   "ReactNative",
   "Tailwind CSS",
   "AI",
+  "Supabase",
   "Prisma",
   "Node.js",
   "Express.js",
-  "RESTful APIs",
   "Nginx",
 ];
