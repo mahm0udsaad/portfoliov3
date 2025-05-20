@@ -205,22 +205,13 @@ export default function Home() {
 
 const projects = [
   {
-    title: "E-commerce Website",
-    image: "/projects/joulaa.jpg",
+    title: "Travel Agency Website",
+    image: "/projects/vally.jpg",
     tech: ["Next.js", "SSG", "Tailwind CSS", "Supabase"],
     description:
-      "E-commerce website with Next.js and Tailwind CSS for a modern and responsive design.",
+      "Travel agency website with Next.js and Tailwind CSS for a modern and responsive design.",
     github: "#",
-    deploy: "https://joulaa.com/",
-  },
-  {
-    title: "Resume Builder",
-    image: "/projects/cohr.jpg",
-    tech: ["Next.js", "SSG", "React-PDF", "PDF Generation"],
-    description:
-      "Web-based tool for dynamic resume building and downloading with Google Sign-In authentication. Implemented serverless functions to reduce operational costs.",
-    github: "#",
-    deploy: "https://cv.cohr.sa/",
+    deploy: "https://valleycornertravel.com/",
   },
   {
     title: "AbreezGroup Website",
@@ -232,15 +223,14 @@ const projects = [
     deploy: "https://abreezstock.com/",
   },
   {
-    title: "Elsewedy Automation Website",
-    image: "/projects/sewedy.jpg",
-    tech: ["Next.js", "SSG", "DevOps", "Nginx", "PM2"],
+    title: "Resume Builder",
+    image: "/projects/cohr.jpg",
+    tech: ["Next.js", "SSG", "React-PDF", "PDF Generation"],
     description:
-      "Created company website with Next.js SSG, deployed mail and cloud servers, managed Ubuntu VPS with Nginx and PM2. Implemented cost-effective solutions by replacing third-party services.",
+      "Web-based tool for dynamic resume building and downloading with Google Sign-In authentication. Implemented serverless functions to reduce operational costs.",
     github: "#",
-    deploy: "https://www.elsewedy-automation.com/",
+    deploy: "https://cv.cohr.sa/",
   },
-
   {
     title: "Mobile App Landing Page",
     image: "/projects/halaqr-site.jpg",
@@ -250,7 +240,6 @@ const projects = [
     github: "#",
     deploy: "https://hala-qr-site.vercel.app/",
   },
-
   {
     title: "Mobile App UI/UX",
     image: "/projects/hala-design.jpg",
@@ -261,35 +250,25 @@ const projects = [
     deploy:
       "https://www.figma.com/design/lXpObprsDsVJDQfhbUQO57/Invitation-Designer-UI?node-id=0-1&p=f&t=a9lDdPcGX0te8LUd-0",
   },
-
   {
-    title: "DailyTravel Website",
-    image: "/projects/daily.jpg",
-    tech: ["Next.js", "Paymob", "REST API"],
+    title: "Elsewedy Automation Website",
+    image: "/projects/sewedy.jpg",
+    tech: ["Next.js", "SSG", "DevOps", "Nginx", "PM2"],
     description:
-      "Built company website with Next.js and integrated Paymob payment services for seamless transactions. Implemented server-side optimizations for improved performance and reduced hosting costs.",
+      "Created company website with Next.js SSG, deployed mail and cloud servers, managed Ubuntu VPS with Nginx and PM2. Implemented cost-effective solutions by replacing third-party services.",
     github: "#",
-    deploy: "https://dailtravel.vercel.app/",
+    deploy: "https://www.elsewedy-automation.com/",
+  },
+  {
+    title: "E-commerce Website",
+    image: "/projects/joulaa.jpg",
+    tech: ["Next.js", "SSG", "Tailwind CSS", "Supabase"],
+    description:
+      "E-commerce website with Next.js and Tailwind CSS for a modern and responsive design.",
+    github: "#",
+    deploy: "https://joulaa.com/",
   },
 
-  {
-    title: "TowSoft Company Website",
-    image: "/projects/towsoft.jpg",
-    tech: ["Next.js", "Framer Motion", "Tailwind CSS"],
-    description:
-      "Designed and developed company website with Next.js featuring heavy animations via Framer Motion. Optimized for performance and cost-efficiency.",
-    github: "#",
-    deploy: "https://nakul-narewal-website.vercel.app/",
-  },
-  {
-    title: "Ebtekar Website",
-    image: "/projects/eptecar.jpg",
-    tech: ["Next.js", "SSG", "Tailwind CSS"],
-    description:
-      "Informative website about a manufacturer company in Saudi Arabia. Developed with Next.js and styled using Tailwind CSS for a modern and responsive design.",
-    github: "#",
-    deploy: "https://alibtekar.vercel.app/",
-  },
 ];
 
 const skills = [
