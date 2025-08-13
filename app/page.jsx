@@ -46,14 +46,54 @@ export default function Home() {
                 <Link href={"#contact"}>
                   <Button>Contact</Button>
                 </Link>
-                <Link href={"/Mahmoud_Saad Resume.pdf"} target="_blank">
-                  <Button variant="outline">
-                    Download CV
-                    <ExternalLink className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
+              
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mobile Apps Preview Section */}
+      <section id="mobile-apps" className="py-16 px-4 bg-muted/30">
+        <div className="container mx-auto">
+          <h2 className="text-4xl font-bold mb-12">Mobile Apps Preview</h2>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {mobileApps.map((app) => (
+              <Card
+                key={app.title}
+                className="overflow-hidden group relative bg-gradient-to-b from-slate-50 to-slate-100 dark:from-slate-900/40 dark:to-slate-800/40 border shadow-sm hover:shadow-lg transition-transform hover:-translate-y-1"
+              >
+                <Link
+                  href={app.deploy}
+                  target="_blank"
+                  className="text-muted-foreground hover:text-foreground hover:bg-gray-100/80"
+                >
+                  <div className="w-full flex justify-center py-6">
+                    <div className="relative w-[220px] h-[440px] rounded-[28px] ring-1 ring-black/10 dark:ring-white/10 shadow-2xl overflow-hidden bg-black">
+                      <div className="absolute top-2 left-1/2 -translate-x-1/2 w-20 h-3 rounded-full bg-white/40 dark:bg-white/20" />
+                      <Image
+                        src={app.image}
+                        alt={app.title}
+                        fill
+                        className="object-cover group-hover:opacity-90 transition-opacity"
+                      />
+                      <div className="absolute z-5 inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <ExternalLink className="h-8 w-8 text-white bg-black/70 p-2 rounded-full" />
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+                <div className="px-6 pb-6">
+                  <h3 className="text-xl font-semibold mb-2 text-center">{app.title}</h3>
+                  <p className="text-muted-foreground text-sm mb-4 text-center">{app.description}</p>
+                  <div className="flex flex-wrap gap-2 mb-4">
+                    {app.tech.map((tech) => (
+                      <TechBadge key={tech} tech={tech} className="custom-class" />
+                    ))}
+                  </div>
+                </div>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -107,6 +147,8 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      
 
       {/* About Section */}
       <section className="py-16 px-4 bg-muted/50">
@@ -205,6 +247,34 @@ export default function Home() {
 
 const projects = [
   {
+    title: "Sufrah Platform",
+    image: "/projects/sufrah.sa.png",
+    tech: ["Next.js", "SSG", "Tailwind CSS"],
+    description:
+      "منصة ذكية لإنشاء مواقع وتطبيقات للمطاعم بسرعة وبدون كود.",
+    github: "#",
+    deploy: "https://www.sufrah.sa/",
+  },
+
+  {
+    title: "Amstore",
+    image: "/projects/amstore.png",
+    tech: ["Next.js", "Tailwind CSS", "E‑commerce"],
+    description:
+      "منصة تجارة إلكترونية مخصصة مع أداء عالٍ وتجربة مستخدم حديثة.",
+    github: "#",
+    deploy: "https://amstore-eg.com/",
+  },
+  {
+    title: "OneCard",
+    image: "/projects/onecard.png",
+    tech: ["Next.js", "Design", "Payments"],
+    description:
+      "صفحة تعريفية أنيقة بخبرة في التكاملات وتقديم تجربة موثوقة.",
+    github: "#",
+    deploy: "https://www.onecard.com/",
+  },
+  {
     title: "Travel Agency Website",
     image: "/projects/vally.jpg",
     tech: ["Next.js", "SSG", "Tailwind CSS", "Supabase"],
@@ -269,7 +339,53 @@ const projects = [
     deploy: "https://joulaa.com/",
   },
 
+
 ];
+
+const mobileApps = [
+  {
+    title: "سنبل",
+    image: "/projects/sonbol.webp",
+    tech: ["React Native", "Expo", "Android"],
+    description:
+      "تطبيق متجر رقمي يقدّم تجربة سلسة وسريعة على أجهزة أندرويد.",
+    github: "#",
+    deploy:
+      "https://play.google.com/store/apps/details?id=com.sonbol&hl=en",
+  },
+  {
+    title: "تامل",
+    image: "/projects/tamol.webp",
+    tech: ["React Native", "Expo", "Meditation"],
+    description:
+      "تطبيق للتأمل والاسترخاء بواجهات مريحة وتجربة مستخدم بسيطة.",
+    github: "#",
+    deploy:
+      "https://play.google.com/store/apps/details?id=app.meditationtime.meditation_time",
+  },
+  {
+    title: "الفا ستور",
+    image: "/projects/alphastore.webp",
+    tech: ["React Native", "Expo", "E‑commerce"],
+    description:
+      "تطبيق تسوّق إلكتروني يعرض المنتجات بطريقة سريعة وسلسة.",
+    github: "#",
+    deploy:
+      "https://play.google.com/store/apps/details?id=com.allphastore.app",
+  },
+  {
+    title: "دليل ستور",
+    image: "/projects/daleelstore.webp",
+    tech: ["React Native", "Expo", "Store"],
+    description:
+      "متجر إلكتروني شامل مع تجربة استخدام مرنة ومتجاوبة.",
+    github: "#",
+    deploy:
+      "https://play.google.com/store/apps/details?id=com.daleelstore",
+  },
+];
+
+// moved websites into the main `projects` list above
 
 const skills = [
   "Figma",
