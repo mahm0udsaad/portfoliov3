@@ -10,7 +10,14 @@ import {
   AppWindow,
   Terminal,
   Hand,
+  ShoppingCart,
+  LayoutDashboard,
+  Bot,
+  CreditCard,
+  PenTool,
+  FileText,
 } from "lucide-react";
+
 const SupabaseIcon = () => (
   <svg width="16" height="16" viewBox="0 0 109 113" fill="none">
     <path
@@ -52,6 +59,7 @@ const SupabaseIcon = () => (
     </defs>
   </svg>
 );
+
 const techConfig = {
   AI: {
     color: "bg-blue-100/80 hover:bg-blue-200/80 text-blue-700",
@@ -167,6 +175,71 @@ const techConfig = {
     color: "bg-emerald-100/80 hover:bg-emerald-200/80 text-emerald-700",
     icon: SupabaseIcon,
     type: "custom",
+  },
+  "E-commerce": {
+    color: "bg-orange-100/80 hover:bg-orange-200/80 text-orange-700",
+    icon: ShoppingCart,
+    type: "lucide",
+  },
+  "E‑commerce": {
+    color: "bg-orange-100/80 hover:bg-orange-200/80 text-orange-700",
+    icon: ShoppingCart,
+    type: "lucide",
+  },
+  "Admin Dashboard": {
+    color: "bg-slate-100/80 hover:bg-slate-200/80 text-slate-700",
+    icon: LayoutDashboard,
+    type: "lucide",
+  },
+  "Inventory Management": {
+    color: "bg-slate-100/80 hover:bg-slate-200/80 text-slate-700",
+    icon: LayoutDashboard,
+    type: "lucide",
+  },
+  "Bot": {
+    color: "bg-blue-100/80 hover:bg-blue-200/80 text-blue-700",
+    icon: Bot,
+    type: "lucide",
+  },
+  "Payments": {
+    color: "bg-green-100/80 hover:bg-green-200/80 text-green-700",
+    icon: CreditCard,
+    type: "lucide",
+  },
+  "Payment Gateway": {
+    color: "bg-green-100/80 hover:bg-green-200/80 text-green-700",
+    icon: CreditCard,
+    type: "lucide",
+  },
+  "Design": {
+    color: "bg-pink-100/80 hover:bg-pink-200/80 text-pink-700",
+    icon: PenTool,
+    type: "lucide",
+  },
+  "React-PDF": {
+    color: "bg-rose-100/80 hover:bg-rose-200/80 text-rose-700",
+    icon: FileText,
+    type: "lucide",
+  },
+  "Ordering System": {
+    color: "bg-orange-100/80 hover:bg-orange-200/80 text-orange-700",
+    icon: ShoppingCart,
+    type: "lucide",
+  },
+  "B2B": {
+    color: "bg-indigo-100/80 hover:bg-indigo-200/80 text-indigo-700",
+    icon: Globe,
+    type: "lucide",
+  },
+  "B2C": {
+    color: "bg-indigo-100/80 hover:bg-indigo-200/80 text-indigo-700",
+    icon: Globe,
+    type: "lucide",
+  },
+  "Restaurant Management": {
+    color: "bg-amber-100/80 hover:bg-amber-200/80 text-amber-700",
+    icon: LayoutDashboard,
+    type: "lucide",
   },
 };
 
