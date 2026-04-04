@@ -317,6 +317,24 @@ function TechIcon({ icon }) {
 // Data
 const projects = [
   {
+    title: "Postaty",
+    image: "/projects/postaty.png",
+    tech: ["Next.js", "Supabase", "AI", "Google Nano Banana API"],
+    description:
+      "Social media post generator built with AI to streamline content creation and publishing workflows.",
+    github: "#",
+    deploy: "https://www.postaty.com/",
+  },
+  {
+    title: "Wasit Alan",
+    image: "/projects/waiseet-alan.png",
+    tech: ["Next.js", "Expo", "React Native", "Supabase"],
+    description:
+      "Mobile app and platform for للتنازل، التعقيب، والخدمات العامة with a shared stack across web and mobile.",
+    github: "#",
+    deploy: "https://www.wasitalan.com/",
+  },
+  {
     title: "Augen",
     image: "/projects/augen/Screenshot 2025-12-22 at 1.13.12 PM.png",
     tech: ["Next.js", "Admin Dashboard", "Inventory Management", "E-commerce"],
