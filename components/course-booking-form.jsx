@@ -115,7 +115,7 @@ export default function CourseBookingForm() {
         </span>
         <span>
           <span className="block text-[14.5px] font-semibold leading-snug">
-            Yes, I&apos;m willing to pay 1000 EGP for the course.
+            Yes, I&apos;m willing to pay 999 EGP for the course.
           </span>
           <span className="block text-[13px] text-muted-foreground leading-snug mt-0.5">
             Optional — this just helps us prioritize serious learners for the
