@@ -52,7 +52,7 @@ export default function CourseBookingForm() {
   }
 
   return (
-    <form action={handleSubmit} className="space-y-0">
+    <form action={handleSubmit}>
       <label htmlFor="name" className="block text-sm font-semibold mb-2">
         Full name <span className="text-primary">*</span>
       </label>
