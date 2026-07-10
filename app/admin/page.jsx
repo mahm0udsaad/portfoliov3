@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 import AdminSignOut from "@/components/admin-sign-out";
+import AdminNotifications from "@/components/admin-notifications";
 
 export const metadata = {
   title: "Admin — Bookings",
@@ -57,6 +58,7 @@ export default async function AdminPage() {
             </span>
           </p>
           <div className="flex items-center gap-6">
+            <AdminNotifications />
             <span className="text-sm text-muted-foreground hidden sm:inline">
               {user.email}
             </span>
