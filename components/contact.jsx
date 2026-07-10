@@ -1,9 +1,8 @@
 "use client";
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { sendEmail } from "@/app/actions/send-email";
 
 const ContactForm = () => {
@@ -16,9 +15,7 @@ const ContactForm = () => {
       const result = await sendEmail(formData);
       if (result.success) {
         setStatus({ type: "success", message: "Message sent successfully!" });
-        // Reset form
-        const form = document.getElementById("contact-form");
-        form.reset();
+        document.getElementById("contact-form")?.reset();
       } else {
         setStatus({
           type: "error",
@@ -36,32 +33,47 @@ const ContactForm = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      <h2 className="text-4xl font-bold mb-8 text-center">Get in Touch</h2>
+      <h3 className="font-serif font-normal text-3xl mb-6 text-center">
+        Send a message
+      </h3>
 
       {status.message && (
-        <Alert
-          className={`mb-4 ${
-            status.type === "success" ? "bg-green-500/10" : "bg-red-500/10"
+        <div
+          className={`mb-5 rounded-xl px-4 py-3 text-sm ${
+            status.type === "success"
+              ? "bg-accent text-accent-foreground"
+              : "bg-destructive/10 text-destructive"
           }`}
         >
-          <AlertDescription className="text-white">
-            {status.message}
-          </AlertDescription>
-        </Alert>
+          {status.message}
+        </div>
       )}
 
       <form id="contact-form" action={handleSubmit} className="space-y-4">
-        <Input type="text" name="name" placeholder="Your Name" required />
-        <Input type="email" name="email" placeholder="Your Email" required />
+        <Input type="text" name="name" placeholder="Your name" required />
+        <Input type="email" name="email" placeholder="Your email" required />
         <Textarea
           name="message"
-          placeholder="Your Message"
+          placeholder="Your message"
           required
-          className="text-black"
+          className="min-h-[140px] rounded-xl border-[1.5px] border-input bg-card/60 text-[15px] focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/15 focus-visible:ring-offset-0"
         />
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
-          {isSubmitting ? "Sending..." : "Send Message"}
-        </Button>
+        <button
+          type="submit"
+          disabled={isSubmitting}
+          className="w-full flex items-center justify-center gap-2.5 bg-ink text-ink-foreground py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors disabled:opacity-60"
+        >
+          {isSubmitting ? (
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" />
+              Sending...
+            </>
+          ) : (
+            <>
+              Send message <span className="text-lg">→</span>
+            </>
+          )}
+        </button>
       </form>
     </div>
   );

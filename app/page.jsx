@@ -1,139 +1,132 @@
 import Image from "next/image";
 import Link from "next/link";
-import { 
-  ExternalLink, 
-  ArrowRight, 
-  Github, 
-  Linkedin, 
-  Mail, 
-  Download,
+import {
+  ExternalLink,
+  ArrowRight,
+  Github,
+  Linkedin,
+  Mail,
   Phone,
-  Menu
 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
+import HeroVideos from "@/components/hero-videos";
 import TechBadge, { SkillCard } from "@/components/ui/techBadge";
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-background font-sans selection:bg-primary/20">
-      {/* Header */}
-      <header className="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md border-b">
-        <div className="container mx-auto px-4 h-16 flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-3 group">
-            <div className="relative w-10 h-10 overflow-hidden rounded-lg shadow-sm group-hover:shadow-md transition-shadow">
-               <Image
-                width={50}
-                height={50}
-                src={"/logo.png"}
-                alt={"logo"}
-                className="object-cover"
-              />
-            </div>
-            <span className="text-lg font-bold tracking-tight">Mahmoud Saad</span>
+    <div className="min-h-screen bg-background text-foreground">
+      {/* NAV */}
+      <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
+        <nav className="flex items-center justify-between px-6 md:px-14 py-5">
+          <Link href="/" className="font-serif text-[22px] tracking-tight">
+            Mahmoud Saad<span className="text-primary">.</span>
           </Link>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center gap-8">
-            <Link href="#projects" className="text-sm font-medium hover:text-primary transition-colors">
+          <div className="hidden md:flex items-center gap-8 text-[14.5px] font-medium text-muted-foreground">
+            <Link href="/book" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+              Course
+            </Link>
+            <Link href="#projects" className="hover:text-foreground transition-colors">
               Projects
             </Link>
-            <Link href="#about" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="#about" className="hover:text-foreground transition-colors">
               About
             </Link>
-            <Link href="#contact" className="text-sm font-medium hover:text-primary transition-colors">
+            <Link href="#contact" className="hover:text-foreground transition-colors">
               Contact
             </Link>
-            <Link href="/Mahmoud_Saad%20Resume.pdf" target="_blank">
-              <Button size="sm" variant="outline" className="gap-2">
-                <Download className="w-4 h-4" />
-                Resume
-              </Button>
+            <Link
+              href="/book"
+              className="bg-ink text-ink-foreground px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-primary transition-colors"
+            >
+              Reserve a seat
             </Link>
-          </nav>
-
-          {/* Mobile Navigation */}
-          <div className="md:hidden">
-             {/* Simple mobile menu trigger - can be expanded to a Sheet later if needed */}
-             <Link href="#contact">
-                <Button size="sm">Get in Touch</Button>
-             </Link>
           </div>
-        </div>
+          <Link
+            href="/book"
+            className="md:hidden bg-ink text-ink-foreground px-4 py-2 rounded-full font-semibold text-sm"
+          >
+            Reserve a seat
+          </Link>
+        </nav>
       </header>
 
-      {/* Hero Section */}
-      <section className="pt-32 pb-20 px-4 lg:pt-40 lg:pb-32 relative overflow-hidden">
-        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-green-100/50 via-background to-background dark:from-green-900/20"></div>
-        
-        <div className="container mx-auto max-w-5xl">
-          <div className="flex flex-col items-center text-center gap-8">
-            <div className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary/10 text-primary hover:bg-primary/20">
-              Available for new opportunities
-            </div>
-            
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight text-foreground">
-              Building Scalable <br className="hidden sm:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-green-600 to-emerald-600 dark:from-green-400 dark:to-emerald-400">
-                Digital Experiences
-              </span>
-            </h1>
-            
-            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl leading-relaxed">
-              I'm a Full-Stack Developer specializing in building exceptional digital products. 
-              From conceptualization to deployment, I deliver robust, scalable, and user-centric solutions.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 mt-4">
-              <Link href="#projects">
-                <Button size="lg" className="rounded-full px-8 h-12 text-base">
-                  View My Work
-                  <ArrowRight className="ml-2 w-4 h-4" />
-                </Button>
-              </Link>
-              <Link href="#contact">
-                <Button size="lg" variant="outline" className="rounded-full px-8 h-12 text-base">
-                  Contact Me
-                </Button>
-              </Link>
-            </div>
-
-            <div className="mt-12 flex items-center gap-8 text-muted-foreground grayscale opacity-70 hover:grayscale-0 hover:opacity-100 transition-all duration-500">
-               {/* Tech Stack Hints */}
-               <TechIcon icon="Next.js" />
-               <TechIcon icon="React" />
-               <TechIcon icon="Node.js" />
-               <TechIcon icon="Supabase" />
-            </div>
+      {/* HERO — course launch */}
+      <section className="relative overflow-hidden">
+        <div className="mx-auto max-w-[1000px] px-6 pt-20 pb-24 md:pt-28 md:pb-28 text-center">
+          <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-7">
+            New course · Cohort 01 now open
           </div>
+
+          <h1 className="font-serif font-normal text-[44px] md:text-[68px] leading-[1.03] tracking-[-0.015em] mb-7">
+            Create stunning videos with the
+            <br className="hidden sm:block" /> power of{" "}
+            <em className="text-primary">AI &amp; video editing.</em>
+          </h1>
+
+          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[560px] mx-auto mb-10">
+            A hands-on course by{" "}
+            <span className="text-foreground font-medium">Mahmoud Saad</span> that
+            teaches you to produce and edit scroll-stopping videos with AI — from
+            zero to publishing.
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+            >
+              Reserve your seat
+              <span className="text-lg">→</span>
+            </Link>
+            <Link
+              href="#projects"
+              className="inline-flex items-center gap-2 border border-border px-8 py-4 rounded-full font-semibold text-base hover:border-ink/40 transition-colors"
+            >
+              View my work
+            </Link>
+          </div>
+
+          <p className="text-sm text-muted-foreground mt-8">
+            No experience needed · Free to reserve — no payment now
+          </p>
+
+          {/* Sample video previews — click to play, loaded on demand from Supabase */}
+          <HeroVideos clips={heroClips} />
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-24 px-4 bg-muted/30">
-        <div className="container mx-auto max-w-6xl">
-          <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+      {/* PROJECTS */}
+      <section id="projects" className="py-24 px-6 md:px-14 border-t border-border bg-muted/40">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="flex flex-col md:flex-row justify-between md:items-end mb-14 gap-5">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight mb-4">Featured Projects</h2>
-              <p className="text-muted-foreground max-w-xl">
-                A selection of projects that demonstrate my ability to solve complex problems 
-                and deliver high-quality software.
+              <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
+                Selected work
+              </div>
+              <h2 className="font-serif font-normal text-[36px] md:text-[44px] leading-tight tracking-tight mb-4">
+                Featured projects
+              </h2>
+              <p className="text-muted-foreground max-w-xl text-[15.5px] leading-relaxed">
+                A selection of projects that demonstrate my ability to solve
+                complex problems and ship high-quality software.
               </p>
             </div>
-            <Link href="https://github.com/mahm0udsaad" target="_blank">
-               <Button variant="ghost" className="gap-2 group">
-                 View all on GitHub 
-                 <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-               </Button>
+            <Link
+              href="https://github.com/mahm0udsaad"
+              target="_blank"
+              className="inline-flex items-center gap-2 text-sm font-semibold group whitespace-nowrap hover:text-primary transition-colors"
+            >
+              View all on GitHub
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
             {projects.map((project) => (
               <Card
                 key={project.title}
-                className="group flex flex-col overflow-hidden border bg-card text-card-foreground shadow-sm hover:shadow-lg hover:border-primary/20 transition-all duration-300"
+                className="group flex flex-col overflow-hidden rounded-[18px] border border-border bg-card shadow-none hover:shadow-[0_20px_50px_oklch(0.23_0.01_70_/_0.08)] hover:-translate-y-1 transition-all duration-300"
               >
                 <div className="relative aspect-video overflow-hidden bg-muted">
                   <Image
@@ -142,32 +135,28 @@ export default function Home() {
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                  <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
                     <Link
                       href={project.deploy}
                       target="_blank"
-                      className="inline-flex items-center justify-center rounded-full bg-white text-black px-6 py-2.5 font-medium shadow hover:bg-white/90 transition-colors gap-2"
+                      className="inline-flex items-center gap-2 rounded-full bg-background text-foreground px-6 py-2.5 font-semibold text-sm shadow hover:bg-primary hover:text-primary-foreground transition-colors"
                     >
-                      Visit Website
+                      Visit website
                       <ExternalLink className="w-4 h-4" />
                     </Link>
                   </div>
                 </div>
-                
+
                 <div className="flex flex-col flex-1 p-6">
-                  <h3 className="text-xl font-semibold mb-2 group-hover:text-primary transition-colors">
+                  <h3 className="font-serif text-[22px] leading-tight mb-2 group-hover:text-primary transition-colors">
                     {project.title}
                   </h3>
-                  <p className="text-muted-foreground text-sm mb-6 flex-1 line-clamp-3">
+                  <p className="text-muted-foreground text-sm mb-6 flex-1 leading-relaxed line-clamp-3">
                     {project.description}
                   </p>
                   <div className="flex flex-wrap gap-2 mt-auto">
                     {project.tech.slice(0, 4).map((tech) => (
-                      <TechBadge
-                        key={tech}
-                        tech={tech}
-                        className="text-xs py-0.5"
-                      />
+                      <TechBadge key={tech} tech={tech} className="text-xs py-0.5" />
                     ))}
                     {project.tech.length > 4 && (
                       <span className="text-xs text-muted-foreground self-center px-1">
@@ -182,109 +171,112 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Mobile Apps Section - Commented out for now */}
-      {/* 
-      <section id="mobile-apps" className="py-24 px-4">
-        <div className="container mx-auto">
-           ...
-        </div>
-      </section> 
-      */}
-
-      {/* About Section */}
-      <section id="about" className="py-24 px-4">
-        <div className="container mx-auto max-w-6xl">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="relative order-2 lg:order-1">
-              <div className="relative aspect-square max-w-md mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-green-100 to-primary/20 rounded-2xl transform rotate-3"></div>
-                <Image
-                  src="/about.jpg"
-                  alt="About Mahmoud Saad"
-                  fill
-                  className="rounded-2xl object-cover shadow-xl relative transform -rotate-3 hover:rotate-0 transition-transform duration-300"
-                />
-              </div>
+      {/* ABOUT */}
+      <section id="about" className="py-24 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-[1180px] grid lg:grid-cols-2 gap-14 lg:gap-16 items-center">
+          <div className="relative order-2 lg:order-1">
+            <div className="relative aspect-square max-w-md mx-auto">
+              <div className="absolute inset-0 bg-accent rounded-[22px] rotate-3" />
+              <Image
+                src="/about.jpg"
+                alt="About Mahmoud Saad"
+                fill
+                className="rounded-[22px] object-cover shadow-xl relative -rotate-3 hover:rotate-0 transition-transform duration-300"
+              />
             </div>
-            
-            <div className="order-1 lg:order-2">
-              <h2 className="text-3xl font-bold tracking-tight mb-6">About Me</h2>
-              <div className="space-y-4 text-lg text-muted-foreground mb-8">
-                <p>
-                  I am a passionate Full-Stack Developer with a strong focus on creating scalable web applications and intuitive user interfaces.
-                </p>
-                <p>
-                  With expertise in modern technologies like <span className="text-foreground font-medium">Next.js, React, and Node.js</span>, 
-                  I help businesses transform their ideas into powerful software solutions. I thrive on solving complex challenges and 
-                  continuously learning new technologies to stay ahead in the rapidly evolving tech landscape.
-                </p>
-              </div>
-              
-              <h3 className="text-xl font-semibold mb-4">Technical Proficiency</h3>
-              <div className="flex flex-wrap gap-3">
-                {skills.map((skill) => (
-                  <SkillCard key={skill} skill={skill} />
-                ))}
-              </div>
+          </div>
 
-              <div className="mt-10">
-                <Link href="/Mahmoud_Saad%20Resume.pdf" target="_blank">
-                  <Button variant="default" size="lg" className="gap-2">
-                    <Download className="w-4 h-4" />
-                    Download Resume
-                  </Button>
-                </Link>
-              </div>
+          <div className="order-1 lg:order-2">
+            <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
+              About
+            </div>
+            <h2 className="font-serif font-normal text-[36px] md:text-[44px] leading-tight tracking-tight mb-6">
+              Developer, builder &amp; <em className="text-primary">educator.</em>
+            </h2>
+            <div className="space-y-4 text-[16px] text-muted-foreground leading-relaxed mb-8">
+              <p>
+                I&apos;m a passionate Full-Stack Developer focused on creating
+                scalable web applications and intuitive user interfaces.
+              </p>
+              <p>
+                With expertise in{" "}
+                <span className="text-foreground font-medium">
+                  Next.js, React, and Node.js
+                </span>
+                , I help businesses turn ideas into powerful software — and now I
+                teach what I&apos;ve learned about building fast with AI.
+              </p>
+            </div>
+
+            <h3 className="text-[12.5px] font-semibold tracking-[0.14em] uppercase text-muted-foreground border-b border-border pb-3.5 mb-5">
+              Technical proficiency
+            </h3>
+            <div className="flex flex-wrap gap-3">
+              {skills.map((skill) => (
+                <SkillCard key={skill} skill={skill} />
+              ))}
+            </div>
+
+            <div className="mt-10">
+              <Link
+                href="/book"
+                className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-7 py-3.5 rounded-full font-semibold text-[15px] hover:bg-primary transition-colors"
+              >
+                Join the course
+                <ArrowRight className="w-4 h-4" />
+              </Link>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-24 px-4 bg-primary text-primary-foreground relative overflow-hidden">
-        {/* Abstract shapes/background */}
-        <div className="absolute top-0 left-0 w-full h-full overflow-hidden opacity-10 pointer-events-none">
-          <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-white blur-3xl"></div>
-          <div className="absolute -bottom-24 -left-24 w-72 h-72 rounded-full bg-white blur-3xl"></div>
-        </div>
-
-        <div className="container mx-auto max-w-4xl relative z-10">
+      {/* CONTACT */}
+      <section
+        id="contact"
+        className="py-24 px-6 md:px-14 bg-ink text-ink-foreground"
+      >
+        <div className="mx-auto max-w-3xl">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold mb-4">Let's Work Together</h2>
-            <p className="text-primary-foreground/80 text-lg max-w-xl mx-auto">
-              Have a project in mind or want to discuss a new opportunity? 
-              I'd love to hear from you.
+            <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
+              Get in touch
+            </div>
+            <h2 className="font-serif font-normal text-[38px] md:text-[48px] leading-tight tracking-tight mb-4">
+              Let&apos;s work together.
+            </h2>
+            <p className="text-ink-foreground/70 text-lg max-w-xl mx-auto leading-relaxed">
+              Have a project in mind, or a question about the course? I&apos;d
+              love to hear from you.
             </p>
           </div>
 
-          <div className="bg-background text-foreground rounded-2xl shadow-xl p-6 md:p-10 mb-12">
+          <div className="bg-card text-card-foreground rounded-[22px] shadow-xl p-6 md:p-10 mb-12">
             <ContactForm />
           </div>
 
-          <div className="flex flex-wrap justify-center gap-6 text-primary-foreground">
-            <SocialLink 
-              href="mailto:mahmoud.saad.dev@gmail.com" // You might want to update this email
-              icon={<Mail className="w-5 h-5" />}
+          <div className="flex flex-wrap justify-center gap-3.5">
+            <SocialLink
+              href="mailto:101mahm0udsaad@gmail.com"
+              icon={<Mail className="w-4 h-4" />}
               label="Email"
             />
-            <SocialLink 
-              href="https://wa.me/+201157337829" 
-              icon={<Phone className="w-5 h-5" />}
+            <SocialLink
+              href="https://wa.me/+201157337829"
+              icon={<Phone className="w-4 h-4" />}
               label="WhatsApp"
             />
-            <SocialLink 
-              href="https://www.linkedin.com/in/mahm0us-saad" 
-              icon={<Linkedin className="w-5 h-5" />}
+            <SocialLink
+              href="https://www.linkedin.com/in/mahm0us-saad"
+              icon={<Linkedin className="w-4 h-4" />}
               label="LinkedIn"
             />
-            <SocialLink 
-              href="https://github.com/mahm0udsaad" 
-              icon={<Github className="w-5 h-5" />}
+            <SocialLink
+              href="https://github.com/mahm0udsaad"
+              icon={<Github className="w-4 h-4" />}
               label="GitHub"
             />
           </div>
-          
-          <div className="text-center mt-12 text-primary-foreground/60 text-sm">
+
+          <div className="text-center mt-12 text-ink-foreground/50 text-sm">
             © {new Date().getFullYear()} Mahmoud Saad. All rights reserved.
           </div>
         </div>
@@ -296,26 +288,44 @@ export default function Home() {
 // Helper Components
 function SocialLink({ href, icon, label }) {
   return (
-    <Link 
-      href={href} 
+    <Link
+      href={href}
       target="_blank"
-      className="flex items-center gap-2 bg-white/10 hover:bg-white/20 transition-colors px-4 py-2 rounded-full backdrop-blur-sm"
+      className="flex items-center gap-2 bg-ink-foreground/10 hover:bg-primary transition-colors px-4 py-2 rounded-full text-sm font-medium"
     >
       {icon}
-      <span className="font-medium">{label}</span>
+      <span>{label}</span>
     </Link>
   );
 }
 
-function TechIcon({ icon }) {
-  // Simple helper for hero section logos - could be replaced with actual SVGs or Images
-  return (
-    <span className="font-semibold text-sm border px-3 py-1 rounded-md">{icon}</span>
-  );
-}
-
 // Data
+const SUPABASE_VIDEOS = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/course-videos`;
+const heroClips = [
+  { videoUrl: `${SUPABASE_VIDEOS}/clip1.mp4`, poster: "/videos/clip1.jpg" },
+  { videoUrl: `${SUPABASE_VIDEOS}/clip2.mp4`, poster: "/videos/clip2.jpg" },
+  { videoUrl: `${SUPABASE_VIDEOS}/clip3.mp4`, poster: "/videos/clip3.jpg" },
+];
+
 const projects = [
+  {
+    title: "Nehgz",
+    image: "/projects/nehgzbot/nehgzbot-1.png",
+    tech: ["Next.js", "WhatsApp API", "AI", "Bot"],
+    description:
+      "WhatsApp AI Desk that connects businesses' WhatsApp to their booking system — auto-replies to customers and manages appointments 24/7 from one app.",
+    github: "#",
+    deploy: "https://nehgzbot.com/",
+  },
+  {
+    title: "TRES",
+    image: "/projects/tres/tres-1.png",
+    tech: ["Next.js", "E‑commerce", "UI/UX"],
+    description:
+      "Brand and ordering site for a specialty coffee roaster in Taif, blending illustrated storytelling with a bilingual RTL/LTR menu experience.",
+    github: "#",
+    deploy: "https://tres.com.sa/",
+  },
   {
     title: "Postaty",
     image: "/projects/postaty.png",
@@ -336,7 +346,7 @@ const projects = [
   },
   {
     title: "Augen",
-    image: "/projects/augen/Screenshot 2025-12-22 at 1.13.12 PM.png",
+    image: "/projects/augen/augen-1.png",
     tech: ["Next.js", "Admin Dashboard", "Inventory Management", "E-commerce"],
     description:
       "Luxury eyewear e-commerce website with comprehensive admin dashboard for managing orders, inventory, and customer data.",
@@ -370,7 +380,6 @@ const projects = [
     github: "#",
     deploy: "https://www.sufrah.sa/",
   },
-
   {
     title: "Amstore",
     image: "/projects/amstore.png",
@@ -451,9 +460,3 @@ const skills = [
   "Express.js",
   "Nginx",
 ];
-
-// Commented out mobileApps array to avoid unused variable warning if possible, or just leave it since it's used in commented code.
-// Ideally remove if not needed, but keeping for reference if user uncomments.
-/* 
-const mobileApps = [ ... ];
-*/

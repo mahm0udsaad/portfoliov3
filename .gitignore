@@ -31,6 +31,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# raw video footage — compressed clips are uploaded to Supabase Storage instead
+/video-assets
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts

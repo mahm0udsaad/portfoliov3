@@ -1,0 +1,156 @@
+import Image from "next/image";
+import Link from "next/link";
+import CourseBookingForm from "@/components/course-booking-form";
+
+export const metadata = {
+  title: "Reserve your seat — AI & Video Editing Course | Mahmoud Saad",
+  description:
+    "Reserve your seat in the first cohort of the AI & Video Editing course. Free to reserve — no payment required now.",
+};
+
+const learnItems = [
+  "Generate video, images & voiceovers with the latest AI tools",
+  "Edit like a pro: cuts, transitions, captions & color grading",
+  "Automate repetitive editing with AI-powered workflows",
+  "Turn a single idea into content for Reels, TikTok & YouTube",
+  "Build a repeatable system to publish faster than everyone else",
+  "Real projects you can add to your portfolio from day one",
+];
+
+const forWho = [
+  "Content creators who want to produce more, faster",
+  "Freelancers & marketers adding video to their services",
+  "Total beginners — no editing experience needed",
+];
+
+export default function BookPage() {
+  return (
+    <div className="min-h-screen bg-background text-foreground">
+      {/* NAV */}
+      <nav className="flex items-center justify-between px-6 md:px-14 py-6 border-b border-border">
+        <Link href="/" className="font-serif text-[22px] tracking-tight">
+          Mahmoud Saad<span className="text-primary">.</span>
+        </Link>
+        <div className="hidden md:flex items-center gap-8 text-[14.5px] font-medium text-muted-foreground">
+          <Link href="/book" className="text-foreground font-semibold">
+            Course
+          </Link>
+          <Link href="/#projects" className="hover:text-foreground transition-colors">
+            Projects
+          </Link>
+          <Link href="/#about" className="hover:text-foreground transition-colors">
+            About
+          </Link>
+          <Link href="/#contact" className="hover:text-foreground transition-colors">
+            Contact
+          </Link>
+          <a
+            href="#reserve"
+            className="bg-ink text-ink-foreground px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-primary transition-colors"
+          >
+            Reserve a seat
+          </a>
+        </div>
+        <a
+          href="#reserve"
+          className="md:hidden bg-ink text-ink-foreground px-4 py-2 rounded-full font-semibold text-sm"
+        >
+          Reserve
+        </a>
+      </nav>
+
+      <section className="mx-auto max-w-[1280px] px-6 md:px-14 pt-10 md:pt-14 pb-20 grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-[72px] items-start">
+        {/* LEFT — pitch */}
+        <div>
+          <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-6">
+            Cohort 01 — Limited seats
+          </div>
+
+          <h1 className="font-serif font-normal text-[42px] md:text-[56px] lg:text-[64px] leading-[1.04] tracking-[-0.015em] mb-6">
+            Reserve your seat in
+            <br />
+            the <em className="text-primary">first cohort.</em>
+          </h1>
+
+          <p className="text-[17.5px] leading-relaxed text-muted-foreground max-w-[470px] mb-10">
+            A hands-on course that teaches you to create and edit scroll-stopping
+            videos with AI — even if you&apos;ve never touched an editing timeline
+            before.
+          </p>
+
+          {/* What you'll learn */}
+          <SectionLabel>What you&apos;ll learn</SectionLabel>
+          <div className="grid sm:grid-cols-2 gap-x-7 gap-y-[18px] mb-11">
+            {learnItems.map((item) => (
+              <div key={item} className="flex gap-3">
+                <span className="shrink-0 w-[22px] h-[22px] rounded-full bg-accent text-accent-foreground grid place-items-center text-xs font-bold mt-px">
+                  ✓
+                </span>
+                <span className="text-[15.5px] leading-normal text-foreground/85">
+                  {item}
+                </span>
+              </div>
+            ))}
+          </div>
+
+          {/* Who it's for */}
+          <SectionLabel>Who it&apos;s for</SectionLabel>
+          <div className="flex flex-col gap-3.5 mb-11">
+            {forWho.map((item) => (
+              <div key={item} className="flex gap-3 items-baseline">
+                <span className="text-primary font-bold">→</span>
+                <span className="text-[15.5px] text-foreground/85">{item}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Instructor card */}
+          <div className="flex items-center gap-[18px] bg-card border border-border rounded-[18px] p-5 md:px-6">
+            <div className="shrink-0 w-16 h-16 rounded-full overflow-hidden bg-muted relative">
+              <Image
+                src="/me.jpg"
+                alt="Mahmoud Saad"
+                fill
+                className="object-cover"
+              />
+            </div>
+            <div>
+              <p className="font-serif text-lg mb-1">Taught by Mahmoud Saad</p>
+              <p className="text-sm leading-normal text-muted-foreground">
+                Full-stack developer &amp; builder. You&apos;ll learn directly from
+                him, with feedback on your own projects.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT — form */}
+        <div id="reserve" className="lg:sticky lg:top-8 scroll-mt-24">
+          <div className="bg-card border border-border rounded-[22px] shadow-[0_24px_60px_oklch(0.23_0.01_70_/_0.08)] overflow-hidden">
+            <div className="bg-ink text-ink-foreground px-[30px] py-6">
+              <p className="font-serif text-2xl mb-1.5">Reserve your seat</p>
+              <p className="text-sm leading-normal text-ink-foreground/70">
+                Free to reserve — no payment now. We&apos;ll reach out with the
+                schedule &amp; details within 24 hours.
+              </p>
+            </div>
+            <div className="p-[26px] md:px-[30px] pb-[30px]">
+              <CourseBookingForm />
+            </div>
+          </div>
+          <p className="flex items-center justify-center gap-1.5 text-[13px] text-muted-foreground mt-4">
+            🔒 Your details are stored securely and never shared.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
+}
+
+function SectionLabel({ children }) {
+  return (
+    <div className="text-[12.5px] font-semibold tracking-[0.14em] uppercase text-muted-foreground border-b border-border pb-3.5 mb-5">
+      {children}
+    </div>
+  );
+}
