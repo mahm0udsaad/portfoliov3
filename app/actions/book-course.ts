@@ -1,6 +1,31 @@
 "use server";
 
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getTransporter } from "@/lib/mailer";
+
+async function notifyAdmin(booking: {
+  name: string;
+  email: string;
+  phone: string | null;
+  willingToPay: boolean;
+}) {
+  const transporter = getTransporter();
+
+  await transporter.sendMail({
+    from: process.env.SMTP_USER,
+    to: process.env.ADMIN_EMAIL,
+    subject: `New course booking: ${booking.name}`,
+    text: `New reservation for AI & Video Editing with AI.
+
+Name: ${booking.name}
+Email: ${booking.email}
+Phone: ${booking.phone ?? "—"}
+Willing to pay 1000 EGP: ${booking.willingToPay ? "Yes" : "No"}
+
+View all bookings: https://mahmoudsaad.site/admin
+`,
+  });
+}
 
 export type BookCourseResult = {
   success: boolean;
@@ -53,6 +78,10 @@ export async function bookCourse(
         message: "Something went wrong. Please try again.",
       };
     }
+
+    notifyAdmin({ name, email, phone, willingToPay }).catch((err) =>
+      console.error("Failed to send admin notification email:", err),
+    );
 
     return {
       success: true,
