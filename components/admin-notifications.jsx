@@ -1,58 +1,77 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Bell, BellOff } from "lucide-react";
-import { createClient } from "@/lib/supabase/client";
+import { pollBookings } from "@/app/actions/poll-bookings";
 
-export default function AdminNotifications() {
+const POLL_INTERVAL_MS = 10000;
+
+export default function AdminNotifications({ initialCount = 0 }) {
   const router = useRouter();
   const [permission, setPermission] = useState("default");
+  // Baseline count so existing bookings on load never trigger a notification.
+  const lastCount = useRef(initialCount);
 
+  // Ask for notification permission on mount.
   useEffect(() => {
     if (typeof window === "undefined" || !("Notification" in window)) return;
-
     setPermission(Notification.permission);
     if (Notification.permission === "default") {
       Notification.requestPermission().then(setPermission);
     }
   }, []);
 
+  // Poll for new bookings.
   useEffect(() => {
-    const supabase = createClient();
-    const channel = supabase
-      .channel("admin-course-bookings")
-      .on(
-        "postgres_changes",
-        { event: "INSERT", schema: "public", table: "course_bookings" },
-        (payload) => {
-          const booking = payload.new;
+    let cancelled = false;
 
-          if (
-            typeof window !== "undefined" &&
-            "Notification" in window &&
-            Notification.permission === "granted"
-          ) {
-            const notification = new Notification("New course reservation", {
-              body: `${booking.name} just reserved a seat${
-                booking.willing_to_pay ? " — willing to pay 999 EGP" : ""
-              }`,
-              icon: "/logo.png",
-              tag: booking.id,
-            });
-            notification.onclick = () => {
-              window.focus();
-              notification.close();
-            };
-          }
+    async function check() {
+      const result = await pollBookings();
+      if (cancelled || !result.authorized) return;
 
-          router.refresh();
-        },
-      )
-      .subscribe();
+      const prev = lastCount.current;
+      const delta = result.count - prev;
 
+      if (delta > 0) {
+        lastCount.current = result.count;
+
+        if (
+          "Notification" in window &&
+          Notification.permission === "granted"
+        ) {
+          const title =
+            delta === 1 ? "New course reservation" : `${delta} new reservations`;
+          const body =
+            delta === 1 && result.latest
+              ? `${result.latest.name} just reserved a seat${
+                  result.latest.willing_to_pay ? " — willing to pay 999 EGP" : ""
+                }`
+              : "Open the admin dashboard to see the details.";
+
+          const notification = new Notification(title, {
+            body,
+            icon: "/logo.png",
+            tag: "course-booking",
+          });
+          notification.onclick = () => {
+            window.focus();
+            notification.close();
+          };
+        }
+
+        // Refresh the server component so the table shows the new rows.
+        router.refresh();
+      } else if (delta < 0) {
+        // Count dropped (deletion) — keep baseline in sync.
+        lastCount.current = result.count;
+      }
+    }
+
+    const interval = setInterval(check, POLL_INTERVAL_MS);
     return () => {
-      supabase.removeChannel(channel);
+      cancelled = true;
+      clearInterval(interval);
     };
   }, [router]);
 

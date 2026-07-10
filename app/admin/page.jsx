@@ -58,7 +58,7 @@ export default async function AdminPage() {
             </span>
           </p>
           <div className="flex items-center gap-6">
-            <AdminNotifications />
+            <AdminNotifications initialCount={bookings.length} />
             <span className="text-sm text-muted-foreground hidden sm:inline">
               {user.email}
             </span>
