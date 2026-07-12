@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Instrument_Sans, Instrument_Serif } from "next/font/google";
 import "./globals.css";
 
@@ -67,6 +68,7 @@ export default function RootLayout({
         className={`${instrumentSans.variable} ${instrumentSerif.variable} font-sans`}
       >
         {children}
+        <Analytics />
       </body>
     </html>
   );

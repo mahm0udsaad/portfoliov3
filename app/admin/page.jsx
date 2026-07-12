@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
+import { getWebsiteVisitors } from "@/lib/vercel-analytics";
 import AdminSignOut from "@/components/admin-sign-out";
 import AdminNotifications from "@/components/admin-notifications";
 
@@ -24,6 +25,7 @@ export default async function AdminPage() {
   let bookings = [];
   let tableMissing = false;
   let fetchError = null;
+  const visitors = await getWebsiteVisitors();
 
   try {
     const admin = getSupabaseAdmin();
@@ -100,6 +102,63 @@ export default async function AdminPage() {
               <StatCard label="Total requests" value={bookings.length} />
               <StatCard label="Willing to pay" value={willingCount} />
             </div>
+
+            <section className="mb-10">
+              <div className="flex items-end justify-between gap-4 mb-4">
+                <div>
+                  <div className="text-[12px] font-semibold tracking-[0.16em] uppercase text-primary mb-2">
+                    Website visitors
+                  </div>
+                  <h2 className="font-serif font-normal text-[26px] leading-tight tracking-tight">
+                    Vercel Analytics
+                  </h2>
+                </div>
+                {visitors.updatedAt && (
+                  <p className="text-xs text-muted-foreground">
+                    Updated{" "}
+                    {new Date(visitors.updatedAt).toLocaleString("en-GB", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </p>
+                )}
+              </div>
+
+              {visitors.missing && (
+                <div className="rounded-2xl border border-border bg-card p-6 text-sm text-muted-foreground">
+                  {visitors.missing}
+                </div>
+              )}
+
+              {visitors.error && (
+                <div className="rounded-2xl border border-destructive/30 bg-destructive/10 p-6 text-sm text-destructive">
+                  Failed to load website visitors: {visitors.error}
+                </div>
+              )}
+
+              {!visitors.missing && !visitors.error && (
+                <>
+                  <div className="flex flex-wrap gap-4 mb-4">
+                    <StatCard label="Visits 24h" value={visitors.last24Hours} />
+                    <StatCard label="Visits 7d" value={visitors.last7Days} />
+                    <StatCard label="Visits 30d" value={visitors.last30Days} />
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <AnalyticsList
+                      title="Top pages"
+                      empty="No page data yet."
+                      items={visitors.topPages}
+                    />
+                    <AnalyticsList
+                      title="Top referrers"
+                      empty="No referrer data yet."
+                      items={visitors.referrers}
+                    />
+                  </div>
+                </>
+              )}
+            </section>
 
             {bookings.length === 0 ? (
               <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
@@ -180,6 +239,33 @@ function StatCard({ label, value }) {
         {label}
       </div>
       <div className="font-serif text-3xl">{value}</div>
+    </div>
+  );
+}
+
+function AnalyticsList({ title, empty, items = [] }) {
+  return (
+    <div className="rounded-2xl border border-border bg-card overflow-hidden">
+      <div className="px-5 py-4 border-b border-border">
+        <h3 className="text-sm font-semibold">{title}</h3>
+      </div>
+      {items.length === 0 ? (
+        <div className="px-5 py-6 text-sm text-muted-foreground">{empty}</div>
+      ) : (
+        <div className="divide-y divide-border">
+          {items.map((item) => (
+            <div
+              key={item.label}
+              className="flex items-center justify-between gap-4 px-5 py-3.5 text-sm"
+            >
+              <span className="min-w-0 truncate text-muted-foreground">
+                {item.label}
+              </span>
+              <span className="font-semibold tabular-nums">{item.value}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
