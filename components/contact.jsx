@@ -5,7 +5,20 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { sendEmail } from "@/app/actions/send-email";
 
-const ContactForm = () => {
+const defaultLabels = {
+  heading: "Send a message",
+  name: "Your name",
+  email: "Your email",
+  message: "Your message",
+  send: "Send message",
+  sending: "Sending...",
+  success: "Message sent successfully!",
+  error: "Failed to send message. Please try again.",
+  unexpected: "An error occurred. Please try again later.",
+};
+
+const ContactForm = ({ labels = {} }) => {
+  const t = { ...defaultLabels, ...labels };
   const [status, setStatus] = useState({ type: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -14,18 +27,18 @@ const ContactForm = () => {
     try {
       const result = await sendEmail(formData);
       if (result.success) {
-        setStatus({ type: "success", message: "Message sent successfully!" });
+        setStatus({ type: "success", message: t.success });
         document.getElementById("contact-form")?.reset();
       } else {
         setStatus({
           type: "error",
-          message: "Failed to send message. Please try again.",
+          message: t.error,
         });
       }
     } catch (error) {
       setStatus({
         type: "error",
-        message: "An error occurred. Please try again later.",
+        message: t.unexpected,
       });
     }
     setIsSubmitting(false);
@@ -34,7 +47,7 @@ const ContactForm = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <h3 className="font-serif font-normal text-3xl mb-6 text-center">
-        Send a message
+        {t.heading}
       </h3>
 
       {status.message && (
@@ -50,11 +63,11 @@ const ContactForm = () => {
       )}
 
       <form id="contact-form" action={handleSubmit} className="space-y-4">
-        <Input type="text" name="name" placeholder="Your name" required />
-        <Input type="email" name="email" placeholder="Your email" required />
+        <Input type="text" name="name" placeholder={t.name} required />
+        <Input type="email" name="email" placeholder={t.email} required />
         <Textarea
           name="message"
-          placeholder="Your message"
+          placeholder={t.message}
           required
           className="min-h-[140px] rounded-xl border-[1.5px] border-input bg-card/60 text-[15px] focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/15 focus-visible:ring-offset-0"
         />
@@ -66,11 +79,11 @@ const ContactForm = () => {
           {isSubmitting ? (
             <>
               <Loader2 className="w-5 h-5 animate-spin" />
-              Sending...
+              {t.sending}
             </>
           ) : (
             <>
-              Send message <span className="text-lg">→</span>
+              {t.send} <span className="text-lg">→</span>
             </>
           )}
         </button>

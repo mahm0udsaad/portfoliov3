@@ -1,11 +1,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import CourseBookingForm from "@/components/course-booking-form";
+import { courseSchema, JsonLd } from "@/lib/seo";
 
 export const metadata = {
-  title: "Reserve your seat — AI & Video Editing Course | Mahmoud Saad",
+  title: "Reserve your seat — AI & Video Editing Course",
   description:
-    "Reserve your seat in the first cohort of the AI & Video Editing course. Free to reserve — no payment required now.",
+    "Reserve your seat in the first cohort of the AI & Video Editing course by Mahmoud Saad. Free to reserve — no payment required now.",
+  alternates: {
+    canonical: "/book",
+  },
 };
 
 const learnItems = [
@@ -26,6 +30,7 @@ const forWho = [
 export default function BookPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <JsonLd data={courseSchema()} />
       {/* NAV */}
       <nav className="flex items-center justify-between px-6 md:px-14 py-6 border-b border-border">
         <Link href="/" className="font-serif text-[22px] tracking-tight">

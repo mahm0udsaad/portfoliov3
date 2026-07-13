@@ -7,15 +7,22 @@ import {
   Linkedin,
   Mail,
   Phone,
+  Globe,
+  Smartphone,
+  MessageSquare,
+  ShoppingCart,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
 import TechBadge, { SkillCard } from "@/components/ui/techBadge";
+import { homeGraph, JsonLd } from "@/lib/seo";
 
 export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
+      <JsonLd data={homeGraph("en")} />
+
       {/* NAV */}
       <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
         <nav className="flex items-center justify-between px-6 md:px-14 py-5">
@@ -23,11 +30,14 @@ export default function Home() {
             Mahmoud Saad<span className="text-primary">.</span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-[14.5px] font-medium text-muted-foreground">
-            <Link href="/book" className="text-primary font-semibold hover:text-primary/80 transition-colors">
-              Course
+            <Link href="#services" className="hover:text-foreground transition-colors">
+              Services
             </Link>
             <Link href="#projects" className="hover:text-foreground transition-colors">
               Projects
+            </Link>
+            <Link href="/book" className="text-primary font-semibold hover:text-primary/80 transition-colors">
+              Course
             </Link>
             <Link href="#about" className="hover:text-foreground transition-colors">
               About
@@ -36,47 +46,60 @@ export default function Home() {
               Contact
             </Link>
             <Link
-              href="/book"
+              href="/ar"
+              hrefLang="ar"
+              className="hover:text-foreground transition-colors"
+            >
+              العربية
+            </Link>
+            <Link
+              href="#contact"
               className="bg-ink text-ink-foreground px-5 py-2.5 rounded-full font-semibold text-sm hover:bg-primary transition-colors"
             >
-              Reserve a seat
+              Start a project
             </Link>
           </div>
-          <Link
-            href="/book"
-            className="md:hidden bg-ink text-ink-foreground px-4 py-2 rounded-full font-semibold text-sm"
-          >
-            Reserve a seat
-          </Link>
+          <div className="md:hidden flex items-center gap-3">
+            <Link href="/ar" hrefLang="ar" className="text-sm font-medium text-muted-foreground">
+              العربية
+            </Link>
+            <Link
+              href="#contact"
+              className="bg-ink text-ink-foreground px-4 py-2 rounded-full font-semibold text-sm"
+            >
+              Start a project
+            </Link>
+          </div>
         </nav>
       </header>
 
-      {/* HERO — course launch */}
+      {/* HERO — identity & services */}
       <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-[1000px] px-6 pt-20 pb-24 md:pt-28 md:pb-28 text-center">
+        <div className="mx-auto max-w-[1000px] px-6 pt-20 pb-16 md:pt-28 md:pb-20 text-center">
           <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-7">
-            New course · Cohort 01 now open
+            Freelance Full-Stack Developer · Egypt · Remote worldwide
           </div>
 
-          <h1 className="font-serif font-normal text-[44px] md:text-[68px] leading-[1.03] tracking-[-0.015em] mb-7">
-            Create stunning videos with the
-            <br className="hidden sm:block" /> power of{" "}
-            <em className="text-primary">AI &amp; video editing.</em>
+          <h1 className="font-serif font-normal text-[42px] md:text-[64px] leading-[1.05] tracking-[-0.015em] mb-7">
+            Mahmoud Saad — freelance
+            <br className="hidden sm:block" /> <em className="text-primary">web &amp; mobile</em> developer.
           </h1>
 
-          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[560px] mx-auto mb-10">
-            A hands-on course by{" "}
-            <span className="text-foreground font-medium">Mahmoud Saad</span> that
-            teaches you to produce and edit scroll-stopping videos with AI — from
-            zero to publishing.
+          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[640px] mx-auto mb-10">
+            I design and build fast websites with{" "}
+            <span className="text-foreground font-medium">Next.js</span>, mobile
+            apps with{" "}
+            <span className="text-foreground font-medium">React Native</span>,
+            e-commerce platforms, and WhatsApp Business API bots — for startups
+            and businesses in Egypt, Saudi Arabia, the Gulf and worldwide.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center">
             <Link
-              href="/book"
+              href="#contact"
               className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
             >
-              Reserve your seat
+              Start a project
               <span className="text-lg">→</span>
             </Link>
             <Link
@@ -86,8 +109,65 @@ export default function Home() {
               View my work
             </Link>
           </div>
+        </div>
+      </section>
 
-          <p className="text-sm text-muted-foreground mt-8">
+      {/* SERVICES */}
+      <section id="services" className="py-20 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="text-center mb-12">
+            <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
+              Services
+            </div>
+            <h2 className="font-serif font-normal text-[34px] md:text-[42px] leading-tight tracking-tight">
+              What I can build for you
+            </h2>
+          </div>
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {services.map((s) => (
+              <div
+                key={s.title}
+                className="rounded-[18px] border border-border bg-card p-6 hover:shadow-[0_20px_50px_oklch(0.23_0.01_70_/_0.08)] hover:-translate-y-1 transition-all duration-300"
+              >
+                <div className="w-11 h-11 rounded-full bg-accent text-accent-foreground grid place-items-center mb-5">
+                  {s.icon}
+                </div>
+                <h3 className="font-serif text-[20px] leading-tight mb-2.5">
+                  {s.title}
+                </h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  {s.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* COURSE */}
+      <section className="py-20 px-6 md:px-14 border-t border-border bg-muted/40">
+        <div className="mx-auto max-w-[1000px] text-center">
+          <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-6">
+            New course · Cohort 01 now open
+          </div>
+          <h2 className="font-serif font-normal text-[34px] md:text-[48px] leading-[1.08] tracking-tight mb-6">
+            Create stunning videos with the power of{" "}
+            <em className="text-primary">AI &amp; video editing.</em>
+          </h2>
+          <p className="text-[16.5px] leading-relaxed text-muted-foreground max-w-[560px] mx-auto mb-9">
+            A hands-on course by Mahmoud Saad that teaches you to produce and
+            edit scroll-stopping videos with AI — from zero to publishing.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center mb-3">
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+            >
+              Reserve your seat
+              <span className="text-lg">→</span>
+            </Link>
+          </div>
+          <p className="text-sm text-muted-foreground mt-5">
             No experience needed · Free to reserve — no payment now
           </p>
 
@@ -97,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* PROJECTS */}
-      <section id="projects" className="py-24 px-6 md:px-14 border-t border-border bg-muted/40">
+      <section id="projects" className="py-24 px-6 md:px-14 border-t border-border">
         <div className="mx-auto max-w-[1180px]">
           <div className="flex flex-col md:flex-row justify-between md:items-end mb-14 gap-5">
             <div>
@@ -108,8 +188,8 @@ export default function Home() {
                 Featured projects
               </h2>
               <p className="text-muted-foreground max-w-xl text-[15.5px] leading-relaxed">
-                A selection of projects that demonstrate my ability to solve
-                complex problems and ship high-quality software.
+                Real websites, e-commerce platforms, mobile apps and WhatsApp
+                bots shipped for clients in Egypt, Saudi Arabia and beyond.
               </p>
             </div>
             <Link
@@ -131,7 +211,9 @@ export default function Home() {
                 <div className="relative aspect-video overflow-hidden bg-muted">
                   <Image
                     src={project.image}
-                    alt={project.title}
+                    alt={`${project.title} — ${project.tech
+                      .slice(0, 3)
+                      .join(", ")} project built by Mahmoud Saad`}
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
@@ -172,14 +254,14 @@ export default function Home() {
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="py-24 px-6 md:px-14 border-t border-border">
+      <section id="about" className="py-24 px-6 md:px-14 border-t border-border bg-muted/40">
         <div className="mx-auto max-w-[1180px] grid lg:grid-cols-2 gap-14 lg:gap-16 items-center">
           <div className="relative order-2 lg:order-1">
             <div className="relative aspect-square max-w-md mx-auto">
               <div className="absolute inset-0 bg-accent rounded-[22px] rotate-3" />
               <Image
                 src="/about.jpg"
-                alt="About Mahmoud Saad"
+                alt="Mahmoud Saad — freelance full-stack web developer in Egypt"
                 fill
                 className="rounded-[22px] object-cover shadow-xl relative -rotate-3 hover:rotate-0 transition-transform duration-300"
               />
@@ -195,16 +277,21 @@ export default function Home() {
             </h2>
             <div className="space-y-4 text-[16px] text-muted-foreground leading-relaxed mb-8">
               <p>
-                I&apos;m a passionate Full-Stack Developer focused on creating
-                scalable web applications and intuitive user interfaces.
+                I&apos;m Mahmoud Saad, a freelance full-stack developer based in
+                Egypt. I&apos;ve shipped 15+ production projects — company
+                websites, online stores, booking platforms, mobile apps and
+                WhatsApp automation — for clients across Egypt, Saudi Arabia
+                and the Gulf.
               </p>
               <p>
                 With expertise in{" "}
                 <span className="text-foreground font-medium">
-                  Next.js, React, and Node.js
+                  Next.js, React, React Native and Node.js
                 </span>
-                , I help businesses turn ideas into powerful software — and now I
-                teach what I&apos;ve learned about building fast with AI.
+                , I take projects from UI/UX design in Figma to a fast,
+                SEO-ready product in production — including bilingual
+                Arabic/English websites with full RTL support. I also teach
+                what I&apos;ve learned about building fast with AI.
               </p>
             </div>
 
@@ -219,10 +306,10 @@ export default function Home() {
 
             <div className="mt-10">
               <Link
-                href="/book"
+                href="#contact"
                 className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-7 py-3.5 rounded-full font-semibold text-[15px] hover:bg-primary transition-colors"
               >
-                Join the course
+                Work with me
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -244,8 +331,8 @@ export default function Home() {
               Let&apos;s work together.
             </h2>
             <p className="text-ink-foreground/70 text-lg max-w-xl mx-auto leading-relaxed">
-              Have a project in mind, or a question about the course? I&apos;d
-              love to hear from you.
+              Have a website, app or automation project in mind — or a question
+              about the course? I&apos;d love to hear from you.
             </p>
           </div>
 
@@ -277,7 +364,11 @@ export default function Home() {
           </div>
 
           <div className="text-center mt-12 text-ink-foreground/50 text-sm">
-            © {new Date().getFullYear()} Mahmoud Saad. All rights reserved.
+            © {new Date().getFullYear()} Mahmoud Saad — Freelance Web &amp;
+            Mobile Developer ·{" "}
+            <Link href="/ar" hrefLang="ar" className="underline hover:text-ink-foreground">
+              العربية
+            </Link>
           </div>
         </div>
       </section>
@@ -300,6 +391,33 @@ function SocialLink({ href, icon, label }) {
 }
 
 // Data
+const services = [
+  {
+    title: "Web Development",
+    icon: <Globe className="w-5 h-5" />,
+    description:
+      "Fast, SEO-ready websites and web apps built with Next.js and React — landing pages, company sites, dashboards and platforms.",
+  },
+  {
+    title: "Mobile Apps",
+    icon: <Smartphone className="w-5 h-5" />,
+    description:
+      "Cross-platform iOS & Android apps with React Native and Expo, sharing one codebase with your web platform.",
+  },
+  {
+    title: "WhatsApp Bots & AI",
+    icon: <MessageSquare className="w-5 h-5" />,
+    description:
+      "WhatsApp Business API bots for bookings, ordering and customer support — plus AI integrations that automate real work.",
+  },
+  {
+    title: "E-commerce",
+    icon: <ShoppingCart className="w-5 h-5" />,
+    description:
+      "Custom online stores with payments (Paymob & more), inventory, admin dashboards and bilingual Arabic/English storefronts.",
+  },
+];
+
 const SUPABASE_VIDEOS = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/course-videos`;
 const heroClips = [
   { videoUrl: `${SUPABASE_VIDEOS}/clip1.mp4`, poster: "/videos/clip1.jpg" },
