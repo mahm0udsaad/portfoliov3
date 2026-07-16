@@ -357,7 +357,7 @@ export default function HomeArabic() {
               label="واتساب"
             />
             <SocialLink
-              href="https://www.linkedin.com/in/mahm0us-saad"
+              href="https://www.linkedin.com/in/mahm0udsaad"
               icon={<Linkedin className="w-4 h-4" />}
               label="لينكدإن"
             />
