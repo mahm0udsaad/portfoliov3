@@ -15,8 +15,29 @@ import {
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
+import ScrollIntro from "@/components/scroll-intro";
+import VoiceNotes from "@/components/voice-notes";
 import TechBadge, { SkillCard } from "@/components/ui/techBadge";
 import { homeGraph, JsonLd } from "@/lib/seo";
+
+const voiceNoteLabels = {
+  eyebrow: "رسائل حقيقية من العملاء",
+  heading: "شغل الناس",
+  headingEm: "بتتكلم عنه.",
+  chatTitle: "بعد الإطلاق",
+  chatMeta: "ردود فعل حقيقية · منشورة بإذن أصحابها",
+  today: "أحدث الرسائل",
+  imageLabel: "رسالة عميل",
+  viewImage: "عرض بالحجم الكامل",
+  close: "إغلاق",
+  play: "تشغيل الرسالة الصوتية",
+  pause: "إيقاف الرسالة الصوتية",
+  loadMore: "عرض رسائل أكثر",
+  inputHint: "اكتب رسالة…",
+  sendLabel: "إرسال الرسالة",
+  footer: "رسالتك تفضل داخل التجربة دي ومش بتتبعت لأي مكان.",
+  now: "الآن",
+};
 
 const contactLabels = {
   heading: "أرسل رسالة",
@@ -81,9 +102,13 @@ export default function HomeArabic() {
         </nav>
       </header>
 
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-[1000px] px-6 pt-20 pb-16 md:pt-28 md:pb-20 text-center">
+      {/* HERO + CLIENT CHAT — one scroll-driven opening scene */}
+      <ScrollIntro
+        active
+        cueLabel="مرّر للاستكشاف"
+        hero={
+          <section className="relative grid h-full place-items-center overflow-hidden">
+            <div className="mx-auto max-w-[1000px] px-6 pb-20 pt-24 text-center md:py-24">
           <div className="text-[13px] font-semibold tracking-wide text-primary mb-7">
             مطور Full-Stack مستقل · مصر · عمل عن بُعد لجميع الدول
           </div>
@@ -117,8 +142,11 @@ export default function HomeArabic() {
               شاهد أعمالي
             </Link>
           </div>
-        </div>
-      </section>
+            </div>
+          </section>
+        }
+        chat={<VoiceNotes locale="ar" labels={voiceNoteLabels} />}
+      />
 
       {/* SERVICES */}
       <section id="services" className="py-20 px-6 md:px-14 border-t border-border">

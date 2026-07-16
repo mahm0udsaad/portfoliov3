@@ -15,6 +15,8 @@ import {
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
+import ScrollIntro from "@/components/scroll-intro";
+import VoiceNotes from "@/components/voice-notes";
 import TechBadge, { SkillCard } from "@/components/ui/techBadge";
 import { homeGraph, JsonLd } from "@/lib/seo";
 
@@ -73,9 +75,12 @@ export default function Home() {
         </nav>
       </header>
 
-      {/* HERO — identity & services */}
-      <section className="relative overflow-hidden">
-        <div className="mx-auto max-w-[1000px] px-6 pt-20 pb-16 md:pt-28 md:pb-20 text-center">
+      {/* HERO + CLIENT CHAT — one scroll-driven opening scene */}
+      <ScrollIntro
+        active
+        hero={
+          <section className="relative grid h-full place-items-center overflow-hidden">
+            <div className="mx-auto max-w-[1000px] px-6 pb-20 pt-24 text-center md:py-24">
           <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-7">
             Freelance Full-Stack Developer · Egypt · Remote worldwide
           </div>
@@ -109,8 +114,11 @@ export default function Home() {
               View my work
             </Link>
           </div>
-        </div>
-      </section>
+            </div>
+          </section>
+        }
+        chat={<VoiceNotes />}
+      />
 
       {/* SERVICES */}
       <section id="services" className="py-20 px-6 md:px-14 border-t border-border">

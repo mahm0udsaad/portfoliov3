@@ -29,6 +29,10 @@
     --input: 0.88 0.008 85;
     --ring: 0.45 0.09 160;
     --radius: 0.9rem;
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 24px;
+    --radius-full: 999px;
   }
 }
 
@@ -64,5 +68,167 @@ body::-webkit-scrollbar-thumb {
   100% {
     transform: scale(1);
     opacity: 1;
+  }
+}
+
+.chat-thread::-webkit-scrollbar {
+  width: 0.3em;
+}
+.chat-thread::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-thread::-webkit-scrollbar-thumb {
+  background: oklch(0.45 0.09 160 / 0.25);
+  border-radius: 3rem;
+}
+
+/* The opening scene spends page scroll on a pinned transition: first the hero
+   recedes, then the client thread advances, then the page releases. */
+.scroll-story {
+  position: relative;
+  min-height: calc(100svh - 69px);
+  background: oklch(var(--background));
+}
+
+.scroll-story__viewport {
+  position: relative;
+  height: calc(100svh - 69px);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.scroll-story__hero,
+.scroll-story__chat {
+  position: absolute;
+  inset: 0;
+}
+
+.scroll-story__hero {
+  z-index: 1;
+  transform-origin: 50% 35%;
+  will-change: transform, opacity;
+}
+
+.scroll-story__chat {
+  z-index: 2;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(0, 72px, 0) scale(0.965);
+  transform-origin: 50% 55%;
+  will-change: transform, opacity;
+}
+
+.scroll-story.is-chat-active .scroll-story__chat {
+  pointer-events: auto;
+}
+
+.scroll-story__rail {
+  position: absolute;
+  z-index: 5;
+  top: 50%;
+  right: 22px;
+  width: 1px;
+  height: 120px;
+  overflow: hidden;
+  background: oklch(var(--foreground) / 0.18);
+  transform: translateY(-50%);
+}
+
+.scroll-story__rail-fill {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: oklch(var(--primary));
+  transform: scaleY(0);
+  transform-origin: top;
+}
+
+.scroll-story__cue {
+  position: absolute;
+  z-index: 3;
+  right: 32px;
+  bottom: 28px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: oklch(var(--foreground) / 0.55);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+
+.scroll-story__cue-line {
+  width: 52px;
+  height: 1px;
+  background: currentColor;
+}
+
+@media (max-width: 767px) {
+  .scroll-story__rail {
+    display: none;
+  }
+
+  .scroll-story__cue {
+    right: 20px;
+    bottom: 18px;
+    left: 20px;
+  }
+
+  .scroll-story__cue-line {
+    flex: 1;
+    width: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .scroll-story {
+    height: auto;
+    background: transparent;
+  }
+
+  .scroll-story__viewport {
+    position: relative;
+    top: auto;
+    height: auto;
+    overflow: visible;
+  }
+
+  .scroll-story__hero,
+  .scroll-story__chat {
+    position: relative;
+    inset: auto;
+    opacity: 1;
+    transform: none;
+  }
+
+  .scroll-story__chat {
+    min-height: calc(100svh - 69px);
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .scroll-story__hero {
+    min-height: calc(100svh - 69px);
+  }
+
+  .scroll-story__rail,
+  .scroll-story__cue {
+    display: none;
+  }
+
+  /* Without the pinned scrub there is nothing driving the thread's
+     scrollTop, so the fixed-height viewport must scroll natively or the
+     later messages become unreachable. */
+  .chat-thread {
+    overflow-y: auto;
   }
 }
