@@ -7,17 +7,17 @@ import {
   Linkedin,
   Mail,
   Phone,
-  Globe,
-  Smartphone,
-  MessageSquare,
-  ShoppingCart,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
+import MobileNav from "@/components/mobile-nav";
+import ProjectStack from "@/components/project-stack";
+import ServiceCards from "@/components/service-cards";
 import ScrollIntro from "@/components/scroll-intro";
-import VoiceNotes from "@/components/voice-notes";
-import TechBadge, { SkillCard } from "@/components/ui/techBadge";
+import SkillOrbit from "@/components/skill-orbit";
+import VoiceNotes from "@/components/voice-notes-loader";
+import TechBadge from "@/components/ui/techBadge";
 import { homeGraph, JsonLd } from "@/lib/seo";
 
 const voiceNoteLabels = {
@@ -40,15 +40,19 @@ const voiceNoteLabels = {
 };
 
 const contactLabels = {
-  heading: "أرسل رسالة",
-  name: "اسمك",
-  email: "بريدك الإلكتروني",
-  message: "رسالتك",
-  send: "إرسال الرسالة",
-  sending: "جارٍ الإرسال...",
-  success: "تم إرسال رسالتك بنجاح!",
-  error: "تعذّر إرسال الرسالة. حاول مرة أخرى.",
-  unexpected: "حدث خطأ. حاول مرة أخرى لاحقًا.",
+  heading: "احجز مكالمة سريعة",
+  subheading: "اكتب رقمك واختر الوقت — وأنا أتصل بك. بهذه البساطة.",
+  phone: "رقم هاتفك (واتساب)",
+  dayLabel: "أي يوم؟",
+  timeLabel: "أي وقت؟",
+  send: "احجز المكالمة",
+  sending: "جارٍ الحجز...",
+  success: "تم! سأتصل بك في الوقت الذي اخترته.",
+  error: "تعذّر حجز المكالمة. حاول مرة أخرى.",
+  today: "اليوم",
+  tomorrow: "غدًا",
+  locale: "ar",
+  dateLocale: "ar-EG",
 };
 
 export default function HomeArabic() {
@@ -58,7 +62,7 @@ export default function HomeArabic() {
 
       {/* NAV */}
       <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
-        <nav className="flex items-center justify-between px-6 md:px-14 py-5">
+        <nav className="flex items-center justify-between px-6 md:px-14 py-3 md:py-5">
           <Link href="/ar" className="font-serif text-[22px] tracking-tight">
             محمود سعد<span className="text-primary">.</span>
           </Link>
@@ -88,17 +92,19 @@ export default function HomeArabic() {
               ابدأ مشروعك
             </Link>
           </div>
-          <div className="md:hidden flex items-center gap-3">
-            <Link href="/" hrefLang="en" className="text-sm font-medium text-muted-foreground">
-              English
-            </Link>
-            <Link
-              href="#contact"
-              className="bg-ink text-ink-foreground px-4 py-2 rounded-full font-semibold text-sm"
-            >
-              ابدأ مشروعك
-            </Link>
-          </div>
+          <MobileNav
+            links={[
+              { href: "#services", label: "الخدمات" },
+              { href: "#projects", label: "أعمالي" },
+              { href: "/book", label: "الدورة" },
+              { href: "#about", label: "عنّي" },
+              { href: "#contact", label: "تواصل معي" },
+            ]}
+            cta={{ href: "#contact", label: "ابدأ مشروعك" }}
+            lang={{ href: "/", hrefLang: "en", label: "English" }}
+            menuLabel="القائمة"
+            closeLabel="إغلاق القائمة"
+          />
         </nav>
       </header>
 
@@ -159,24 +165,7 @@ export default function HomeArabic() {
               ماذا أستطيع أن أبني لك؟
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((s) => (
-              <div
-                key={s.title}
-                className="rounded-[18px] border border-border bg-card p-6 hover:shadow-[0_20px_50px_oklch(0.23_0.01_70_/_0.08)] hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="w-11 h-11 rounded-full bg-accent text-accent-foreground grid place-items-center mb-5">
-                  {s.icon}
-                </div>
-                <h3 className="font-serif font-semibold text-[19px] leading-snug mb-2.5">
-                  {s.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {s.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <ServiceCards services={services} />
         </div>
       </section>
 
@@ -208,7 +197,10 @@ export default function HomeArabic() {
           </p>
 
           {/* Sample video previews — click to play, loaded on demand from Supabase */}
-          <HeroVideos clips={heroClips} />
+          <HeroVideos
+            clips={heroClips}
+            watchHint="▶ اضغط للمشاهدة — فيديوهات حقيقية مصنوعة بنفس أسلوب العمل الذي ستتعلمه."
+          />
         </div>
       </section>
 
@@ -238,7 +230,10 @@ export default function HomeArabic() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+          {/* Mobile: scroll-stacked deck. Desktop: classic grid. */}
+          <ProjectStack projects={projects} visitLabel="زيارة الموقع" />
+
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-7">
             {projects.map((project) => (
               <Card
                 key={project.title}
@@ -249,6 +244,7 @@ export default function HomeArabic() {
                     src={project.image}
                     alt={`${project.title} — ${project.alt}`}
                     fill
+                    sizes="(max-width: 1024px) 45vw, 380px"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -290,16 +286,8 @@ export default function HomeArabic() {
       {/* ABOUT */}
       <section id="about" className="py-24 px-6 md:px-14 border-t border-border bg-muted/40">
         <div className="mx-auto max-w-[1180px] grid lg:grid-cols-2 gap-14 lg:gap-16 items-center">
-          <div className="relative order-2 lg:order-1">
-            <div className="relative aspect-square max-w-md mx-auto">
-              <div className="absolute inset-0 bg-accent rounded-[22px] rotate-3" />
-              <Image
-                src="/about.jpg"
-                alt="محمود سعد — مطور ويب وتطبيقات موبايل مستقل من مصر"
-                fill
-                className="rounded-[22px] object-cover shadow-xl relative -rotate-3 hover:rotate-0 transition-transform duration-300"
-              />
-            </div>
+          <div className="relative order-2 lg:order-1 py-6">
+            <SkillOrbit label="المهارات التقنية لمحمود سعد" />
           </div>
 
           <div className="order-1 lg:order-2">
@@ -326,15 +314,6 @@ export default function HomeArabic() {
                 (عربي/إنجليزي) بدعم كامل للكتابة من اليمين لليسار. وأشارك خبرتي
                 أيضًا في البناء السريع بالذكاء الاصطناعي.
               </p>
-            </div>
-
-            <h3 className="text-[13px] font-semibold tracking-wide text-muted-foreground border-b border-border pb-3.5 mb-5">
-              المهارات التقنية
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {skills.map((skill) => (
-                <SkillCard key={skill} skill={skill} />
-              ))}
             </div>
 
             <div className="mt-10">
@@ -427,25 +406,29 @@ function SocialLink({ href, icon, label }) {
 const services = [
   {
     title: "تطوير المواقع",
-    icon: <Globe className="w-5 h-5" />,
+    iconKey: "web",
+    visual: "/visuals/service-web.jpg",
     description:
       "مواقع وتطبيقات ويب سريعة وجاهزة لمحركات البحث بتقنية Next.js وReact — صفحات هبوط، مواقع شركات، لوحات تحكم ومنصات كاملة.",
   },
   {
     title: "تطبيقات الموبايل",
-    icon: <Smartphone className="w-5 h-5" />,
+    iconKey: "mobile",
+    visual: "/visuals/service-mobile.jpg",
     description:
       "تطبيقات iOS وAndroid بكود واحد باستخدام React Native وExpo، متكاملة مع منصتك على الويب.",
   },
   {
     title: "بوتات واتساب والذكاء الاصطناعي",
-    icon: <MessageSquare className="w-5 h-5" />,
+    iconKey: "whatsapp",
+    visual: "/visuals/service-whatsapp.jpg",
     description:
       "بوتات WhatsApp Business API للحجوزات والطلبات وخدمة العملاء — وتكاملات ذكاء اصطناعي تؤتمت شغلك الحقيقي.",
   },
   {
     title: "المتاجر الإلكترونية",
-    icon: <ShoppingCart className="w-5 h-5" />,
+    iconKey: "ecommerce",
+    visual: "/visuals/service-ecommerce.jpg",
     description:
       "متاجر إلكترونية مخصصة مع بوابات دفع (Paymob وغيرها)، إدارة مخزون، لوحة تحكم، وواجهات ثنائية اللغة عربي/إنجليزي.",
   },
@@ -597,17 +580,3 @@ const projects = [
   },
 ];
 
-const skills = [
-  "Figma",
-  "Next.js",
-  "React",
-  "Expo",
-  "ReactNative",
-  "Tailwind CSS",
-  "AI",
-  "Supabase",
-  "Prisma",
-  "Node.js",
-  "Express.js",
-  "Nginx",
-];

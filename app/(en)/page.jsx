@@ -7,17 +7,17 @@ import {
   Linkedin,
   Mail,
   Phone,
-  Globe,
-  Smartphone,
-  MessageSquare,
-  ShoppingCart,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
+import MobileNav from "@/components/mobile-nav";
+import ProjectStack from "@/components/project-stack";
+import ServiceCards from "@/components/service-cards";
 import ScrollIntro from "@/components/scroll-intro";
-import VoiceNotes from "@/components/voice-notes";
-import TechBadge, { SkillCard } from "@/components/ui/techBadge";
+import SkillOrbit from "@/components/skill-orbit";
+import VoiceNotes from "@/components/voice-notes-loader";
+import TechBadge from "@/components/ui/techBadge";
 import { homeGraph, JsonLd } from "@/lib/seo";
 
 export default function Home() {
@@ -27,7 +27,7 @@ export default function Home() {
 
       {/* NAV */}
       <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
-        <nav className="flex items-center justify-between px-6 md:px-14 py-5">
+        <nav className="flex items-center justify-between px-6 md:px-14 py-3 md:py-5">
           <Link href="/" className="font-serif text-[22px] tracking-tight">
             Mahmoud Saad<span className="text-primary">.</span>
           </Link>
@@ -61,17 +61,17 @@ export default function Home() {
               Start a project
             </Link>
           </div>
-          <div className="md:hidden flex items-center gap-3">
-            <Link href="/ar" hrefLang="ar" className="text-sm font-medium text-muted-foreground">
-              العربية
-            </Link>
-            <Link
-              href="#contact"
-              className="bg-ink text-ink-foreground px-4 py-2 rounded-full font-semibold text-sm"
-            >
-              Start a project
-            </Link>
-          </div>
+          <MobileNav
+            links={[
+              { href: "#services", label: "Services" },
+              { href: "#projects", label: "Projects" },
+              { href: "/book", label: "Course" },
+              { href: "#about", label: "About" },
+              { href: "#contact", label: "Contact" },
+            ]}
+            cta={{ href: "#contact", label: "Start a project" }}
+            lang={{ href: "/ar", hrefLang: "ar", label: "العربية" }}
+          />
         </nav>
       </header>
 
@@ -131,24 +131,7 @@ export default function Home() {
               What I can build for you
             </h2>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((s) => (
-              <div
-                key={s.title}
-                className="rounded-[18px] border border-border bg-card p-6 hover:shadow-[0_20px_50px_oklch(0.23_0.01_70_/_0.08)] hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="w-11 h-11 rounded-full bg-accent text-accent-foreground grid place-items-center mb-5">
-                  {s.icon}
-                </div>
-                <h3 className="font-serif text-[20px] leading-tight mb-2.5">
-                  {s.title}
-                </h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {s.description}
-                </p>
-              </div>
-            ))}
-          </div>
+          <ServiceCards services={services} />
         </div>
       </section>
 
@@ -210,7 +193,10 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
+          {/* Mobile: scroll-stacked deck. Desktop: classic grid. */}
+          <ProjectStack projects={projects} visitLabel="Visit website" />
+
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-7">
             {projects.map((project) => (
               <Card
                 key={project.title}
@@ -223,6 +209,7 @@ export default function Home() {
                       .slice(0, 3)
                       .join(", ")} project built by Mahmoud Saad`}
                     fill
+                    sizes="(max-width: 1024px) 45vw, 380px"
                     className="object-cover transition-transform duration-500 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-ink/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
@@ -264,16 +251,8 @@ export default function Home() {
       {/* ABOUT */}
       <section id="about" className="py-24 px-6 md:px-14 border-t border-border bg-muted/40">
         <div className="mx-auto max-w-[1180px] grid lg:grid-cols-2 gap-14 lg:gap-16 items-center">
-          <div className="relative order-2 lg:order-1">
-            <div className="relative aspect-square max-w-md mx-auto">
-              <div className="absolute inset-0 bg-accent rounded-[22px] rotate-3" />
-              <Image
-                src="/about.jpg"
-                alt="Mahmoud Saad — freelance full-stack web developer in Egypt"
-                fill
-                className="rounded-[22px] object-cover shadow-xl relative -rotate-3 hover:rotate-0 transition-transform duration-300"
-              />
-            </div>
+          <div className="relative order-2 lg:order-1 py-6">
+            <SkillOrbit label="Technical stack of Mahmoud Saad" />
           </div>
 
           <div className="order-1 lg:order-2">
@@ -301,15 +280,6 @@ export default function Home() {
                 Arabic/English websites with full RTL support. I also teach
                 what I&apos;ve learned about building fast with AI.
               </p>
-            </div>
-
-            <h3 className="text-[12.5px] font-semibold tracking-[0.14em] uppercase text-muted-foreground border-b border-border pb-3.5 mb-5">
-              Technical proficiency
-            </h3>
-            <div className="flex flex-wrap gap-3">
-              {skills.map((skill) => (
-                <SkillCard key={skill} skill={skill} />
-              ))}
             </div>
 
             <div className="mt-10">
@@ -402,25 +372,29 @@ function SocialLink({ href, icon, label }) {
 const services = [
   {
     title: "Web Development",
-    icon: <Globe className="w-5 h-5" />,
+    iconKey: "web",
+    visual: "/visuals/service-web.jpg",
     description:
       "Fast, SEO-ready websites and web apps built with Next.js and React — landing pages, company sites, dashboards and platforms.",
   },
   {
     title: "Mobile Apps",
-    icon: <Smartphone className="w-5 h-5" />,
+    iconKey: "mobile",
+    visual: "/visuals/service-mobile.jpg",
     description:
       "Cross-platform iOS & Android apps with React Native and Expo, sharing one codebase with your web platform.",
   },
   {
     title: "WhatsApp Bots & AI",
-    icon: <MessageSquare className="w-5 h-5" />,
+    iconKey: "whatsapp",
+    visual: "/visuals/service-whatsapp.jpg",
     description:
       "WhatsApp Business API bots for bookings, ordering and customer support — plus AI integrations that automate real work.",
   },
   {
     title: "E-commerce",
-    icon: <ShoppingCart className="w-5 h-5" />,
+    iconKey: "ecommerce",
+    visual: "/visuals/service-ecommerce.jpg",
     description:
       "Custom online stores with payments (Paymob & more), inventory, admin dashboards and bilingual Arabic/English storefronts.",
   },
@@ -572,17 +546,3 @@ const projects = [
   },
 ];
 
-const skills = [
-  "Figma",
-  "Next.js",
-  "React",
-  "Expo",
-  "ReactNative",
-  "Tailwind CSS",
-  "AI",
-  "Supabase",
-  "Prisma",
-  "Node.js",
-  "Express.js",
-  "Nginx",
-];

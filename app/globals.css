@@ -71,6 +71,36 @@ body::-webkit-scrollbar-thumb {
   }
 }
 
+.hide-scrollbar {
+  scrollbar-width: none;
+}
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Service cards: hidden until they enter the viewport, then they rise in
+   (stagger set inline per card). The generated backdrop gets a JS parallax. */
+[data-service-card] {
+  opacity: 0;
+  transform: translateY(30px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-service-card].is-in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-service-card] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
 .chat-thread::-webkit-scrollbar {
   width: 0.3em;
 }
