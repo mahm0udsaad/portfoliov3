@@ -78,27 +78,14 @@ body::-webkit-scrollbar-thumb {
   display: none;
 }
 
-/* Service cards: hidden until they enter the viewport, then they rise in
-   (stagger set inline per card). The generated backdrop gets a JS parallax. */
-[data-service-card] {
-  opacity: 0;
-  transform: translateY(30px);
+/* Service-card focus (scale/tilt/opacity) is driven per-frame by JS, so those
+   properties must NOT have a CSS transition or they'd lag the scroll. Only the
+   hover affordances transition. Inner starts mid-dim as a sensible pre-rAF state. */
+[data-service-card] [data-inner] {
+  opacity: 0.72;
   transition:
-    opacity 0.7s ease,
-    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-[data-service-card].is-in {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  [data-service-card] {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
+    border-color 0.3s,
+    box-shadow 0.3s;
 }
 
 .chat-thread::-webkit-scrollbar {

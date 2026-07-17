@@ -41,9 +41,9 @@ function Ring({ ringRef, skills, startIndex, radius, active }) {
             style={{ left: `${x}%`, top: `${y}%` }}
           >
             {/* counter-rotation keeps the logo (and its label) upright */}
-            <div style={{ transform: "rotate(calc(var(--angle, 0deg) * -1))" }}>
+            <div style={{ transform: "rotate(var(--counter, 0deg))" }}>
               <div
-                className={`flex h-11 items-center gap-2 rounded-full border px-[10px] transition-colors duration-300 ${
+                className={`flex h-11 items-center gap-2 rounded-full border px-[10px] transition-[max-width,background-color,color,border-color,box-shadow] duration-500 ${
                   isActive
                     ? "border-ink bg-ink text-ink-foreground shadow-[0_12px_32px_oklch(0.23_0.01_70_/_0.3)]"
                     : "border-border bg-card shadow-[0_8px_24px_oklch(0.23_0.01_70_/_0.12)]"
@@ -59,10 +59,11 @@ function Ring({ ringRef, skills, startIndex, radius, active }) {
                   }`}
                 />
                 <span
-                  className="overflow-hidden whitespace-nowrap text-[13px] font-semibold transition-all duration-300"
+                  className="overflow-hidden whitespace-nowrap text-[13px] font-semibold"
                   style={{
                     maxWidth: isActive ? 120 : 0,
                     opacity: isActive ? 1 : 0,
+                    transition: "max-width 0.5s ease, opacity 0.4s ease",
                   }}
                 >
                   {skill.name}
@@ -76,8 +77,10 @@ function Ring({ ringRef, skills, startIndex, radius, active }) {
   );
 }
 
-/* The "solar system": scroll makes the rings spin, and every couple of
-   seconds a random skill expands into a pill that names it. */
+/* The "solar system": both rings orbit continuously (rAF, always running so it
+   reads as motion the moment it's on screen). Scrolling adds a temporary spin
+   boost that decays with friction. Every ~1.8s a random skill expands into a
+   pill that names it, one at a time. */
 export default function SkillOrbit({ label }) {
   const rootRef = useRef(null);
   const innerRef = useRef(null);
@@ -85,49 +88,52 @@ export default function SkillOrbit({ label }) {
   const visibleRef = useRef(false);
   const [active, setActive] = useState(-1);
 
-  /* Rotation: constant slow drift + a boost proportional to scroll speed,
-     decaying with friction so the rings glide to a rest. */
-  useEffect(() => {
+  // Visibility is computed straight from the bounding rect each frame — no
+  // IntersectionObserver (it proved unreliable in some webviews).
+  const isVisible = () => {
     const root = rootRef.current;
-    if (!root) return;
+    if (!root) return false;
+    const r = root.getBoundingClientRect();
+    return r.bottom > 0 && r.top < window.innerHeight;
+  };
 
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        visibleRef.current = entry.isIntersecting;
-      },
-      { threshold: 0.05 },
-    );
-    io.observe(root);
-
-    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) return () => io.disconnect();
-
+  useEffect(() => {
     let angle = 0;
-    let velocity = 0;
+    let boost = 0;
     let lastY = window.scrollY;
     let raf;
 
     const onScroll = () => {
       const y = window.scrollY;
-      velocity += (y - lastY) * 0.045;
+      boost += (y - lastY) * 0.06;
       lastY = y;
     };
     window.addEventListener("scroll", onScroll, { passive: true });
 
+    const BASE = 0.28; // deg/frame ≈ full turn every ~21s at 60fps
     const tick = () => {
       raf = requestAnimationFrame(tick);
-      if (!visibleRef.current) return;
-      velocity *= 0.9; // friction
-      velocity = Math.max(-6, Math.min(6, velocity));
-      angle += 0.04 + velocity;
-      innerRef.current?.style.setProperty("--angle", `${angle}deg`);
-      outerRef.current?.style.setProperty("--angle", `${-angle * 0.65}deg`);
+      const visible = isVisible();
+      visibleRef.current = visible;
+      if (!visible) return;
+      boost *= 0.92; // friction
+      boost = Math.max(-8, Math.min(8, boost));
+      angle += BASE + boost;
+
+      if (innerRef.current) {
+        innerRef.current.style.setProperty("--angle", `${angle}deg`);
+        innerRef.current.style.setProperty("--counter", `${-angle}deg`);
+      }
+      if (outerRef.current) {
+        const outerAngle = -angle * 0.62; // slower, opposite direction
+        outerRef.current.style.setProperty("--angle", `${outerAngle}deg`);
+        outerRef.current.style.setProperty("--counter", `${-outerAngle}deg`);
+      }
     };
     tick();
 
     return () => {
       cancelAnimationFrame(raf);
-      io.disconnect();
       window.removeEventListener("scroll", onScroll);
     };
   }, []);
@@ -142,8 +148,7 @@ export default function SkillOrbit({ label }) {
       }
       setActive(queue.shift());
     };
-    next();
-    const id = setInterval(next, 2400);
+    const id = setInterval(next, 1800);
     return () => clearInterval(id);
   }, []);
 
