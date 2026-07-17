@@ -103,7 +103,7 @@ function VoiceMessage({ note, playLabel, pauseLabel }) {
   }
 
   return (
-    <div className="w-[240px] max-w-[82%] rounded-[var(--radius-lg)] rounded-ss-[5px] border border-border bg-card px-3 pb-2 pt-2.5 shadow-[0_6px_20px_oklch(0.23_0.01_70_/_0.08)] sm:w-[280px]">
+    <div className="w-[260px] max-w-[82%] rounded-[var(--radius-lg)] rounded-ss-[5px] border border-border bg-card px-3 pb-2 pt-2.5 shadow-[0_6px_20px_oklch(0.23_0.01_70_/_0.08)] sm:w-[320px]">
       <p className="flex min-w-0 items-baseline gap-1.5 text-[11px] leading-tight">
         <span aria-hidden>{note.flag}</span>
         <span className="select-none font-semibold blur-[3px]" aria-hidden>
@@ -177,7 +177,7 @@ function VoiceMessage({ note, playLabel, pauseLabel }) {
 
 function ImageMessage({ message, label, onOpen, viewLabel }) {
   return (
-    <figure className="w-[168px] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card p-1.5 shadow-[0_8px_28px_oklch(0.23_0.01_70_/_0.10)] sm:w-[190px]">
+    <figure className="w-[190px] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card p-1.5 shadow-[0_8px_28px_oklch(0.23_0.01_70_/_0.10)] sm:w-[220px]">
       <button
         type="button"
         onClick={() => onOpen(message)}
@@ -263,7 +263,7 @@ function Lightbox({ image, onClose, closeLabel }) {
   );
 }
 
-export default function ClientChat({ locale = "en", labels = {} }) {
+export default function ClientChat({ locale = "en", labels = {}, messages = null }) {
   const text = {
     eyebrow: "Live client feedback",
     heading: "Work that gets",
@@ -284,23 +284,34 @@ export default function ClientChat({ locale = "en", labels = {} }) {
     ...labels,
   };
 
-  const notes = locale === "ar" ? voiceNotesAr : voiceNotes;
-
   const [draft, setDraft] = useState("");
   const [sentMessages, setSentMessages] = useState([]);
   const [expanded, setExpanded] = useState(false);
   const [lightboxImage, setLightboxImage] = useState(null);
   const threadRef = useRef(null);
 
-  /* The opening story is 6 real messages: three voice notes interleaved with
-     the three screenshot bubbles. Everything else waits behind "load more". */
-  const storyNotes = notes.slice(0, 3);
-  const extraNotes = notes.slice(3);
-  const storyMessages = [];
-  for (let i = 0; i < 3; i++) {
-    if (storyNotes[i]) storyMessages.push({ kind: "voice", note: storyNotes[i] });
-    storyMessages.push({ kind: "image", image: FEEDBACK_IMAGES[i] });
-  }
+  /* One ordered list of bubbles. When the DB has content it arrives via the
+     `messages` prop (already localized); otherwise we rebuild the original
+     static thread — three voice notes interleaved with the three screenshots,
+     followed by the remaining notes. */
+  const orderedMessages = useMemo(() => {
+    if (messages && messages.length > 0) return messages;
+
+    const notes = locale === "ar" ? voiceNotesAr : voiceNotes;
+    const list = [];
+    for (let i = 0; i < 3; i++) {
+      if (notes[i]) list.push({ kind: "voice", ...notes[i] });
+      if (FEEDBACK_IMAGES[i]) list.push({ kind: "image", ...FEEDBACK_IMAGES[i] });
+    }
+    for (let i = 3; i < notes.length; i++) list.push({ kind: "voice", ...notes[i] });
+    return list;
+  }, [messages, locale]);
+
+  /* The opening story is the first 6 bubbles (pinned + animated); everything
+     after that waits behind "load more". */
+  const STORY_COUNT = 6;
+  const storyMessages = orderedMessages.slice(0, STORY_COUNT);
+  const extraMessages = orderedMessages.slice(STORY_COUNT);
 
   function loadMore() {
     setExpanded(true);
@@ -340,7 +351,7 @@ export default function ClientChat({ locale = "en", labels = {} }) {
       id="testimonials"
       className="relative h-full overflow-hidden border-y border-border bg-muted/40 px-4 sm:px-6 md:px-14"
     >
-      <div className="relative mx-auto flex h-full max-w-[860px] flex-col justify-center pb-5 pt-20 md:py-8">
+      <div className="relative mx-auto flex h-full max-w-[1040px] flex-col justify-center pb-5 pt-20 md:py-8">
         <div data-chat-intro className="mb-4 shrink-0 text-center md:mb-5">
           <div className="mb-3 inline-flex items-center gap-2 rounded-[var(--radius-full)] border border-primary/25 bg-background px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary md:text-[12px]">
             <span className="h-2 w-2 rounded-[var(--radius-full)] bg-primary" />
@@ -351,7 +362,7 @@ export default function ClientChat({ locale = "en", labels = {} }) {
           </h2>
         </div>
 
-        <div className="mx-auto h-[min(61svh,540px)] min-h-[390px] w-full max-w-[760px] shrink-0">
+        <div className="mx-auto h-[min(72svh,660px)] min-h-[440px] w-full max-w-[940px] shrink-0">
           <div
             data-chat-shell
             className="flex h-full min-h-0 flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card shadow-[0_24px_70px_oklch(0.23_0.01_70_/_0.14)]"
@@ -386,20 +397,20 @@ export default function ClientChat({ locale = "en", labels = {} }) {
 
               {storyMessages.map((message, index) => (
                 <div
-                  key={message.note?.id ?? message.image.id}
+                  key={message.id}
                   data-chat-message
                   data-side={index % 2 ? "right" : "left"}
                   className="flex w-full justify-start"
                 >
                   {message.kind === "voice" ? (
                     <VoiceMessage
-                      note={message.note}
+                      note={message}
                       playLabel={text.play}
                       pauseLabel={text.pause}
                     />
                   ) : (
                     <ImageMessage
-                      message={message.image}
+                      message={message}
                       label={text.imageLabel}
                       viewLabel={text.viewImage}
                       onOpen={setLightboxImage}
@@ -409,17 +420,26 @@ export default function ClientChat({ locale = "en", labels = {} }) {
               ))}
 
               {expanded &&
-                extraNotes.map((note) => (
-                  <div key={note.id} className="flex w-full justify-start">
-                    <VoiceMessage
-                      note={note}
-                      playLabel={text.play}
-                      pauseLabel={text.pause}
-                    />
+                extraMessages.map((message) => (
+                  <div key={message.id} className="flex w-full justify-start">
+                    {message.kind === "voice" ? (
+                      <VoiceMessage
+                        note={message}
+                        playLabel={text.play}
+                        pauseLabel={text.pause}
+                      />
+                    ) : (
+                      <ImageMessage
+                        message={message}
+                        label={text.imageLabel}
+                        viewLabel={text.viewImage}
+                        onOpen={setLightboxImage}
+                      />
+                    )}
                   </div>
                 ))}
 
-              {!expanded && extraNotes.length > 0 && (
+              {!expanded && extraMessages.length > 0 && (
                 <div className="flex w-full justify-center pt-1">
                   <button
                     type="button"
@@ -427,7 +447,7 @@ export default function ClientChat({ locale = "en", labels = {} }) {
                     className="inline-flex cursor-pointer items-center gap-1.5 rounded-[var(--radius-full)] border border-primary/30 bg-card px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em] text-primary transition-colors hover:bg-primary hover:text-primary-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
                   >
                     <ChevronDown className="h-3.5 w-3.5" />
-                    {text.loadMore} ({extraNotes.length})
+                    {text.loadMore} ({extraMessages.length})
                   </button>
                 </div>
               )}

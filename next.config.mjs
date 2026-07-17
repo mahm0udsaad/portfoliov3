@@ -5,6 +5,16 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true, // Disable ESLint checks during builds
   },
+  images: {
+    remotePatterns: [
+      // Chat screenshots uploaded to the public "chat-media" Storage bucket.
+      {
+        protocol: "https",
+        hostname: "*.supabase.co",
+        pathname: "/storage/v1/object/public/**",
+      },
+    ],
+  },
   async redirects() {
     return [
       // Consolidate the old Vercel subdomain onto the canonical domain

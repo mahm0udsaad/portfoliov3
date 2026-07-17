@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { MessageCircle } from "lucide-react";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
@@ -60,6 +62,13 @@ export default async function AdminPage() {
             </span>
           </p>
           <div className="flex items-center gap-6">
+            <Link
+              href="/admin/chat"
+              className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <MessageCircle className="w-4 h-4" />
+              Chat content
+            </Link>
             <AdminNotifications initialCount={bookings.length} />
             <span className="text-sm text-muted-foreground hidden sm:inline">
               {user.email}
