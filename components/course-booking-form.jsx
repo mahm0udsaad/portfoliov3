@@ -44,8 +44,8 @@ export default function CourseBookingForm() {
           Your seat is reserved!
         </h3>
         <p className="text-[15px] leading-relaxed text-muted-foreground">
-          Thanks{firstName ? `, ${firstName}` : ""} — check your inbox. We&apos;ll
-          send the schedule &amp; details within 24 hours.
+          Thanks{firstName ? `, ${firstName}` : ""} — we&apos;ll message you on
+          WhatsApp with the schedule &amp; details within 24 hours.
         </p>
       </div>
     );
@@ -60,34 +60,28 @@ export default function CourseBookingForm() {
         id="name"
         name="name"
         type="text"
+        autoComplete="name"
         placeholder="e.g. Ahmed Hassan"
         required
         className="mb-[18px]"
       />
 
-      <label htmlFor="email" className="block text-sm font-semibold mb-2">
-        Email <span className="text-primary">*</span>
-      </label>
-      <Input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="you@example.com"
-        required
-        className="mb-[18px]"
-      />
-
       <label htmlFor="phone" className="block text-sm font-semibold mb-2">
-        Phone{" "}
-        <span className="text-muted-foreground/80 font-medium">(optional)</span>
+        WhatsApp / Phone <span className="text-primary">*</span>
       </label>
       <Input
         id="phone"
         name="phone"
         type="tel"
+        inputMode="tel"
+        autoComplete="tel"
         placeholder="+20 1XX XXX XXXX"
-        className="mb-[22px]"
+        required
+        className="mb-1.5"
       />
+      <p className="text-[12.5px] text-muted-foreground mb-[22px]">
+        We&apos;ll send the schedule &amp; details straight to your WhatsApp.
+      </p>
 
       {/* Willing-to-pay toggle */}
       <label
@@ -115,7 +109,7 @@ export default function CourseBookingForm() {
         </span>
         <span>
           <span className="block text-[14.5px] font-semibold leading-snug">
-            Yes, I&apos;m willing to pay 999 EGP for the course.
+            Yes, I&apos;m willing to pay for the course.
           </span>
           <span className="block text-[13px] text-muted-foreground leading-snug mt-0.5">
             Optional — this just helps us prioritize serious learners for the
@@ -148,7 +142,7 @@ export default function CourseBookingForm() {
       </button>
 
       <p className="text-[13px] text-muted-foreground text-center leading-relaxed mt-4">
-        No payment required now. Cancel your reservation anytime.
+        Takes 15 seconds · No payment required now · Cancel anytime.
       </p>
     </form>
   );

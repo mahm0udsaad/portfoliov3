@@ -1,14 +1,42 @@
 import Image from "next/image";
 import Link from "next/link";
 import CourseBookingForm from "@/components/course-booking-form";
-import { courseSchema, JsonLd } from "@/lib/seo";
+import { courseSchema, courseFaqSchema, COURSE_FAQ, JsonLd } from "@/lib/seo";
 
 export const metadata = {
-  title: "Reserve your seat — AI & Video Editing Course",
+  title: "AI Video Editing Course — Learn Video Editing with AI (Online)",
   description:
-    "Reserve your seat in the first cohort of the AI & Video Editing course by Mahmoud Saad. Free to reserve — no payment required now.",
+    "Join the AI video editing course by Mahmoud Saad. Learn to create and edit professional videos with AI — from zero to publishing for Reels, TikTok & YouTube. Beginner-friendly online cohort. Reserve your seat free — no payment now.",
+  keywords: [
+    "AI video editing course",
+    "video editing course",
+    "AI video editing",
+    "learn video editing",
+    "video editing with AI",
+    "AI video course",
+    "online video editing course",
+    "content creation course",
+    "video editing for beginners",
+    "كورس مونتاج",
+    "كورس مونتاج بالذكاء الاصطناعي",
+  ],
   alternates: {
     canonical: "/book",
+  },
+  openGraph: {
+    type: "website",
+    title: "AI Video Editing Course — Learn Video Editing with AI (Online)",
+    description:
+      "Create and edit scroll-stopping videos with AI — even if you've never touched a timeline. Beginner-friendly online cohort. Reserve your seat free.",
+    url: "/book",
+    images: [{ url: "/website.jpg", width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "AI Video Editing Course — Learn Video Editing with AI",
+    description:
+      "Create and edit scroll-stopping videos with AI. Beginner-friendly online cohort. Reserve your seat free.",
+    images: ["/website.jpg"],
   },
 };
 
@@ -27,10 +55,17 @@ const forWho = [
   "Total beginners — no editing experience needed",
 ];
 
+const proofStats = [
+  { value: "6 weeks", label: "Live online cohort" },
+  { value: "10+", label: "AI tools you'll master" },
+  { value: "0", label: "Experience required" },
+];
+
 export default function BookPage() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <JsonLd data={courseSchema()} />
+      <JsonLd data={courseFaqSchema()} />
       {/* NAV */}
       <nav className="flex items-center justify-between px-6 md:px-14 py-6 border-b border-border">
         <Link href="/" className="font-serif text-[22px] tracking-tight">
@@ -67,21 +102,42 @@ export default function BookPage() {
       <section className="mx-auto max-w-[1280px] px-6 md:px-14 pt-10 md:pt-14 pb-20 grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-[72px] items-start">
         {/* LEFT — pitch */}
         <div>
-          <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-6">
-            Cohort 01 — Limited seats
+          <div className="inline-flex items-center gap-2 text-[12.5px] font-semibold tracking-[0.1em] uppercase text-primary mb-6 bg-accent/60 border border-primary/20 rounded-full px-3.5 py-1.5">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-primary opacity-70" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-primary" />
+            </span>
+            Cohort 01 · Online · Limited seats
           </div>
 
-          <h1 className="font-serif font-normal text-[42px] md:text-[56px] lg:text-[64px] leading-[1.04] tracking-[-0.015em] mb-6">
-            Reserve your seat in
-            <br />
-            the <em className="text-primary">first cohort.</em>
+          <h1 className="font-serif font-normal text-[40px] md:text-[54px] lg:text-[60px] leading-[1.05] tracking-[-0.015em] mb-5">
+            The <em className="text-primary">AI Video Editing</em> course
+            <br className="hidden sm:block" /> for creators.
           </h1>
 
-          <p className="text-[17.5px] leading-relaxed text-muted-foreground max-w-[470px] mb-10">
-            A hands-on course that teaches you to create and edit scroll-stopping
-            videos with AI — even if you&apos;ve never touched an editing timeline
-            before.
+          <p className="text-[17.5px] leading-relaxed text-muted-foreground max-w-[480px] mb-8">
+            Learn to create and edit scroll-stopping videos with AI — even if
+            you&apos;ve never touched an editing timeline before. A hands-on,
+            beginner-friendly online video editing course that takes you from
+            zero to publishing.
           </p>
+
+          {/* Proof stats */}
+          <div className="grid grid-cols-3 gap-3 mb-10 max-w-[480px]">
+            {proofStats.map((s) => (
+              <div
+                key={s.label}
+                className="rounded-2xl border border-border bg-card px-4 py-3.5 text-center"
+              >
+                <div className="font-serif text-2xl md:text-[26px] leading-none text-foreground">
+                  {s.value}
+                </div>
+                <div className="text-[11.5px] leading-tight text-muted-foreground mt-1.5">
+                  {s.label}
+                </div>
+              </div>
+            ))}
+          </div>
 
           {/* What you'll learn */}
           <SectionLabel>What you&apos;ll learn</SectionLabel>
@@ -114,7 +170,7 @@ export default function BookPage() {
             <div className="shrink-0 w-16 h-16 rounded-full overflow-hidden bg-muted relative">
               <Image
                 src="/me.jpg"
-                alt="Mahmoud Saad"
+                alt="Mahmoud Saad — AI video editing course instructor"
                 fill
                 className="object-cover"
               />
@@ -133,10 +189,15 @@ export default function BookPage() {
         <div id="reserve" className="lg:sticky lg:top-8 scroll-mt-24">
           <div className="bg-card border border-border rounded-[22px] shadow-[0_24px_60px_oklch(0.23_0.01_70_/_0.08)] overflow-hidden">
             <div className="bg-ink text-ink-foreground px-[30px] py-6">
-              <p className="font-serif text-2xl mb-1.5">Reserve your seat</p>
+              <div className="flex items-baseline justify-between gap-3 mb-1.5">
+                <p className="font-serif text-2xl">Reserve your seat</p>
+                <span className="text-[13px] font-semibold text-ink-foreground/70 whitespace-nowrap">
+                  Free now
+                </span>
+              </div>
               <p className="text-sm leading-normal text-ink-foreground/70">
-                Free to reserve — no payment now. We&apos;ll reach out with the
-                schedule &amp; details within 24 hours.
+                Just your name &amp; number — no payment now. We&apos;ll message
+                you on WhatsApp with the schedule within 24 hours.
               </p>
             </div>
             <div className="p-[26px] md:px-[30px] pb-[30px]">
@@ -148,6 +209,53 @@ export default function BookPage() {
           </p>
         </div>
       </section>
+
+      {/* FAQ — mirrors the FAQ JSON-LD for rich results */}
+      <section className="border-t border-border bg-muted/30">
+        <div className="mx-auto max-w-[820px] px-6 md:px-14 pt-16 md:pt-20 pb-28 md:pb-20">
+          <h2 className="font-serif font-normal text-[30px] md:text-[38px] leading-tight text-center mb-3">
+            Frequently asked questions
+          </h2>
+          <p className="text-center text-muted-foreground text-[15.5px] mb-10">
+            Everything you need to know about the AI video editing course.
+          </p>
+          <div className="flex flex-col gap-3">
+            {COURSE_FAQ.map(({ q, a }) => (
+              <details
+                key={q}
+                className="group rounded-2xl border border-border bg-card px-5 md:px-6 py-1 open:shadow-sm"
+              >
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none py-4 font-semibold text-[16px] md:text-[17px]">
+                  {q}
+                  <span className="shrink-0 text-primary text-xl transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="text-[15px] leading-relaxed text-muted-foreground pb-5 -mt-1">
+                  {a}
+                </p>
+              </details>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <a
+              href="#reserve"
+              className="inline-flex items-center gap-2.5 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+            >
+              Reserve my seat — it&apos;s free <span className="text-lg">→</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* Sticky mobile CTA — keeps the reserve action one tap away */}
+      <a
+        href="#reserve"
+        className="lg:hidden fixed bottom-4 inset-x-4 z-40 flex items-center justify-center gap-2 bg-ink text-ink-foreground py-4 rounded-full font-semibold text-base shadow-[0_10px_30px_oklch(0.23_0.01_70_/_0.25)]"
+      >
+        Reserve my seat — free <span className="text-lg">→</span>
+      </a>
     </div>
   );
 }

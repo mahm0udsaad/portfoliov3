@@ -199,12 +199,16 @@ export default async function AdminPage() {
                         </Td>
                         <Td className="font-medium">{b.name}</Td>
                         <Td>
-                          <a
-                            href={`mailto:${b.email}`}
-                            className="hover:text-primary transition-colors"
-                          >
-                            {b.email}
-                          </a>
+                          {b.email ? (
+                            <a
+                              href={`mailto:${b.email}`}
+                              className="hover:text-primary transition-colors"
+                            >
+                              {b.email}
+                            </a>
+                          ) : (
+                            <span className="text-muted-foreground">—</span>
+                          )}
                         </Td>
                         <Td>
                           {b.phone ? (

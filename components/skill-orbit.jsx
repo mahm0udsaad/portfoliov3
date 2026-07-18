@@ -32,8 +32,11 @@ function Ring({ ringRef, skills, startIndex, radius, active }) {
         const globalIndex = startIndex + i;
         const isActive = active === globalIndex;
         const theta = (2 * Math.PI * i) / skills.length;
-        const x = 50 + radius * Math.cos(theta);
-        const y = 50 + radius * Math.sin(theta);
+        // Round to a fixed precision so the server- and client-rendered strings
+        // are byte-identical — full float precision differs across engines and
+        // triggers a React hydration mismatch warning.
+        const x = (50 + radius * Math.cos(theta)).toFixed(3);
+        const y = (50 + radius * Math.sin(theta)).toFixed(3);
         return (
           <div
             key={skill.name}
