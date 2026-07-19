@@ -48,6 +48,9 @@ export const metadata: Metadata = {
       "x-default": "/",
     },
   },
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION,
+  },
   openGraph: {
     title: "Mahmoud Saad — Freelance Full-Stack Web Developer",
     description:

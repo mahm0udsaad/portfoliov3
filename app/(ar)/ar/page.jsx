@@ -18,7 +18,7 @@ import ScrollIntro from "@/components/scroll-intro";
 import SkillOrbit from "@/components/skill-orbit";
 import VoiceNotes from "@/components/voice-notes-loader";
 import TechBadge from "@/components/ui/techBadge";
-import { homeGraph, JsonLd } from "@/lib/seo";
+import { homeGraph, arFaqSchema, AR_FAQ, JsonLd } from "@/lib/seo";
 
 const voiceNoteLabels = {
   eyebrow: "رسائل حقيقية من العملاء",
@@ -59,6 +59,7 @@ export default function HomeArabic() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       <JsonLd data={homeGraph("ar")} />
+      <JsonLd data={arFaqSchema()} />
 
       {/* NAV */}
       <header className="sticky top-0 z-50 bg-background/85 backdrop-blur-md border-b border-border">
@@ -325,6 +326,39 @@ export default function HomeArabic() {
                 <ArrowLeft className="w-4 h-4" />
               </Link>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ — hire-intent questions, mirrors the FAQPage JSON-LD for rich results */}
+      <section id="faq" className="py-24 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-3xl">
+          <div className="text-center mb-12">
+            <div className="text-[13px] font-semibold tracking-wide text-primary mb-4">
+              الأسئلة الشائعة
+            </div>
+            <h2 className="font-serif font-bold text-[34px] md:text-[42px] leading-snug tracking-tight">
+              أسئلة يتكرر طرحها قبل التعاقد مع مطور مستقل
+            </h2>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {AR_FAQ.map(({ q, a }) => (
+              <details
+                key={q}
+                className="group rounded-2xl border border-border bg-card px-5 md:px-6 py-1 open:shadow-sm"
+              >
+                <summary className="flex items-center justify-between gap-4 cursor-pointer list-none py-4 font-semibold text-[16px] md:text-[17px]">
+                  {q}
+                  <span className="shrink-0 text-primary text-xl transition-transform group-open:rotate-45">
+                    +
+                  </span>
+                </summary>
+                <p className="text-[15px] leading-relaxed text-muted-foreground pb-5 -mt-1">
+                  {a}
+                </p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
