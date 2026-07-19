@@ -275,6 +275,48 @@ export async function moveMessage(
   }
 }
 
+/**
+ * Persists an arbitrary new order (from admin drag-and-drop). Takes a
+ * comma-separated list of message ids in their new top-to-bottom order and
+ * writes each row's sort_order to its 1-based position.
+ */
+export async function reorderMessages(
+  formData: FormData,
+): Promise<ChatActionResult> {
+  try {
+    await requireAdmin();
+    const admin = getSupabaseAdmin();
+
+    const raw = str(formData.get("ids"));
+    const ids = (raw ?? "")
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    if (ids.length === 0) {
+      return { success: false, message: "No order provided." };
+    }
+
+    const results = await Promise.all(
+      ids.map((id, i) =>
+        admin
+          .from("chat_messages")
+          .update({ sort_order: i + 1 })
+          .eq("id", id),
+      ),
+    );
+    const failed = results.find((r) => r.error);
+    if (failed?.error) throw new Error(failed.error.message);
+
+    revalidateSurfaces();
+    return { success: true };
+  } catch (err) {
+    return {
+      success: false,
+      message: err instanceof Error ? err.message : "Failed to reorder.",
+    };
+  }
+}
+
 export async function togglePublished(
   formData: FormData,
 ): Promise<ChatActionResult> {

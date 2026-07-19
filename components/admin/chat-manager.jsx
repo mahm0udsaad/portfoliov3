@@ -4,8 +4,7 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
-  ChevronUp,
-  ChevronDown,
+  GripVertical,
   Pencil,
   Trash2,
   Plus,
@@ -22,7 +21,7 @@ import {
   createMessage,
   updateMessage,
   deleteMessage,
-  moveMessage,
+  reorderMessages,
   togglePublished,
 } from "@/app/actions/chat-messages";
 
@@ -51,7 +50,18 @@ export default function ChatManager({ messages }) {
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState(null);
   const [preview, setPreview] = useState(null); // null | { src, alt }
+  // Local, optimistic copy of the order so drag-and-drop feels instant; kept in
+  // sync with the server list whenever fresh props arrive after a refresh.
+  const [items, setItems] = useState(messages);
+  const [draggingId, setDraggingId] = useState(null);
+  const dragIndex = useRef(null);
+  const itemsRef = useRef(items);
+  itemsRef.current = items;
   const [isPending, startTransition] = useTransition();
+
+  useEffect(() => {
+    setItems(messages);
+  }, [messages]);
 
   function run(action, formData, opts = {}) {
     setError("");
@@ -74,6 +84,36 @@ export default function ChatManager({ messages }) {
     run(action, fd, { busyId });
   }
 
+  function handleDragStart(index) {
+    dragIndex.current = index;
+    setDraggingId(itemsRef.current[index]?.id ?? null);
+  }
+
+  // Live reorder as the pointer passes over another row, so the list rearranges
+  // under the cursor instead of only snapping on drop.
+  function handleDragEnter(index) {
+    const from = dragIndex.current;
+    if (from === null || from === index) return;
+    setItems((prev) => {
+      const next = [...prev];
+      const [moved] = next.splice(from, 1);
+      next.splice(index, 0, moved);
+      return next;
+    });
+    dragIndex.current = index;
+  }
+
+  function handleDragEnd() {
+    dragIndex.current = null;
+    setDraggingId(null);
+    const orderedIds = itemsRef.current.map((m) => m.id);
+    // Only hit the server if the order actually changed.
+    if (orderedIds.join(",") === messages.map((m) => m.id).join(",")) return;
+    const fd = new FormData();
+    fd.append("ids", orderedIds.join(","));
+    run(reorderMessages, fd);
+  }
+
   return (
     <div>
       {error && (
@@ -84,7 +124,10 @@ export default function ChatManager({ messages }) {
 
       <div className="flex items-center justify-between gap-4 mb-5">
         <p className="text-sm text-muted-foreground">
-          {messages.length} message{messages.length === 1 ? "" : "s"}
+          {items.length} message{items.length === 1 ? "" : "s"}
+          <span className="hidden sm:inline text-muted-foreground/70">
+            {" "}· drag to reorder
+          </span>
         </p>
         <button
           type="button"
@@ -100,18 +143,18 @@ export default function ChatManager({ messages }) {
       </div>
 
       <ul className="space-y-3">
-        {messages.map((m, index) => (
+        {items.map((m, index) => (
           <MessageRow
             key={m.id}
             m={m}
-            first={index === 0}
-            last={index === messages.length - 1}
+            index={index}
+            dragging={draggingId === m.id}
             busy={busyId === m.id && isPending}
+            onDragStart={handleDragStart}
+            onDragEnter={handleDragEnter}
+            onDragEnd={handleDragEnd}
             onPreview={() =>
               setPreview({ src: m.image_url, alt: m.alt || "Screenshot" })
-            }
-            onMove={(direction) =>
-              rowAction(moveMessage, { id: m.id, direction }, m.id)
             }
             onTogglePublished={() =>
               rowAction(togglePublished, { id: m.id }, m.id)
@@ -129,7 +172,7 @@ export default function ChatManager({ messages }) {
         ))}
       </ul>
 
-      {messages.length === 0 && (
+      {items.length === 0 && (
         <div className="rounded-2xl border border-border bg-card p-10 text-center text-muted-foreground">
           No messages yet. Add your first one.
         </div>
@@ -215,17 +258,22 @@ function rowToForm(m) {
 
 function MessageRow({
   m,
-  first,
-  last,
+  index,
+  dragging,
   busy,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
   onPreview,
-  onMove,
   onTogglePublished,
   onEdit,
   onDelete,
 }) {
   const audioRef = useRef(null);
   const [playing, setPlaying] = useState(false);
+  // Native HTML5 drag is only armed while the grip handle is held, so clicks on
+  // the row's buttons never start a drag.
+  const [dragOn, setDragOn] = useState(false);
 
   const isImage = m.type === "image";
   const hasImage = isImage && Boolean(m.image_url);
@@ -242,27 +290,32 @@ function MessageRow({
   }
 
   return (
-    <li className="flex items-center gap-4 rounded-2xl border border-border bg-card px-4 py-3.5">
-      <div className="flex flex-col">
-        <button
-          type="button"
-          disabled={first || busy}
-          onClick={() => onMove("up")}
-          aria-label="Move up"
-          className="grid place-items-center h-6 w-6 rounded-md text-muted-foreground hover:bg-muted disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-        >
-          <ChevronUp className="w-4 h-4" />
-        </button>
-        <button
-          type="button"
-          disabled={last || busy}
-          onClick={() => onMove("down")}
-          aria-label="Move down"
-          className="grid place-items-center h-6 w-6 rounded-md text-muted-foreground hover:bg-muted disabled:opacity-30 disabled:hover:bg-transparent transition-colors"
-        >
-          <ChevronDown className="w-4 h-4" />
-        </button>
-      </div>
+    <li
+      draggable={dragOn}
+      onDragStart={() => onDragStart(index)}
+      onDragEnter={() => onDragEnter(index)}
+      onDragOver={(e) => e.preventDefault()}
+      onDragEnd={() => {
+        setDragOn(false);
+        onDragEnd();
+      }}
+      className={`flex items-center gap-4 rounded-2xl border bg-card px-4 py-3.5 transition-[opacity,box-shadow] ${
+        dragging
+          ? "border-primary/60 opacity-60 shadow-lg"
+          : "border-border"
+      }`}
+    >
+      <button
+        type="button"
+        aria-label="Drag to reorder"
+        title="Drag to reorder"
+        onMouseDown={() => setDragOn(true)}
+        onMouseUp={() => setDragOn(false)}
+        onTouchStart={() => setDragOn(true)}
+        className="grid place-items-center h-9 w-6 shrink-0 cursor-grab active:cursor-grabbing rounded-md text-muted-foreground hover:bg-muted hover:text-foreground transition-colors touch-none"
+      >
+        <GripVertical className="w-4 h-4" />
+      </button>
 
       <button
         type="button"
