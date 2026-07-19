@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, useTransition } from "react";
+import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -10,7 +10,9 @@ import {
   Trash2,
   Plus,
   Play,
+  Pause,
   ImageIcon,
+  Maximize2,
   Eye,
   EyeOff,
   Loader2,
@@ -48,6 +50,7 @@ export default function ChatManager({ messages }) {
   const [editing, setEditing] = useState(null); // null | EMPTY-shaped object
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState(null);
+  const [preview, setPreview] = useState(null); // null | { src, alt }
   const [isPending, startTransition] = useTransition();
 
   function run(action, formData, opts = {}) {
@@ -104,6 +107,9 @@ export default function ChatManager({ messages }) {
             first={index === 0}
             last={index === messages.length - 1}
             busy={busyId === m.id && isPending}
+            onPreview={() =>
+              setPreview({ src: m.image_url, alt: m.alt || "Screenshot" })
+            }
             onMove={(direction) =>
               rowAction(moveMessage, { id: m.id, direction }, m.id)
             }
@@ -141,6 +147,47 @@ export default function ChatManager({ messages }) {
           }
         />
       )}
+
+      {preview && (
+        <ImageLightbox
+          src={preview.src}
+          alt={preview.alt}
+          onClose={() => setPreview(null)}
+        />
+      )}
+    </div>
+  );
+}
+
+function ImageLightbox({ src, alt, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && onClose();
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  return (
+    <div
+      className="fixed inset-0 z-[60] grid place-items-center bg-ink/80 backdrop-blur-sm p-4 md:p-8"
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close preview"
+        className="absolute top-4 right-4 grid place-items-center h-11 w-11 rounded-full bg-ink-foreground/10 text-ink-foreground hover:bg-ink-foreground/20 transition-colors"
+      >
+        <X className="w-5 h-5" />
+      </button>
+      {/* Plain img: screenshots have arbitrary dimensions and we want them shown
+          in full without next/image's fixed-size constraints. */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={src}
+        alt={alt}
+        onClick={(e) => e.stopPropagation()}
+        className="max-h-full max-w-full rounded-2xl object-contain shadow-[0_30px_80px_oklch(0.23_0.01_70_/_0.4)]"
+      />
     </div>
   );
 }
@@ -171,11 +218,29 @@ function MessageRow({
   first,
   last,
   busy,
+  onPreview,
   onMove,
   onTogglePublished,
   onEdit,
   onDelete,
 }) {
+  const audioRef = useRef(null);
+  const [playing, setPlaying] = useState(false);
+
+  const isImage = m.type === "image";
+  const hasImage = isImage && Boolean(m.image_url);
+  const hasAudio = !isImage && Boolean(m.audio_url);
+
+  function toggleAudio() {
+    const a = audioRef.current;
+    if (!a) return;
+    if (a.paused) {
+      a.play();
+    } else {
+      a.pause();
+    }
+  }
+
   return (
     <li className="flex items-center gap-4 rounded-2xl border border-border bg-card px-4 py-3.5">
       <div className="flex flex-col">
@@ -199,23 +264,64 @@ function MessageRow({
         </button>
       </div>
 
-      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent text-accent-foreground overflow-hidden">
-        {m.type === "image" ? (
-          m.image_url ? (
-            <Image
-              src={m.image_url}
-              alt=""
-              width={44}
-              height={44}
-              className="h-full w-full object-cover"
-            />
+      <button
+        type="button"
+        onClick={isImage ? onPreview : toggleAudio}
+        disabled={isImage ? !hasImage : !hasAudio}
+        aria-label={
+          isImage
+            ? "View image full screen"
+            : playing
+              ? "Pause voice note"
+              : "Play voice note"
+        }
+        title={
+          isImage
+            ? hasImage
+              ? "Click to view full screen"
+              : "No image uploaded"
+            : hasAudio
+              ? playing
+                ? "Pause"
+                : "Play voice note"
+              : "No audio uploaded"
+        }
+        className="group relative grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-accent text-accent-foreground overflow-hidden enabled:cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
+      >
+        {isImage ? (
+          hasImage ? (
+            <>
+              <Image
+                src={m.image_url}
+                alt=""
+                width={44}
+                height={44}
+                className="h-full w-full object-cover"
+              />
+              <span className="absolute inset-0 grid place-items-center bg-ink/55 text-ink-foreground opacity-0 transition-opacity group-hover:opacity-100">
+                <Maximize2 className="w-4 h-4" />
+              </span>
+            </>
           ) : (
             <ImageIcon className="w-5 h-5" />
           )
+        ) : playing ? (
+          <Pause className="w-5 h-5" />
         ) : (
           <Play className="w-5 h-5 translate-x-[1px]" />
         )}
-      </div>
+      </button>
+
+      {hasAudio && (
+        <audio
+          ref={audioRef}
+          src={m.audio_url}
+          preload="none"
+          onPlay={() => setPlaying(true)}
+          onPause={() => setPlaying(false)}
+          onEnded={() => setPlaying(false)}
+        />
+      )}
 
       <div className="min-w-0 flex-1">
         {m.type === "image" ? (
