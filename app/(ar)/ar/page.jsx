@@ -11,6 +11,9 @@ import {
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
+import VideoFeature from "@/components/video-feature";
+import DesignGallery from "@/components/design-gallery";
+import { DESIGN_WORK } from "@/lib/design-work";
 import MobileNav from "@/components/mobile-nav";
 import ProjectStack from "@/components/project-stack";
 import ServiceCards from "@/components/service-cards";
@@ -68,11 +71,17 @@ export default function HomeArabic() {
             محمود سعد<span className="text-primary">.</span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-[14.5px] font-medium text-muted-foreground">
+            <Link href="#projects" className="hover:text-foreground transition-colors">
+              أعمالي
+            </Link>
             <Link href="#services" className="hover:text-foreground transition-colors">
               الخدمات
             </Link>
-            <Link href="#projects" className="hover:text-foreground transition-colors">
-              أعمالي
+            <Link href="#showreel" className="hover:text-foreground transition-colors">
+              الفيديو
+            </Link>
+            <Link href="#design" className="hover:text-foreground transition-colors">
+              التصميم
             </Link>
             <Link href="/book" className="text-primary font-semibold hover:text-primary/80 transition-colors">
               الدورة
@@ -95,8 +104,10 @@ export default function HomeArabic() {
           </div>
           <MobileNav
             links={[
-              { href: "#services", label: "الخدمات" },
               { href: "#projects", label: "أعمالي" },
+              { href: "#services", label: "الخدمات" },
+              { href: "#showreel", label: "الفيديو" },
+              { href: "#design", label: "التصميم" },
               { href: "/book", label: "الدورة" },
               { href: "#about", label: "عنّي" },
               { href: "#contact", label: "تواصل معي" },
@@ -154,56 +165,6 @@ export default function HomeArabic() {
         }
         chat={<VoiceNotes locale="ar" labels={voiceNoteLabels} />}
       />
-
-      {/* SERVICES */}
-      <section id="services" className="py-20 px-6 md:px-14 border-t border-border">
-        <div className="mx-auto max-w-[1180px]">
-          <div className="text-center mb-12">
-            <div className="text-[13px] font-semibold tracking-wide text-primary mb-4">
-              الخدمات
-            </div>
-            <h2 className="font-serif font-bold text-[32px] md:text-[40px] leading-snug tracking-tight">
-              ماذا أستطيع أن أبني لك؟
-            </h2>
-          </div>
-          <ServiceCards services={services} />
-        </div>
-      </section>
-
-      {/* COURSE */}
-      <section className="py-20 px-6 md:px-14 border-t border-border bg-muted/40">
-        <div className="mx-auto max-w-[1000px] text-center">
-          <div className="text-[13px] font-semibold tracking-wide text-primary mb-6">
-            دورة جديدة · الدفعة الأولى — الحجز مفتوح
-          </div>
-          <h2 className="font-serif font-bold text-[32px] md:text-[44px] leading-snug tracking-tight mb-6">
-            اصنع فيديوهات مذهلة بقوة{" "}
-            <span className="text-primary">الذكاء الاصطناعي والمونتاج.</span>
-          </h2>
-          <p className="text-[16.5px] leading-relaxed text-muted-foreground max-w-[560px] mx-auto mb-9">
-            دورة عملية مع محمود سعد تتعلم فيها إنتاج ومونتاج فيديوهات احترافية
-            بالذكاء الاصطناعي — من الصفر حتى النشر.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center mb-3">
-            <Link
-              href="/book"
-              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
-            >
-              احجز مقعدك
-              <ArrowLeft className="w-5 h-5" />
-            </Link>
-          </div>
-          <p className="text-sm text-muted-foreground mt-5">
-            لا تحتاج أي خبرة سابقة · الحجز مجاني — بدون أي دفع الآن
-          </p>
-
-          {/* Sample video previews — click to play, loaded on demand from Supabase */}
-          <HeroVideos
-            clips={heroClips}
-            watchHint="▶ اضغط للمشاهدة — فيديوهات حقيقية مصنوعة بنفس أسلوب العمل الذي ستتعلمه."
-          />
-        </div>
-      </section>
 
       {/* PROJECTS */}
       <section id="projects" className="py-24 px-6 md:px-14 border-t border-border">
@@ -281,6 +242,90 @@ export default function HomeArabic() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className="py-20 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="text-center mb-12">
+            <div className="text-[13px] font-semibold tracking-wide text-primary mb-4">
+              الخدمات
+            </div>
+            <h2 className="font-serif font-bold text-[32px] md:text-[40px] leading-snug tracking-tight">
+              ماذا أستطيع أن أبني لك؟
+            </h2>
+          </div>
+          <ServiceCards services={services} />
+        </div>
+      </section>
+
+      {/* VIDEO & DESIGN SHOWREEL */}
+      <section id="showreel" className="py-20 px-6 md:px-14 border-t border-border bg-muted/40">
+        <div className="mx-auto max-w-[1000px] text-center">
+          <div className="text-[13px] font-semibold tracking-wide text-primary mb-6">
+            فيديو وتصميم
+          </div>
+          <h2 className="font-serif font-bold text-[32px] md:text-[44px] leading-snug tracking-tight mb-6">
+            الإعلانات والهوية البصرية —{" "}
+            <span className="text-primary">من صناعتي أنا.</span>
+          </h2>
+          <p className="text-[16.5px] leading-relaxed text-muted-foreground max-w-[620px] mx-auto mb-10">
+            الموقع نصف الشغل. أكتب وأمنتج وأخرج الإعلانات التي تبيعه — إعلانات
+            بالذكاء الاصطناعي، فيديوهات عمودية للريلز والتيك توك، وتصاميم التغليف
+            والسوشيال ميديا المصاحبة لها.
+          </p>
+
+          <VideoFeature
+            videoUrl={showreelFeature.videoUrl}
+            poster={showreelFeature.poster}
+            title="إعلان تريس"
+            caption="تريس — محمصة قهوة مختصة في الطائف. الفكرة والمونتاج والموشن جرافيك من تنفيذي، لعلامة نفّذت لها الموقع أيضًا."
+            playLabel="شغّل إعلان تريس"
+          />
+
+          <HeroVideos
+            clips={showreelClips}
+            altLabel="نموذج إعلان عمودي"
+            watchHint="▶ اضغط للمشاهدة — إعلانات عمودية مصمّمة لحالة الواتساب والريلز والتيك توك."
+          />
+
+          <div className="mt-10 flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+            <Link
+              href="#contact"
+              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+            >
+              اطلب فيديو لعلامتك
+              <ArrowLeft className="w-5 h-5" />
+            </Link>
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-full font-semibold text-base text-ink hover:text-primary transition-colors"
+            >
+              أو تعلّم صناعتها بنفسك
+              <ArrowLeft className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* DESIGN */}
+      <section id="design" className="py-20 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="text-center mb-12">
+            <div className="text-[13px] font-semibold tracking-wide text-primary mb-4">
+              تصميم
+            </div>
+            <h2 className="font-serif font-bold text-[32px] md:text-[42px] leading-snug tracking-tight mb-4">
+              تغليف ومطبوعات وسوشيال —{" "}
+              <span className="text-primary">من نفس اليد.</span>
+            </h2>
+            <p className="text-muted-foreground max-w-[620px] mx-auto text-[15.5px] leading-relaxed">
+              تصاميم تغليف القهوة ورسومات الأكواب وإعلانات الحملات لنفس العملاء
+              الذين أبني لهم منتجاتهم. اضغط أي عمل لعرضه بالحجم الكامل.
+            </p>
+          </div>
+          <DesignGallery items={DESIGN_WORK} locale="ar" labels={{ view: "عرض بالحجم الكامل", close: "إغلاق" }} />
         </div>
       </section>
 
@@ -468,14 +513,45 @@ const services = [
   },
 ];
 
-const SUPABASE_VIDEOS = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/course-videos`;
-const heroClips = [
-  { videoUrl: `${SUPABASE_VIDEOS}/clip1.mp4`, poster: "/videos/clip1.jpg" },
-  { videoUrl: `${SUPABASE_VIDEOS}/clip2.mp4`, poster: "/videos/clip2.jpg" },
-  { videoUrl: `${SUPABASE_VIDEOS}/clip3.mp4`, poster: "/videos/clip3.jpg" },
+/* Showreel media is served from /public so the section keeps working even if
+   the storage backend changes. */
+const showreelFeature = {
+  videoUrl: "/videos/tres-ad.mp4",
+  poster: "/videos/tres-ad.jpg",
+};
+const showreelClips = [
+  { videoUrl: "/videos/clip4.mp4", poster: "/videos/clip4.jpg" },
+  { videoUrl: "/videos/clip5.mp4", poster: "/videos/clip5.jpg" },
 ];
 
 const projects = [
+  {
+    title: "سكاي لايت — مركز قيادة الوكالة",
+    image: "/projects/rawasm/rawasm-1.jpg",
+    tech: ["Next.js", "Supabase", "AI Assistant", "RTL Dashboard"],
+    alt: "لوحة تحكم عربية لإدارة وكالة تسويق سعودية — برمجة محمود سعد",
+    description:
+      "نظام تشغيل عربي بالكامل لوكالة تسويق سعودية: تسليم المبيعات، العملاء، المشاريع، مهام تُنشأ تلقائيًا، مؤشرات الالتزام ورضا العملاء، ومساعد ذكي داخل النظام — بديلاً عن نظام أودو المخصص.",
+    deploy: "https://skylight.rwasem.com",
+  },
+  {
+    title: "كيارا شات",
+    image: "/projects/kiara/kiara-1.jpg",
+    tech: ["Next.js", "WhatsApp API", "Supabase", "Realtime"],
+    alt: "نظام خدمة عملاء عبر واتساب لمركز تجميل — تطوير محمود سعد",
+    description:
+      "منصة خدمة عملاء عبر واتساب بعلامة خاصة لمركز تجميل — محادثات لحظية، توزيع الطلبات على الموظفين، طلبات اليوم وتقارير عبء العمل في لوحة عربية واحدة.",
+    deploy: "https://kiara-chat-eight.vercel.app",
+  },
+  {
+    title: "مالتي جيتس",
+    image: "/projects/multigates/multigates-1.jpg",
+    tech: ["Next.js", "next-intl", "Supabase", "SEO"],
+    alt: "موقع شركة صناعية ثنائي اللغة مع كتالوج منتجات — برمجة محمود سعد",
+    description:
+      "موقع شركة ثنائي اللغة لموزّع بيرنجات ومكونات نقل الحركة في مصر — كتالوج منتجات قابل للبحث، العلامات والقطاعات الصناعية، ويُدار بالكامل من Supabase.",
+    deploy: "https://multigates-eg.vercel.app",
+  },
   {
     title: "Nehgz",
     image: "/projects/nehgzbot/nehgzbot-1.png",

@@ -11,6 +11,9 @@ import {
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
+import VideoFeature from "@/components/video-feature";
+import DesignGallery from "@/components/design-gallery";
+import { DESIGN_WORK } from "@/lib/design-work";
 import MobileNav from "@/components/mobile-nav";
 import ProjectStack from "@/components/project-stack";
 import ServiceCards from "@/components/service-cards";
@@ -32,11 +35,17 @@ export default function Home() {
             Mahmoud Saad<span className="text-primary">.</span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-[14.5px] font-medium text-muted-foreground">
+            <Link href="#projects" className="hover:text-foreground transition-colors">
+              Projects
+            </Link>
             <Link href="#services" className="hover:text-foreground transition-colors">
               Services
             </Link>
-            <Link href="#projects" className="hover:text-foreground transition-colors">
-              Projects
+            <Link href="#showreel" className="hover:text-foreground transition-colors">
+              Showreel
+            </Link>
+            <Link href="#design" className="hover:text-foreground transition-colors">
+              Design
             </Link>
             <Link href="/book" className="text-primary font-semibold hover:text-primary/80 transition-colors">
               Course
@@ -63,8 +72,10 @@ export default function Home() {
           </div>
           <MobileNav
             links={[
-              { href: "#services", label: "Services" },
               { href: "#projects", label: "Projects" },
+              { href: "#services", label: "Services" },
+              { href: "#showreel", label: "Showreel" },
+              { href: "#design", label: "Design" },
               { href: "/book", label: "Course" },
               { href: "#about", label: "About" },
               { href: "#contact", label: "Contact" },
@@ -119,53 +130,6 @@ export default function Home() {
         }
         chat={<VoiceNotes />}
       />
-
-      {/* SERVICES */}
-      <section id="services" className="py-20 px-6 md:px-14 border-t border-border">
-        <div className="mx-auto max-w-[1180px]">
-          <div className="text-center mb-12">
-            <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
-              Services
-            </div>
-            <h2 className="font-serif font-normal text-[34px] md:text-[42px] leading-tight tracking-tight">
-              What I can build for you
-            </h2>
-          </div>
-          <ServiceCards services={services} />
-        </div>
-      </section>
-
-      {/* COURSE */}
-      <section className="py-20 px-6 md:px-14 border-t border-border bg-muted/40">
-        <div className="mx-auto max-w-[1000px] text-center">
-          <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-6">
-            New course · Cohort 01 now open
-          </div>
-          <h2 className="font-serif font-normal text-[34px] md:text-[48px] leading-[1.08] tracking-tight mb-6">
-            Create stunning videos with the power of{" "}
-            <em className="text-primary">AI &amp; video editing.</em>
-          </h2>
-          <p className="text-[16.5px] leading-relaxed text-muted-foreground max-w-[560px] mx-auto mb-9">
-            A hands-on course by Mahmoud Saad that teaches you to produce and
-            edit scroll-stopping videos with AI — from zero to publishing.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center mb-3">
-            <Link
-              href="/book"
-              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
-            >
-              Reserve your seat
-              <span className="text-lg">→</span>
-            </Link>
-          </div>
-          <p className="text-sm text-muted-foreground mt-5">
-            No experience needed · Free to reserve — no payment now
-          </p>
-
-          {/* Sample video previews — click to play, loaded on demand from Supabase */}
-          <HeroVideos clips={heroClips} />
-        </div>
-      </section>
 
       {/* PROJECTS */}
       <section id="projects" className="py-24 px-6 md:px-14 border-t border-border">
@@ -245,6 +209,90 @@ export default function Home() {
               </Card>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* SERVICES */}
+      <section id="services" className="py-20 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="text-center mb-12">
+            <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
+              Services
+            </div>
+            <h2 className="font-serif font-normal text-[34px] md:text-[42px] leading-tight tracking-tight">
+              What I can build for you
+            </h2>
+          </div>
+          <ServiceCards services={services} />
+        </div>
+      </section>
+
+      {/* VIDEO & DESIGN SHOWREEL */}
+      <section id="showreel" className="py-20 px-6 md:px-14 border-t border-border bg-muted/40">
+        <div className="mx-auto max-w-[1000px] text-center">
+          <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-6">
+            Video &amp; design
+          </div>
+          <h2 className="font-serif font-normal text-[34px] md:text-[48px] leading-[1.08] tracking-tight mb-6">
+            The ads and brand visuals —{" "}
+            <em className="text-primary">made in-house.</em>
+          </h2>
+          <p className="text-[16.5px] leading-relaxed text-muted-foreground max-w-[620px] mx-auto mb-10">
+            Shipping the product is half the job. I also write, edit and direct
+            the videos that sell it — AI-assisted commercials, vertical ads for
+            Reels and TikTok, plus the packaging and social designs around them.
+          </p>
+
+          <VideoFeature
+            videoUrl={showreelFeature.videoUrl}
+            poster={showreelFeature.poster}
+            title="TRES commercial"
+            caption="TRES — specialty coffee roaster in Taif. Concept, edit and motion graphics by me, for a brand whose website I also built."
+            playLabel="Play the TRES commercial"
+          />
+
+          <HeroVideos
+            clips={showreelClips}
+            altLabel="Vertical ad sample"
+            watchHint="▶ Tap to watch — vertical ads cut for WhatsApp status, Reels and TikTok."
+          />
+
+          <div className="mt-10 flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+            <Link
+              href="#contact"
+              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+            >
+              Get a video for your brand
+              <span className="text-lg">→</span>
+            </Link>
+            <Link
+              href="/book"
+              className="inline-flex items-center gap-2 px-6 py-4 rounded-full font-semibold text-base text-ink hover:text-primary transition-colors"
+            >
+              Or learn to make them yourself
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* DESIGN */}
+      <section id="design" className="py-20 px-6 md:px-14 border-t border-border">
+        <div className="mx-auto max-w-[1180px]">
+          <div className="text-center mb-12">
+            <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-4">
+              Design
+            </div>
+            <h2 className="font-serif font-normal text-[34px] md:text-[42px] leading-tight tracking-tight mb-4">
+              Packaging, print and social —{" "}
+              <em className="text-primary">drawn here too.</em>
+            </h2>
+            <p className="text-muted-foreground max-w-[620px] mx-auto text-[15.5px] leading-relaxed">
+              Coffee packaging, cup artwork and campaign creatives for the same
+              clients whose products I build. Tap any piece to see it full size.
+            </p>
+          </div>
+          <DesignGallery items={DESIGN_WORK} locale="en" />
         </div>
       </section>
 
@@ -400,14 +448,45 @@ const services = [
   },
 ];
 
-const SUPABASE_VIDEOS = `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/course-videos`;
-const heroClips = [
-  { videoUrl: `${SUPABASE_VIDEOS}/clip1.mp4`, poster: "/videos/clip1.jpg" },
-  { videoUrl: `${SUPABASE_VIDEOS}/clip2.mp4`, poster: "/videos/clip2.jpg" },
-  { videoUrl: `${SUPABASE_VIDEOS}/clip3.mp4`, poster: "/videos/clip3.jpg" },
+/* Showreel media is served from /public so the section keeps working even if
+   the storage backend changes. */
+const showreelFeature = {
+  videoUrl: "/videos/tres-ad.mp4",
+  poster: "/videos/tres-ad.jpg",
+};
+const showreelClips = [
+  { videoUrl: "/videos/clip4.mp4", poster: "/videos/clip4.jpg" },
+  { videoUrl: "/videos/clip5.mp4", poster: "/videos/clip5.jpg" },
 ];
 
 const projects = [
+  {
+    title: "Skylight — Agency Command Center",
+    image: "/projects/rawasm/rawasm-1.jpg",
+    tech: ["Next.js", "Supabase", "AI Assistant", "RTL Dashboard"],
+    description:
+      "Arabic-first operating system for a Saudi marketing agency: sales handover, clients, projects, auto-generated tasks, SLA and satisfaction KPIs, plus an in-app AI assistant — replacing a customised Odoo deployment.",
+    github: "#",
+    deploy: "https://skylight.rwasem.com",
+  },
+  {
+    title: "Kiara Chat",
+    image: "/projects/kiara/kiara-1.jpg",
+    tech: ["Next.js", "WhatsApp API", "Supabase", "Realtime"],
+    description:
+      "White-labeled WhatsApp customer-service desk for a spa — live conversations, staff assignment, today's bookings and workload reports in one Arabic dashboard.",
+    github: "#",
+    deploy: "https://kiara-chat-eight.vercel.app",
+  },
+  {
+    title: "Multi Gates",
+    image: "/projects/multigates/multigates-1.jpg",
+    tech: ["Next.js", "next-intl", "Supabase", "SEO"],
+    description:
+      "Bilingual corporate site for an industrial bearings and power-transmission distributor in Egypt — searchable product catalog, brands and industries, all managed from Supabase.",
+    github: "#",
+    deploy: "https://multigates-eg.vercel.app",
+  },
   {
     title: "Nehgz",
     image: "/projects/nehgzbot/nehgzbot-1.png",

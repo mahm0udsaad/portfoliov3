@@ -42,3 +42,6 @@ next-env.d.ts
 /.playwright-cli
 /output
 /salon-leads
+
+# raw design source files (optimised copies live in public/design)
+design-work/

@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import { Play } from "lucide-react";
 
-export default function HeroVideos({ clips, watchHint }) {
+export default function HeroVideos({ clips, watchHint, altLabel }) {
   // Only clips the user has clicked get a <video> element (and thus load bytes).
   const [active, setActive] = useState(() => new Set());
   const [slide, setSlide] = useState(0);
@@ -73,7 +73,7 @@ export default function HeroVideos({ clips, watchHint }) {
                 <>
                   <Image
                     src={clip.poster}
-                    alt="Course sample video"
+                    alt={altLabel ?? "Sample video"}
                     fill
                     sizes="(max-width: 768px) 80vw, 210px"
                     className="object-cover"
