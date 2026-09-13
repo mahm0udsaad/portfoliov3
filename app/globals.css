@@ -103,13 +103,13 @@ body::-webkit-scrollbar-thumb {
    recedes, then the client thread advances, then the page releases. */
 .scroll-story {
   position: relative;
-  min-height: calc(100svh - 69px);
+  min-height: var(--scroll-story-height, calc(100svh - 69px));
   background: oklch(var(--background));
 }
 
 .scroll-story__viewport {
   position: relative;
-  height: calc(100svh - 69px);
+  height: var(--scroll-story-height, calc(100svh - 69px));
   overflow: hidden;
   isolation: isolate;
 }

@@ -330,7 +330,8 @@ export default function HomeArabic() {
       </section>
 
       {/* ABOUT */}
-      <section id="about" className="py-24 px-6 md:px-14 border-t border-border bg-muted/40">
+      {/* Rotating ring bounds must not enlarge the mobile scroll viewport. */}
+      <section id="about" className="overflow-hidden py-24 px-6 md:px-14 border-t border-border bg-muted/40">
         <div className="mx-auto max-w-[1180px] grid lg:grid-cols-2 gap-14 lg:gap-16 items-center">
           <div className="relative order-2 lg:order-1 py-6">
             <SkillOrbit label="المهارات التقنية لمحمود سعد" />

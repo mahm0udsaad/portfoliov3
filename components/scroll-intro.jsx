@@ -37,8 +37,35 @@ export default function ScrollIntro({
       cleanup = () => media.revert();
 
       media.add("(prefers-reduced-motion: no-preference)", () => {
+        const viewport = root.querySelector(".scroll-story__viewport");
+        if (!viewport) return;
+
+        // Safari's expanding toolbar changes innerHeight during a swipe.
+        // Keep the opening scene (and its spacer) the same size until the
+        // device width changes, e.g. on rotation or split-screen resizing.
+        const touchViewport = window.matchMedia("(pointer: coarse)").matches;
+        let viewportWidth = document.documentElement.clientWidth;
+        const sizeViewport = () => {
+          root.style.removeProperty("--scroll-story-height");
+          root.style.setProperty(
+            "--scroll-story-height",
+            // The root isn't pinned, so its computed min-height is not
+            // overridden by ScrollTrigger's inline pin dimensions.
+            window.getComputedStyle(root).minHeight,
+          );
+        };
+        if (touchViewport) sizeViewport();
+
+        const onResize = () => {
+          const width = document.documentElement.clientWidth;
+          if (!touchViewport || width === viewportWidth) return;
+          viewportWidth = width;
+          sizeViewport();
+          ScrollTrigger.refresh(true);
+        };
+        window.addEventListener("resize", onResize);
+
         const context = gsap.context(() => {
-          const viewport = root.querySelector(".scroll-story__viewport");
           const heroLayer = root.querySelector(".scroll-story__hero");
           const chatLayer = root.querySelector(".scroll-story__chat");
           const thread = root.querySelector("[data-chat-thread]");
@@ -89,8 +116,8 @@ export default function ScrollIntro({
               start: "top 69px",
               end: () =>
                 `+=${Math.max(
-                  window.innerHeight * 5,
-                  messages.length * 720 + window.innerHeight * 1.2,
+                  (viewport.clientHeight + 69) * 5,
+                  messages.length * 720 + (viewport.clientHeight + 69) * 1.2,
                 )}`,
               pin: viewport,
               pinSpacing: true,
@@ -202,7 +229,8 @@ export default function ScrollIntro({
         // The screenshot bubbles change the thread's scrollHeight as they
         // decode, so the pin distance and scrollTop targets need a refresh
         // once real image dimensions are in.
-        const refresh = () => ScrollTrigger.refresh();
+        // A late image load must not interrupt Safari's momentum scrolling.
+        const refresh = () => ScrollTrigger.refresh(true);
         const pendingImages = Array.from(root.querySelectorAll("img")).filter(
           (img) => !img.complete,
         );
@@ -210,12 +238,15 @@ export default function ScrollIntro({
           img.addEventListener("load", refresh, { once: true }),
         );
 
-        window.requestAnimationFrame(refresh);
+        const refreshFrame = window.requestAnimationFrame(refresh);
         return () => {
+          window.cancelAnimationFrame(refreshFrame);
+          window.removeEventListener("resize", onResize);
           pendingImages.forEach((img) =>
             img.removeEventListener("load", refresh),
           );
           context.revert();
+          root.style.removeProperty("--scroll-story-height");
         };
       });
     }
