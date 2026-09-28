@@ -534,15 +534,6 @@ const projects = [
     deploy: "http://augeneg.com",
   },
   {
-    title: "Sufrah WhatsApp Bot",
-    image: "/projects/sufrah-bot/slide.png",
-    tech: ["WhatsApp API", "Bot", "Restaurant Management", "Ordering System"],
-    description:
-      "WhatsApp bot for restaurant ordering system that enables customers to place orders directly through WhatsApp with automated order management.",
-    github: "#",
-    deploy: "https://www.sufrah.sa/whatsapp-bot",
-  },
-  {
     title: "Tatbela & Tabel",
     image: "/projects/tabel/slide.png",
     tech: ["Next.js", "E-commerce", "B2B", "B2C", "Paymob", "Payment Gateway"],
@@ -550,33 +541,6 @@ const projects = [
       "B2B & B2C e-commerce platform for spices and related products with integrated Paymob payment gateway for seamless transactions.",
     github: "#",
     deploy: "https://tatbela-tabel.vercel.app",
-  },
-  {
-    title: "Sufrah Platform",
-    image: "/projects/sufrah.sa.png",
-    tech: ["Next.js", "SSG", "Tailwind CSS"],
-    description:
-      "Smart platform for creating restaurant websites and applications quickly without code.",
-    github: "#",
-    deploy: "https://www.sufrah.sa/",
-  },
-  {
-    title: "Amstore",
-    image: "/projects/amstore.png",
-    tech: ["Next.js", "Tailwind CSS", "E‑commerce"],
-    description:
-      "Custom e-commerce platform with high performance and modern user experience.",
-    github: "#",
-    deploy: "https://amstore-eg.com/",
-  },
-  {
-    title: "OneCard",
-    image: "/projects/onecard.png",
-    tech: ["Next.js", "Design", "Payments"],
-    description:
-      "Elegant landing page showcasing expertise in integrations and providing a reliable experience.",
-    github: "#",
-    deploy: "https://www.onecard.com/",
   },
   {
     title: "AbreezGroup Website",

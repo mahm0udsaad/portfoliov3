@@ -599,15 +599,6 @@ const projects = [
     deploy: "http://augeneg.com",
   },
   {
-    title: "بوت سفرة للمطاعم",
-    image: "/projects/sufrah-bot/slide.png",
-    tech: ["WhatsApp API", "Bot", "Restaurant Management", "Ordering System"],
-    alt: "بوت واتساب لطلبات المطاعم — نظام طلب آلي عبر واتساب",
-    description:
-      "بوت واتساب لنظام طلبات المطاعم يتيح للعملاء الطلب مباشرة عبر واتساب مع إدارة آلية كاملة للطلبات.",
-    deploy: "https://www.sufrah.sa/whatsapp-bot",
-  },
-  {
     title: "تتبيلة وتوابل",
     image: "/projects/tabel/slide.png",
     tech: ["Next.js", "E-commerce", "B2B", "B2C", "Paymob", "Payment Gateway"],
@@ -615,33 +606,6 @@ const projects = [
     description:
       "منصة تجارة إلكترونية B2B وB2C للتوابل والمنتجات الغذائية مع بوابة دفع Paymob متكاملة.",
     deploy: "https://tatbela-tabel.vercel.app",
-  },
-  {
-    title: "منصة سفرة",
-    image: "/projects/sufrah.sa.png",
-    tech: ["Next.js", "SSG", "Tailwind CSS"],
-    alt: "منصة إنشاء مواقع وتطبيقات مطاعم بدون كود",
-    description:
-      "منصة ذكية لإنشاء مواقع وتطبيقات المطاعم بسرعة وبدون كود.",
-    deploy: "https://www.sufrah.sa/",
-  },
-  {
-    title: "Amstore",
-    image: "/projects/amstore.png",
-    tech: ["Next.js", "Tailwind CSS", "E‑commerce"],
-    alt: "متجر إلكتروني مخصص عالي الأداء — تطوير مواقع مصر",
-    description:
-      "متجر إلكتروني مخصص بأداء عالٍ وتجربة استخدام عصرية.",
-    deploy: "https://amstore-eg.com/",
-  },
-  {
-    title: "OneCard",
-    image: "/projects/onecard.png",
-    tech: ["Next.js", "Design", "Payments"],
-    alt: "صفحة هبوط لخدمات الدفع والتكاملات",
-    description:
-      "صفحة هبوط أنيقة تعرض خبرات التكاملات وتقدم تجربة موثوقة.",
-    deploy: "https://www.onecard.com/",
   },
   {
     title: "موقع مجموعة أبريز",
