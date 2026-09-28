@@ -7,6 +7,7 @@ import {
   Linkedin,
   Mail,
   Phone,
+  MessageCircle,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
@@ -22,6 +23,7 @@ import SkillOrbit from "@/components/skill-orbit";
 import VoiceNotes from "@/components/voice-notes-loader";
 import TechBadge from "@/components/ui/techBadge";
 import { homeGraph, arFaqSchema, AR_FAQ, JsonLd } from "@/lib/seo";
+import { voiceNotesAr } from "@/lib/testimonials";
 
 const voiceNoteLabels = {
   eyebrow: "رسائل حقيقية من العملاء",
@@ -126,7 +128,15 @@ export default function HomeArabic() {
         cueLabel="مرّر للاستكشاف"
         hero={
           <section className="relative grid h-full place-items-center overflow-hidden">
-            <div className="mx-auto max-w-[1000px] px-6 pb-20 pt-24 text-center md:py-24">
+            <div className="hero-enter mx-auto max-w-[1000px] px-6 pb-20 pt-8 sm:pt-24 text-center md:py-24">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3.5 py-1.5 text-[13px] font-medium text-foreground">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            متاح لمشاريع جديدة
+          </div>
+
           <div className="text-[13px] font-semibold tracking-wide text-primary mb-7">
             مطور Full-Stack مستقل · مصر · عمل عن بُعد لجميع الدول
           </div>
@@ -136,7 +146,7 @@ export default function HomeArabic() {
             <br className="hidden sm:block" /> و<span className="text-primary">تطبيقات موبايل</span> مستقل.
           </h1>
 
-          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[640px] mx-auto mb-10">
+          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[640px] mx-auto mb-8 sm:mb-10">
             أصمّم وأبرمج مواقع سريعة بتقنية{" "}
             <span className="text-foreground font-medium">Next.js</span>،
             وتطبيقات موبايل بـ{" "}
@@ -145,21 +155,44 @@ export default function HomeArabic() {
             والسعودية والخليج والعالم.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-3.5 sm:justify-center sm:items-center">
             <Link
               href="#contact"
-              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+              className="col-span-2 inline-flex items-center justify-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
             >
               ابدأ مشروعك
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <Link
               href="#projects"
-              className="inline-flex items-center gap-2 border border-border px-8 py-4 rounded-full font-semibold text-base hover:border-ink/40 transition-colors"
+              className="inline-flex items-center justify-center gap-2 border border-border px-4 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base hover:border-ink/40 transition-colors"
             >
               شاهد أعمالي
             </Link>
+            <Link
+              href="https://wa.me/201157337829?text=%D8%A3%D9%87%D9%84%D8%A7%D9%8B%20%D9%85%D8%AD%D9%85%D9%88%D8%AF%D8%8C%20%D8%A3%D8%B1%D9%8A%D8%AF%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D9%85%D8%B4%D8%B1%D9%88%D8%B9."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 border border-[#25D366]/60 text-[#128C7E] px-4 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base hover:bg-[#25D366]/10 transition-colors"
+            >
+              <MessageCircle className="w-5 h-5 shrink-0" />
+              <span className="sm:hidden">واتساب</span>
+              <span className="hidden sm:inline">تواصل عبر واتساب</span>
+            </Link>
           </div>
+          <ul className="mt-7 sm:mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[13px] sm:text-[14px] text-muted-foreground">
+            <li>
+              <span className="font-serif text-[20px] text-foreground">+{projects.length}</span>{" "}
+              مشروعًا منفّذًا
+            </li>
+            <li aria-hidden className="hidden sm:block h-1 w-1 rounded-full bg-border" />
+            <li className="hidden sm:list-item">🇪🇬 🇸🇦 🇶🇦 عملاء في مصر والسعودية والخليج</li>
+            <li aria-hidden className="hidden sm:block h-1 w-1 rounded-full bg-border" />
+            <li>
+              <span className="font-serif text-[20px] text-foreground">{voiceNotesAr.length}</span>{" "}
+              تقييمًا صوتيًا من العملاء
+            </li>
+          </ul>
             </div>
           </section>
         }

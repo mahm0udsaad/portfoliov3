@@ -7,6 +7,7 @@ import {
   Linkedin,
   Mail,
   Phone,
+  MessageCircle,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
@@ -22,6 +23,7 @@ import SkillOrbit from "@/components/skill-orbit";
 import VoiceNotes from "@/components/voice-notes-loader";
 import TechBadge from "@/components/ui/techBadge";
 import { homeGraph, JsonLd } from "@/lib/seo";
+import { voiceNotes } from "@/lib/testimonials";
 
 export default function Home() {
   return (
@@ -91,7 +93,15 @@ export default function Home() {
         active
         hero={
           <section className="relative grid h-full place-items-center overflow-hidden">
-            <div className="mx-auto max-w-[1000px] px-6 pb-20 pt-24 text-center md:py-24">
+            <div className="hero-enter mx-auto max-w-[1000px] px-6 pb-20 pt-8 sm:pt-24 text-center md:py-24">
+          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-border bg-background/70 px-3.5 py-1.5 text-[13px] font-medium text-foreground">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
+            </span>
+            Available for new projects
+          </div>
+
           <div className="text-[12.5px] font-semibold tracking-[0.16em] uppercase text-primary mb-7">
             Freelance Full-Stack Developer · Egypt · Remote worldwide
           </div>
@@ -101,7 +111,7 @@ export default function Home() {
             <br className="hidden sm:block" /> <em className="text-primary">web &amp; mobile</em> developer.
           </h1>
 
-          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[640px] mx-auto mb-10">
+          <p className="text-[17.5px] md:text-lg leading-relaxed text-muted-foreground max-w-[640px] mx-auto mb-8 sm:mb-10">
             I design and build fast websites with{" "}
             <span className="text-foreground font-medium">Next.js</span>, mobile
             apps with{" "}
@@ -110,21 +120,44 @@ export default function Home() {
             and businesses in Egypt, Saudi Arabia, the Gulf and worldwide.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3.5 justify-center items-center">
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-row sm:gap-3.5 sm:justify-center sm:items-center">
             <Link
               href="#contact"
-              className="inline-flex items-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
+              className="col-span-2 inline-flex items-center justify-center gap-2 bg-ink text-ink-foreground px-8 py-4 rounded-full font-semibold text-base hover:bg-primary transition-colors"
             >
               Start a project
               <span className="text-lg">→</span>
             </Link>
             <Link
               href="#projects"
-              className="inline-flex items-center gap-2 border border-border px-8 py-4 rounded-full font-semibold text-base hover:border-ink/40 transition-colors"
+              className="inline-flex items-center justify-center gap-2 border border-border px-4 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base hover:border-ink/40 transition-colors"
             >
               View my work
             </Link>
+            <Link
+              href="https://wa.me/201157337829?text=Hi%20Mahmoud%2C%20I%27d%20like%20to%20discuss%20a%20project."
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 border border-[#25D366]/60 text-[#128C7E] px-4 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base hover:bg-[#25D366]/10 transition-colors"
+            >
+              <MessageCircle className="w-5 h-5 shrink-0" />
+              <span className="sm:hidden">WhatsApp</span>
+              <span className="hidden sm:inline">Chat on WhatsApp</span>
+            </Link>
           </div>
+          <ul className="mt-7 sm:mt-10 flex flex-wrap items-center justify-center gap-x-5 gap-y-1.5 text-[13px] sm:text-[14px] text-muted-foreground">
+            <li>
+              <span className="font-serif text-[20px] text-foreground">{projects.length}+</span>{" "}
+              projects shipped
+            </li>
+            <li aria-hidden className="hidden sm:block h-1 w-1 rounded-full bg-border" />
+            <li className="hidden sm:list-item">🇪🇬 🇸🇦 🇶🇦 Clients in Egypt, KSA & the Gulf</li>
+            <li aria-hidden className="hidden sm:block h-1 w-1 rounded-full bg-border" />
+            <li>
+              <span className="font-serif text-[20px] text-foreground">{voiceNotes.length}</span>{" "}
+              client voice reviews
+            </li>
+          </ul>
             </div>
           </section>
         }
