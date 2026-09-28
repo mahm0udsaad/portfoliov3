@@ -7,7 +7,6 @@ import {
   Linkedin,
   Mail,
   Phone,
-  MessageCircle,
 } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import ContactForm from "@/components/contact";
@@ -22,6 +21,7 @@ import ScrollIntro from "@/components/scroll-intro";
 import SkillOrbit from "@/components/skill-orbit";
 import VoiceNotes from "@/components/voice-notes-loader";
 import TechBadge from "@/components/ui/techBadge";
+import WhatsAppIcon from "@/components/ui/whatsapp-icon";
 import { homeGraph, JsonLd } from "@/lib/seo";
 import { voiceNotes } from "@/lib/testimonials";
 
@@ -140,7 +140,7 @@ export default function Home() {
               rel="noopener noreferrer"
               className="inline-flex items-center justify-center gap-2 border border-[#25D366]/60 text-[#128C7E] px-4 py-3.5 sm:px-8 sm:py-4 rounded-full font-semibold text-[15px] sm:text-base hover:bg-[#25D366]/10 transition-colors"
             >
-              <MessageCircle className="w-5 h-5 shrink-0" />
+              <WhatsAppIcon className="w-5 h-5 shrink-0 text-[#25D366]" />
               <span className="sm:hidden">WhatsApp</span>
               <span className="hidden sm:inline">Chat on WhatsApp</span>
             </Link>
