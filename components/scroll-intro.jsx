@@ -121,6 +121,10 @@ export default function ScrollIntro({
                   messages.length * 720 + (viewport.clientHeight + headerHeight()) * 0.6,
                 )}`,
               pin: viewport,
+              // Our own wrapper as the spacer: ScrollTrigger then never
+              // re-parents the hero (which would restart its video and CSS
+              // animations and register a new LCP paint).
+              pinSpacer: root.querySelector(".scroll-story__spacer"),
               pinSpacing: true,
               scrub: 0.35,
               anticipatePin: 1,
@@ -226,7 +230,12 @@ export default function ScrollIntro({
         // decode, so the pin distance and scrollTop targets need a refresh
         // once real image dimensions are in.
         // A late image load must not interrupt Safari's momentum scrolling.
-        const refresh = () => ScrollTrigger.refresh(true);
+        // Coalesce: several images finishing together cause one refresh.
+        let refreshTimer = 0;
+        const refresh = () => {
+          clearTimeout(refreshTimer);
+          refreshTimer = setTimeout(() => ScrollTrigger.refresh(true), 200);
+        };
         const pendingImages = Array.from(root.querySelectorAll("img")).filter(
           (img) => !img.complete,
         );
@@ -234,9 +243,8 @@ export default function ScrollIntro({
           img.addEventListener("load", refresh, { once: true }),
         );
 
-        const refreshFrame = window.requestAnimationFrame(refresh);
         return () => {
-          window.cancelAnimationFrame(refreshFrame);
+          clearTimeout(refreshTimer);
           window.removeEventListener("resize", onResize);
           pendingImages.forEach((img) =>
             img.removeEventListener("load", refresh),
@@ -260,6 +268,7 @@ export default function ScrollIntro({
 
   return (
     <div ref={rootRef} className="scroll-story">
+      <div className="scroll-story__spacer">
       <div className="scroll-story__viewport">
         <div className="scroll-story__hero">{hero}</div>
         <div className="scroll-story__chat">{chat}</div>
@@ -277,6 +286,7 @@ export default function ScrollIntro({
             </div>
           </>
         ) : null}
+      </div>
       </div>
     </div>
   );

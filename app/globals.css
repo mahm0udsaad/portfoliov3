@@ -309,9 +309,18 @@ body::-webkit-scrollbar-thumb {
   .hero-device { animation: device-in 1.1s 0.25s cubic-bezier(0.22, 1, 0.36, 1) both; }
 }
 
+/* After the first play, the entrance must never run again (see
+   whenIntroDone in lib/gsap-client.js). */
+html.intro-done .hero-enter > *,
+html.intro-done .hero-device {
+  animation: none !important;
+}
+
 @keyframes device-in {
-  from { opacity: 0; transform: translateY(80px) scale(0.96); }
-  to { opacity: 1; transform: none; }
+  /* Transform only — no fade — so the poster counts as painted on the
+     first frame (it is the page's largest element, i.e. its LCP). */
+  from { transform: translateY(70px) scale(0.97); }
+  to { transform: none; }
 }
 
 /* Display type: Bricolage's optical-size axis tightens at large sizes. */

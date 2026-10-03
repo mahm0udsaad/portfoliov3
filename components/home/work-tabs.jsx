@@ -1,35 +1,74 @@
 "use client";
 
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight, Maximize2 } from "lucide-react";
 import TechBadge from "@/components/ui/techBadge";
 import { Lightbox } from "@/components/design-gallery";
+import { loadGsap, prefersReducedMotion } from "@/lib/gsap-client";
 
-/* Previous work, filtered by category. The tab bar sticks under the header
-   so switching is always one tap away; a pill slides to the active tab and
-   the new cards rise in with a short stagger. Mobile: one swipeable row of
-   big cards. Desktop: a grid. */
+/* Previous work, filtered by category. The chip bar sticks under the header
+   so switching is always one tap away. Inactive chips are compact (label
+   only); the active one fills and reveals its count. Mobile shows the cards
+   as a stacked deck — each card slides over the previous one, which sinks
+   back. Desktop shows a grid. */
 export default function WorkTabs({ tabs, locale, labels }) {
   const [active, setActive] = useState(tabs[0]?.key);
   const [lightbox, setLightbox] = useState(null);
   const barRef = useRef(null);
-  const pillRef = useRef(null);
+  const listRef = useRef(null);
+  const switched = useRef(false);
   const sectionTopRef = useRef(null);
   const current = tabs.find((t) => t.key === active) ?? tabs[0];
 
-  // Slide the pill under the active tab, and keep that tab in view when the
-  // bar itself scrolls sideways on narrow screens.
-  useLayoutEffect(() => {
+  // Keep the active chip in view if the bar ever has to scroll sideways.
+  useEffect(() => {
     const bar = barRef.current;
-    const pill = pillRef.current;
     const tab = bar?.querySelector(`[data-tab="${active}"]`);
-    if (!bar || !pill || !tab) return;
-    pill.style.width = `${tab.offsetWidth}px`;
-    pill.style.transform = `translateX(${tab.offsetLeft}px)`;
-    const left = tab.offsetLeft - (bar.clientWidth - tab.offsetWidth) / 2;
-    bar.scrollTo({ left, behavior: "smooth" });
+    if (!bar || !tab || bar.scrollWidth <= bar.clientWidth) return;
+    bar.scrollTo({ left: tab.offsetLeft - (bar.clientWidth - tab.offsetWidth) / 2, behavior: "smooth" });
+  }, [active]);
+
+  // Mobile deck: as the next card slides up, the covered one scales down and
+  // dims. Rebuilt for each category; transform + opacity only.
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list || prefersReducedMotion()) return;
+    let mm;
+    let cancelled = false;
+    loadGsap().then(({ gsap, ScrollTrigger }) => {
+      if (cancelled) return;
+      mm = gsap.matchMedia();
+      mm.add("(max-width: 767px)", () => {
+        const cards = gsap.utils.toArray("[data-deck-card]", list);
+        cards.forEach((card, i) => {
+          const next = cards[i + 1];
+          if (!next) return;
+          gsap
+            .timeline({
+              scrollTrigger: {
+                trigger: next,
+                start: "top bottom",
+                end: () => `top ${parseFloat(getComputedStyle(next).top) || 140}px`,
+                scrub: true,
+                invalidateOnRefresh: true,
+              },
+            })
+            .to(card.querySelector("[data-deck-inner]"), { scale: 0.92, ease: "none" }, 0)
+            .to(card.querySelector("[data-deck-shade]"), { opacity: 0.5, ease: "none" }, 0);
+        });
+      });
+      // A new category changes the section's height, so triggers further
+      // down the page need new positions. Skipped on first load, where
+      // ScrollTrigger measures everything once by itself.
+      if (switched.current) ScrollTrigger.refresh();
+      switched.current = true;
+    });
+    return () => {
+      cancelled = true;
+      mm?.revert();
+    };
   }, [active]);
 
   function select(key) {
@@ -55,19 +94,14 @@ export default function WorkTabs({ tabs, locale, labels }) {
   return (
     <div>
       <div ref={sectionTopRef} className="scroll-mt-[calc(var(--header-h)+8px)]" />
-      <div className="sticky top-[calc(var(--header-h)+8px)] z-20 -mx-1 mb-7 md:mb-10">
+      <div className="sticky top-[var(--header-h)] z-20 -mx-4 mb-6 bg-background/85 px-4 py-2.5 backdrop-blur-md sm:-mx-6 sm:px-6 md:static md:mx-0 md:mb-10 md:bg-transparent md:px-0 md:py-0 md:backdrop-blur-none">
         <div
           ref={barRef}
           role="tablist"
           aria-label={labels.tablist}
           onKeyDown={onKeyDown}
-          className="hide-scrollbar relative flex w-full gap-1 overflow-x-auto rounded-full sm:w-max sm:max-w-full border border-border bg-card/85 p-1.5 shadow-[0_10px_30px_-12px_oklch(var(--shadow)_/_0.25)] backdrop-blur-md"
+          className="hide-scrollbar flex gap-1 overflow-x-auto sm:gap-2"
         >
-          <span
-            ref={pillRef}
-            aria-hidden
-            className="absolute bottom-1.5 left-0 top-1.5 rounded-full bg-ink transition-[transform,width] duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
-          />
           {tabs.map((tab) => {
             const selected = tab.key === active;
             return (
@@ -81,15 +115,18 @@ export default function WorkTabs({ tabs, locale, labels }) {
                 aria-controls="work-panel"
                 tabIndex={selected ? 0 : -1}
                 onClick={() => select(tab.key)}
-                className={`relative z-10 flex h-11 min-w-0 flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full px-2 text-[14px] font-semibold transition-colors duration-300 sm:flex-none sm:gap-2 sm:px-5 sm:text-[14.5px] ${
-                  selected ? "text-ink-foreground" : "text-muted-foreground hover:text-foreground"
+                className={`flex h-11 shrink-0 items-center whitespace-nowrap rounded-full border px-[9px] text-[13px] font-semibold min-[380px]:px-3 min-[380px]:text-[13.5px] sm:px-4 sm:text-[14.5px] transition-[background-color,border-color,color,padding] duration-300 ease-out md:h-12 md:px-5 md:text-[15px] ${
+                  selected
+                    ? "border-ink bg-ink pe-1 text-ink-foreground min-[380px]:pe-1.5 sm:pe-2 md:pe-2.5"
+                    : "border-border bg-card text-muted-foreground hover:border-foreground/30 hover:text-foreground"
                 }`}
               >
                 <span className="sm:hidden">{tab.short}</span>
                 <span className="hidden sm:inline">{tab.label}</span>
                 <span
-                  className={`rounded-full px-1.5 text-[11px] tabular-nums sm:text-[11.5px] transition-colors duration-300 ${
-                    selected ? "bg-white/15" : "bg-muted"
+                  aria-hidden={!selected}
+                  className={`grid place-items-center overflow-hidden rounded-full bg-signal text-[12px] font-bold tabular-nums text-signal-foreground transition-[max-width,opacity,margin] duration-300 ease-out ${
+                    selected ? "ms-1.5 h-6 min-w-6 max-w-12 px-1 text-[11.5px] opacity-100 md:h-7 md:min-w-7 md:px-1.5" : "ms-0 h-6 max-w-0 px-0 opacity-0"
                   }`}
                 >
                   {tab.items.length}
@@ -101,21 +138,22 @@ export default function WorkTabs({ tabs, locale, labels }) {
       </div>
 
       <div id="work-panel" role="tabpanel" aria-labelledby={`tab-${current.key}`}>
-        <ul
-          key={current.key}
-          className="hide-scrollbar -mx-4 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 sm:-mx-6 sm:px-6 md:mx-0 md:grid md:grid-cols-2 md:gap-6 md:overflow-visible md:px-0 lg:grid-cols-3"
-        >
+        <ul ref={listRef} key={current.key} className="flex flex-col gap-5 md:grid md:grid-cols-2 md:gap-6 lg:grid-cols-3">
           {current.items.map((item, i) => (
             <li
               key={item.id}
-              className="work-card-in w-[84%] shrink-0 snap-center sm:w-[60%] md:w-auto"
-              style={{ animationDelay: `${Math.min(i, 6) * 60}ms` }}
+              data-deck-card
+              className="work-card-in max-md:sticky"
+              style={{ top: `calc(var(--header-h) + 76px + ${Math.min(i, 6) * 8}px)`, animationDelay: `${Math.min(i, 6) * 60}ms` }}
             >
-              {item.kind === "design" ? (
-                <DesignCard item={item} locale={locale} label={labels.viewDesign} onOpen={() => setLightbox(item)} />
-              ) : (
-                <ProjectCard project={item} visitLabel={labels.visit} />
-              )}
+              <div data-deck-inner className="relative h-full origin-top overflow-hidden rounded-[24px] will-change-transform max-md:shadow-[0_-16px_40px_-18px_oklch(var(--shadow)_/_0.35)]">
+                {item.kind === "design" ? (
+                  <DesignCard item={item} locale={locale} label={labels.viewDesign} onOpen={() => setLightbox(item)} />
+                ) : (
+                  <ProjectCard project={item} visitLabel={labels.visit} />
+                )}
+                <span data-deck-shade aria-hidden className="pointer-events-none absolute inset-0 rounded-[24px] bg-[oklch(0.15_0.05_268)] opacity-0" />
+              </div>
             </li>
           ))}
         </ul>

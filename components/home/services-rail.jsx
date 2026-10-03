@@ -20,7 +20,7 @@ export default function ServicesRail({ title, lead, items, end, isAr }) {
     let ctx;
     let cancelled = false;
 
-    loadGsap().then(({ gsap, ScrollTrigger }) => {
+    loadGsap().then(({ gsap }) => {
       if (cancelled) return;
       const track = root.querySelector("[data-rail-track]");
       const fill = root.querySelector("[data-rail-fill]");
@@ -40,6 +40,7 @@ export default function ServicesRail({ title, lead, items, end, isAr }) {
             start: () => `top ${document.querySelector("header")?.offsetHeight ?? 69}px`,
             end: () => `+=${distance()}`,
             pin: true,
+            pinSpacer: root.parentElement, // stable wrapper, no re-parenting
             scrub: 0.6,
             anticipatePin: 1,
             invalidateOnRefresh: true,
@@ -92,7 +93,6 @@ export default function ServicesRail({ title, lead, items, end, isAr }) {
           );
         });
       }, root);
-      ScrollTrigger.refresh();
     });
 
     return () => {
@@ -105,6 +105,7 @@ export default function ServicesRail({ title, lead, items, end, isAr }) {
   const total = items.length + 1;
 
   return (
+    <div>
     <section ref={rootRef} id="services" className="services-rail relative flex flex-col overflow-hidden">
       <div className="mx-auto flex w-full max-w-[1180px] items-end justify-between gap-6 px-4 sm:px-6 md:px-10 xl:px-0">
         <div className="max-w-[620px]">
@@ -180,5 +181,6 @@ export default function ServicesRail({ title, lead, items, end, isAr }) {
         </div>
       </div>
     </section>
+    </div>
   );
 }
