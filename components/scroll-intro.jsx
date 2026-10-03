@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { loadGsap } from "@/lib/gsap-client";
 
 /**
  * GSAP owns the pinned opening sequence while React continues to own the UI.
@@ -26,13 +27,9 @@ export default function ScrollIntro({
     let cleanup = () => {};
 
     async function createStory() {
-      const [{ gsap }, { ScrollTrigger }] = await Promise.all([
-        import("gsap"),
-        import("gsap/ScrollTrigger"),
-      ]);
+      const { gsap, ScrollTrigger } = await loadGsap();
 
       if (cancelled) return;
-      gsap.registerPlugin(ScrollTrigger);
 
       const media = gsap.matchMedia();
       cleanup = () => media.revert();
@@ -65,6 +62,9 @@ export default function ScrollIntro({
           ScrollTrigger.refresh(true);
         };
         window.addEventListener("resize", onResize);
+
+        const headerHeight = () =>
+          document.querySelector("header")?.offsetHeight ?? 69;
 
         const context = gsap.context(() => {
           const heroLayer = root.querySelector(".scroll-story__hero");
@@ -109,16 +109,16 @@ export default function ScrollIntro({
           const messageGap = 0.68;
           const messageDuration = 0.5;
           const messageEnd = messageStart + messages.length * messageGap;
-          const storyDuration = messageEnd + 1.05;
+          const storyDuration = messageEnd + 0.35;
           const timeline = gsap.timeline({
             defaults: { ease: "none" },
             scrollTrigger: {
               trigger: root,
-              start: "top 69px",
+              start: () => `top ${headerHeight()}px`,
               end: () =>
                 `+=${Math.max(
-                  (viewport.clientHeight + 69) * 5,
-                  messages.length * 720 + (viewport.clientHeight + 69) * 1.2,
+                  (viewport.clientHeight + headerHeight()) * 4,
+                  messages.length * 720 + (viewport.clientHeight + headerHeight()) * 0.6,
                 )}`,
               pin: viewport,
               pinSpacing: true,
@@ -128,28 +128,32 @@ export default function ScrollIntro({
               onUpdate: ({ progress }) => {
                 root.classList.toggle(
                   "is-chat-active",
-                  progress > 0.12 && progress < 0.97,
+                  progress > 0.12,
                 );
               },
             },
           });
 
+          // Hand-off: the hero stage sinks back and dims while the client
+          // thread rises over it like a sheet.
+          gsap.set(chatLayer, { yPercent: 55, y: 0, scale: 0.94 });
           timeline
             .to(
               heroLayer,
-              { autoAlpha: 0, y: -84, scale: 0.94, duration: 0.82 },
+              { scale: 0.86, y: -30, autoAlpha: 0.25, duration: 0.9, ease: "power1.in" },
               0,
             )
+            .to(heroLayer, { autoAlpha: 0, duration: 0.25 }, 0.85)
             .to(
               chatLayer,
               {
                 autoAlpha: 1,
-                y: 0,
+                yPercent: 0,
                 scale: 1,
-                duration: 0.72,
-                ease: "power2.out",
+                duration: 0.95,
+                ease: "power3.out",
               },
-              0.28,
+              0.15,
             );
 
           messages.forEach((message, index) => {
@@ -200,17 +204,9 @@ export default function ScrollIntro({
             );
           }
 
-          timeline.to(
-            chatLayer,
-            {
-              autoAlpha: 0,
-              y: -72,
-              scale: 0.98,
-              duration: 0.5,
-              ease: "power2.in",
-            },
-            messageEnd + 0.55,
-          );
+          // Brief hold on the last message, then the pin releases and the
+          // thread scrolls away with the page straight into the next section.
+          timeline.to({}, { duration: 0.35 }, messageEnd);
 
           if (cue) {
             timeline.to(cue, { autoAlpha: 0, y: 8, duration: 0.35 }, 0);

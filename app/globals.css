@@ -84,6 +84,12 @@
 
 html {
   scroll-behavior: smooth;
+  /* Keeps anchored sections clear of the sticky header (native + Lenis). */
+  scroll-padding-top: calc(var(--header-h) + 4px);
+}
+/* Lenis drives the easing itself; native smooth-scroll would fight it. */
+html.lenis {
+  scroll-behavior: auto;
 }
 body::-webkit-scrollbar {
   width: 0.6em;
@@ -115,16 +121,6 @@ body::-webkit-scrollbar-thumb {
   display: none;
 }
 
-/* Service-card focus (scale/tilt/opacity) is driven per-frame by JS, so those
-   properties must NOT have a CSS transition or they'd lag the scroll. Only the
-   hover affordances transition. Inner starts mid-dim as a sensible pre-rAF state. */
-[data-service-card] [data-inner] {
-  opacity: 0.72;
-  transition:
-    border-color 0.3s,
-    box-shadow 0.3s;
-}
-
 .chat-thread::-webkit-scrollbar {
   width: 0.3em;
 }
@@ -140,13 +136,13 @@ body::-webkit-scrollbar-thumb {
    recedes, then the client thread advances, then the page releases. */
 .scroll-story {
   position: relative;
-  min-height: var(--scroll-story-height, calc(100svh - 69px));
+  min-height: var(--scroll-story-height, calc(100svh - var(--header-h)));
   background: oklch(var(--background));
 }
 
 .scroll-story__viewport {
   position: relative;
-  height: var(--scroll-story-height, calc(100svh - 69px));
+  height: var(--scroll-story-height, calc(100svh - var(--header-h)));
   overflow: hidden;
   isolation: isolate;
 }
@@ -265,13 +261,13 @@ body::-webkit-scrollbar-thumb {
   }
 
   .scroll-story__chat {
-    min-height: calc(100svh - 69px);
+    min-height: calc(100svh - var(--header-h));
     visibility: visible;
     pointer-events: auto;
   }
 
   .scroll-story__hero {
-    min-height: calc(100svh - 69px);
+    min-height: calc(100svh - var(--header-h));
   }
 
   .scroll-story__rail,
@@ -428,4 +424,35 @@ body::-webkit-scrollbar-thumb {
     transform: none;
     transition: opacity 0.4s ease;
   }
+}
+
+/* Header height, mirrored here so pinned scenes sit right under it. */
+:root { --header-h: 69px; }
+@media (min-width: 768px) { :root { --header-h: 81px; } }
+
+/* Services rail: swipeable row by default; pinned horizontal scene once
+   GSAP takes over (.is-pinned). */
+.services-rail {
+  padding-block: 80px;
+}
+.services-rail__track {
+  scroll-snap-type: x mandatory;
+}
+.services-rail__card {
+  width: min(84vw, 420px);
+  height: min(540px, calc(100svh - 290px));
+  min-height: 400px;
+}
+.services-rail.is-pinned {
+  height: calc(100svh - var(--header-h));
+  justify-content: center;
+  padding-block: 0;
+}
+.services-rail.is-pinned .services-rail__track {
+  overflow: visible;
+  scroll-snap-type: none;
+}
+@media (max-height: 700px) {
+  .services-rail__card { min-height: 0; }
+  .services-rail.is-pinned p.mt-3 { display: none; }
 }

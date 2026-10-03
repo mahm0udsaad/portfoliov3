@@ -1,26 +1,27 @@
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight, ExternalLink, Github, Linkedin, Mail, Plus } from "lucide-react";
+import { ArrowUpRight, Github, Linkedin, Mail, Plus } from "lucide-react";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
 import VideoFeature from "@/components/video-feature";
 import DesignGallery from "@/components/design-gallery";
 import MobileNav from "@/components/mobile-nav";
-import ProjectStack from "@/components/project-stack";
-import ServiceCards from "@/components/service-cards";
 import ScrollIntro from "@/components/scroll-intro";
 import SkillOrbit from "@/components/skill-orbit";
 import VoiceNotes from "@/components/voice-notes-loader";
-import TechBadge from "@/components/ui/techBadge";
 import WhatsAppIcon from "@/components/ui/whatsapp-icon";
 import NewReleases from "@/components/home/new-releases";
 import Hero from "@/components/home/hero";
+import ServicesRail from "@/components/home/services-rail";
+import ProjectDeck, { MoreWork } from "@/components/home/project-deck";
+import SmoothScroll from "@/components/home/smooth-scroll";
 import { DESIGN_WORK } from "@/lib/design-work";
 import { HOME_CONTENT } from "@/lib/home-content";
 import { AR_FAQ, EN_FAQ, faqSchema, homeGraph, JsonLd } from "@/lib/seo";
 
 const PRIMARY_BTN =
   "inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-4 text-[15.5px] font-semibold text-ink-foreground transition-[background-color,transform] duration-200 hover:bg-primary hover:text-primary-foreground active:scale-[0.98]";
+const FEATURED = 5;
+
 const SECONDARY_BTN =
   "inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3.5 text-[15px] font-semibold transition-colors hover:border-foreground/40";
 
@@ -34,6 +35,7 @@ export default function HomePage({ locale = "en" }) {
     <div className="min-h-screen bg-background text-foreground">
       <JsonLd data={homeGraph(locale)} />
       <JsonLd data={faqSchema(locale)} />
+      <SmoothScroll />
 
       {/* NAV */}
       <header className="sticky top-0 z-50 border-b border-border bg-background/85 backdrop-blur-md">
@@ -80,6 +82,9 @@ export default function HomePage({ locale = "en" }) {
             newTag={t.nav.newTag}
           />
         </nav>
+        <span aria-hidden className="absolute inset-x-0 bottom-[-1px] h-[2px] overflow-hidden">
+          <span data-scroll-progress className="block h-full origin-left scale-x-0 bg-signal rtl:origin-right" />
+        </span>
       </header>
 
       {/* HERO + CLIENT CHAT — one scroll-driven opening scene */}
@@ -90,8 +95,17 @@ export default function HomePage({ locale = "en" }) {
         chat={<VoiceNotes locale={locale} labels={t.voiceNoteLabels} />}
       />
 
-      {/* WORK */}
-      <section id="work" className="scroll-mt-20 border-t border-border px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
+      {/* SERVICES — pinned horizontal rail */}
+      <ServicesRail
+        isAr={isAr}
+        title={t.services.title}
+        lead={t.services.lead}
+        items={t.services.items}
+        end={t.services.end}
+      />
+
+      {/* WORK — featured deck, then the rest */}
+      <section id="work" className="px-4 pb-20 pt-16 sm:px-6 md:px-10 md:pb-28 md:pt-24 xl:px-14">
         <div className="mx-auto max-w-[1180px]">
           <SectionHead
             isAr={isAr}
@@ -108,76 +122,21 @@ export default function HomePage({ locale = "en" }) {
               </Link>
             }
           />
+          <ProjectDeck projects={t.projects.slice(0, FEATURED)} visitLabel={t.work.visit} />
 
-          {/* Mobile: scroll-stacked deck. Desktop: grid. */}
-          <ProjectStack projects={t.projects} visitLabel={t.work.visit} />
-
-          <div className="hidden gap-7 md:grid md:grid-cols-2 lg:grid-cols-3">
-            {t.projects.map((project) => (
-              <article
-                key={project.id}
-                className="group flex flex-col overflow-hidden rounded-[20px] border border-border bg-card transition-[transform,box-shadow] duration-300 hover:-translate-y-1 hover:shadow-[0_24px_50px_-12px_oklch(var(--shadow)_/_0.18)]"
-              >
-                <div className="relative aspect-video overflow-hidden bg-muted">
-                  <Image
-                    src={project.image}
-                    alt={
-                      project.alt ??
-                      `${project.title} — ${project.tech.slice(0, 3).join(", ")} project built by Mahmoud Saad`
-                    }
-                    fill
-                    sizes="(max-width: 1024px) 45vw, 380px"
-                    className="object-cover transition-transform duration-500 group-hover:scale-[1.04]"
-                  />
-                </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <div className="mb-2 flex items-start justify-between gap-3">
-                    <h3 className="font-serif text-[21px] font-semibold leading-tight">
-                      {project.title}
-                    </h3>
-                    <Link
-                      href={project.deploy}
-                      target="_blank"
-                      aria-label={`${t.work.visit} — ${project.title}`}
-                      className="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-border transition-colors hover:border-ink hover:bg-ink hover:text-ink-foreground"
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </Link>
-                  </div>
-                  <p className="mb-6 flex-1 text-sm leading-relaxed text-muted-foreground line-clamp-3">
-                    {project.description}
-                  </p>
-                  <div className="mt-auto flex flex-wrap gap-2">
-                    {project.tech.slice(0, 4).map((tech) => (
-                      <TechBadge key={tech} tech={tech} className="py-0.5 text-xs" />
-                    ))}
-                    {project.tech.length > 4 && (
-                      <span className="self-center px-1 text-xs text-muted-foreground">
-                        +{project.tech.length - 4}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SERVICES */}
-      <section id="services" className="scroll-mt-20 border-t border-border px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
-        <div className="mx-auto max-w-[1180px]">
-          <SectionHead isAr={isAr} title={t.services.title} lead={t.services.lead} />
-          <ServiceCards services={t.services.items} />
+          <h3 data-reveal className="mb-6 mt-16 font-serif text-[22px] font-semibold md:mt-24 md:text-[26px]">
+            {t.work.more}
+          </h3>
+          <MoreWork projects={t.projects.slice(FEATURED)} visitLabel={t.work.visit} />
         </div>
       </section>
 
       {/* FILMS — dark screening room, newest first */}
-      <section id="films" className="theme-ink mx-2 scroll-mt-20 overflow-clip rounded-[30px] px-4 py-16 sm:mx-3 sm:px-6 md:mx-4 md:rounded-[36px] md:px-10 md:py-28 xl:px-14">
+      <section id="films" className="theme-ink mx-2 overflow-clip rounded-[30px] px-4 py-16 sm:mx-3 sm:px-6 md:mx-4 md:rounded-[36px] md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto max-w-[1180px]">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start lg:pt-4">
-              <h2 className={headingClass(isAr)}>{t.films.title}</h2>
+              <h2 data-reveal className={headingClass(isAr)}>{t.films.title}</h2>
               <p className="mt-5 max-w-[52ch] text-[16px] leading-relaxed text-muted-foreground md:text-[17px]">
                 {t.films.lead}
               </p>
@@ -231,7 +190,7 @@ export default function HomePage({ locale = "en" }) {
       </section>
 
       {/* DESIGN */}
-      <section id="design" className="scroll-mt-20 px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
+      <section id="design" className="px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto max-w-[1180px]">
           <SectionHead isAr={isAr} title={t.design.title} lead={t.design.lead} />
           <DesignGallery items={DESIGN_WORK} locale={locale} labels={t.design.labels} />
@@ -239,7 +198,7 @@ export default function HomePage({ locale = "en" }) {
       </section>
 
       {/* PROCESS — a real sequence, so it's numbered */}
-      <section id="process" className="scroll-mt-20 border-t border-border bg-muted/60 px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
+      <section id="process" className="border-t border-border bg-muted/60 px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto max-w-[1180px]">
           <SectionHead isAr={isAr} title={t.process.title} lead={t.process.lead} />
           <ol className="grid gap-px overflow-hidden rounded-[22px] border border-border bg-border md:grid-cols-2 lg:grid-cols-4">
@@ -258,13 +217,13 @@ export default function HomePage({ locale = "en" }) {
 
       {/* ABOUT */}
       {/* Rotating ring bounds must not enlarge the mobile scroll viewport. */}
-      <section id="about" className="scroll-mt-20 overflow-hidden border-t border-border px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
+      <section id="about" className="overflow-hidden border-t border-border px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto grid max-w-[1180px] items-center gap-14 lg:grid-cols-2 lg:gap-16">
           <div className="relative order-2 py-6 lg:order-1">
             <SkillOrbit label={t.about.stackLabel} />
           </div>
           <div className="order-1 lg:order-2">
-            <h2 className={headingClass(isAr)}>{t.about.title}</h2>
+            <h2 data-reveal className={headingClass(isAr)}>{t.about.title}</h2>
             <div className="mt-6 max-w-[60ch] space-y-4 text-[16px] leading-relaxed text-muted-foreground">
               {t.about.body.map((paragraph) => (
                 <p key={paragraph.slice(0, 24)}>{paragraph}</p>
@@ -278,10 +237,10 @@ export default function HomePage({ locale = "en" }) {
       </section>
 
       {/* FAQ — mirrors the FAQPage JSON-LD for rich results */}
-      <section id="faq" className="scroll-mt-20 border-t border-border px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
+      <section id="faq" className="border-t border-border px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto grid max-w-[1180px] gap-10 lg:grid-cols-12">
           <div className="lg:col-span-4">
-            <h2 className={headingClass(isAr)}>{t.faq.title}</h2>
+            <h2 data-reveal className={headingClass(isAr)}>{t.faq.title}</h2>
           </div>
           <div className="flex flex-col gap-3 lg:col-span-8">
             {faq.map(({ q, a }) => (
@@ -301,10 +260,10 @@ export default function HomePage({ locale = "en" }) {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="mx-2 mb-2 scroll-mt-20 rounded-[30px] bg-ink px-4 py-16 text-ink-foreground sm:mx-3 sm:mb-3 sm:px-6 md:mx-4 md:mb-4 md:rounded-[36px] md:px-10 md:py-28 xl:px-14">
+      <section id="contact" className="mx-2 mb-2 rounded-[30px] bg-ink px-4 py-16 text-ink-foreground sm:mx-3 sm:mb-3 sm:px-6 md:mx-4 md:mb-4 md:rounded-[36px] md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 md:mb-12">
-            <h2 className={`${headingClass(isAr)} text-ink-foreground`}>{t.contact.title}</h2>
+            <h2 data-reveal className={`${headingClass(isAr)} text-ink-foreground`}>{t.contact.title}</h2>
             <p className="mt-4 max-w-xl text-[17px] leading-relaxed text-ink-foreground/70">
               {t.contact.lead}
             </p>
@@ -348,7 +307,7 @@ function headingClass(isAr) {
 function SectionHead({ title, lead, aside, isAr }) {
   return (
     <div className="mb-12 flex flex-col justify-between gap-5 md:mb-16 md:flex-row md:items-end">
-      <div className="max-w-[640px]">
+      <div data-reveal className="max-w-[640px]">
         <h2 className={headingClass(isAr)}>
           {title}
         </h2>
