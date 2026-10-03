@@ -12,6 +12,7 @@ export default function ScrollIntro({
   hero,
   chat,
   cueLabel = "Scroll to explore",
+  chrome = true,
 }) {
   const rootRef = useRef(null);
 
@@ -140,11 +141,6 @@ export default function ScrollIntro({
               0,
             )
             .to(
-              cue,
-              { autoAlpha: 0, y: 8, duration: 0.35 },
-              0,
-            )
-            .to(
               chatLayer,
               {
                 autoAlpha: 1,
@@ -216,6 +212,10 @@ export default function ScrollIntro({
             messageEnd + 0.55,
           );
 
+          if (cue) {
+            timeline.to(cue, { autoAlpha: 0, y: 8, duration: 0.35 }, 0);
+          }
+
           if (rail) {
             timeline.fromTo(
               rail,
@@ -268,15 +268,19 @@ export default function ScrollIntro({
         <div className="scroll-story__hero">{hero}</div>
         <div className="scroll-story__chat">{chat}</div>
 
-        <div className="scroll-story__rail" aria-hidden>
-          <span className="scroll-story__rail-fill" />
-        </div>
+        {chrome ? (
+          <>
+            <div className="scroll-story__rail" aria-hidden>
+              <span className="scroll-story__rail-fill" />
+            </div>
 
-        <div className="scroll-story__cue" aria-hidden>
-          <span>{cueLabel}</span>
-          <span className="scroll-story__cue-line" />
-          <span>02</span>
-        </div>
+            <div className="scroll-story__cue" aria-hidden>
+              <span>{cueLabel}</span>
+              <span className="scroll-story__cue-line" />
+              <span>02</span>
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );

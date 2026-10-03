@@ -14,11 +14,10 @@ import VoiceNotes from "@/components/voice-notes-loader";
 import TechBadge from "@/components/ui/techBadge";
 import WhatsAppIcon from "@/components/ui/whatsapp-icon";
 import NewReleases from "@/components/home/new-releases";
-import { HeroReel, HeroReelChip } from "@/components/home/hero-reel";
+import Hero from "@/components/home/hero";
 import { DESIGN_WORK } from "@/lib/design-work";
 import { HOME_CONTENT } from "@/lib/home-content";
 import { AR_FAQ, EN_FAQ, faqSchema, homeGraph, JsonLd } from "@/lib/seo";
-import { voiceNotes, voiceNotesAr } from "@/lib/testimonials";
 
 const PRIMARY_BTN =
   "inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-4 text-[15.5px] font-semibold text-ink-foreground transition-[background-color,transform] duration-200 hover:bg-primary hover:text-primary-foreground active:scale-[0.98]";
@@ -29,7 +28,6 @@ export default function HomePage({ locale = "en" }) {
   const t = HOME_CONTENT[locale];
   const isAr = locale === "ar";
   const faq = isAr ? AR_FAQ : EN_FAQ;
-  const reviewCount = (isAr ? voiceNotesAr : voiceNotes).length;
   const newest = t.films.releases[0];
 
   return (
@@ -87,91 +85,8 @@ export default function HomePage({ locale = "en" }) {
       {/* HERO + CLIENT CHAT — one scroll-driven opening scene */}
       <ScrollIntro
         active
-        cueLabel={t.hero.cue}
-        hero={
-          <section className="relative h-full overflow-hidden">
-            <HeroBackdrop />
-            <div className="relative mx-auto grid h-full max-w-[1240px] items-center gap-10 px-5 pb-16 pt-6 sm:px-8 md:grid-cols-12 md:pb-20 md:pt-10 xl:px-14">
-              <div className="md:col-span-7 lg:col-span-7">
-                <div className="hero-enter">
-                  <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-border bg-card/80 px-3.5 py-1.5 text-[13px] font-medium md:mb-7">
-                    <span className="relative flex h-2 w-2">
-                      <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-500 opacity-75" />
-                      <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
-                    </span>
-                    {t.hero.available}
-                  </div>
-
-                  <h1>
-                    <span className="mb-3 block text-[14.5px] font-medium text-muted-foreground md:mb-5 md:text-[16px]">
-                      {t.hero.name}
-                    </span>
-                    <span
-                      className={`font-display-tight block font-serif font-semibold ${
-                        isAr
-                          ? "text-[37px] leading-[1.3] sm:text-[48px] lg:text-[60px]"
-                          : "text-[44px] leading-[0.98] sm:text-[60px] lg:text-[80px]"
-                      }`}
-                    >
-                      {t.hero.title.map((line) => (
-                        <span key={line} className="hero-line block">
-                          {line}
-                        </span>
-                      ))}
-                    </span>
-                  </h1>
-
-                  <p className="mt-5 max-w-[56ch] text-[16px] leading-relaxed text-muted-foreground md:mt-7 md:text-[17.5px]">
-                    {t.hero.lead}
-                  </p>
-
-                  <div className="mt-6 grid grid-cols-2 gap-2.5 sm:flex sm:flex-wrap sm:items-center sm:gap-3 md:mt-9">
-                    <Link href="#contact" className={`${PRIMARY_BTN} col-span-2`}>
-                      {t.hero.primary}
-                    </Link>
-                    <Link href="#work" className={SECONDARY_BTN}>
-                      {t.hero.secondary}
-                    </Link>
-                    <Link
-                      href={t.hero.whatsappHref}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-2 rounded-full border border-[#25D366]/60 px-5 py-3.5 text-[15px] font-semibold text-[#128C7E] transition-colors hover:bg-[#25D366]/10"
-                    >
-                      <WhatsAppIcon className="h-5 w-5 shrink-0 text-[#25D366]" />
-                      <span className="sm:hidden">{t.hero.whatsappShort}</span>
-                      <span className="hidden sm:inline">{t.hero.whatsapp}</span>
-                    </Link>
-                  </div>
-
-                  <ul className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-1.5 text-[13.5px] text-muted-foreground md:mt-9 max-md:[@media(max-height:860px)]:hidden">
-                    <li>
-                      <span className="font-serif text-[22px] font-semibold text-foreground">
-                        {t.projects.length}
-                      </span>{" "}
-                      {t.hero.proof.projects}
-                    </li>
-                    <li>
-                      <span className="font-serif text-[22px] font-semibold text-foreground">
-                        {reviewCount}
-                      </span>{" "}
-                      {t.hero.proof.reviews}
-                    </li>
-                    <li className="hidden sm:list-item">{t.hero.proof.markets}</li>
-                  </ul>
-
-                  <div className="mt-6 md:hidden [@media(max-height:640px)]:hidden">
-                    <HeroReelChip release={newest} reel={t.hero.reel} />
-                  </div>
-                </div>
-              </div>
-
-              <div className="hero-device hidden md:col-span-5 md:block">
-                <HeroReel release={newest} reel={t.hero.reel} />
-              </div>
-            </div>
-          </section>
-        }
+        chrome={false}
+        hero={<Hero t={t} newest={newest} />}
         chat={<VoiceNotes locale={locale} labels={t.voiceNoteLabels} />}
       />
 
@@ -258,7 +173,7 @@ export default function HomePage({ locale = "en" }) {
       </section>
 
       {/* FILMS — dark screening room, newest first */}
-      <section id="films" className="theme-ink scroll-mt-16 px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
+      <section id="films" className="theme-ink mx-2 scroll-mt-20 overflow-clip rounded-[30px] px-4 py-16 sm:mx-3 sm:px-6 md:mx-4 md:rounded-[36px] md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto max-w-[1180px]">
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:sticky lg:top-28 lg:col-span-5 lg:self-start lg:pt-4">
@@ -386,7 +301,7 @@ export default function HomePage({ locale = "en" }) {
       </section>
 
       {/* CONTACT */}
-      <section id="contact" className="scroll-mt-16 bg-ink px-4 py-20 text-ink-foreground sm:px-6 md:px-10 md:py-28 xl:px-14">
+      <section id="contact" className="mx-2 mb-2 scroll-mt-20 rounded-[30px] bg-ink px-4 py-16 text-ink-foreground sm:mx-3 sm:mb-3 sm:px-6 md:mx-4 md:mb-4 md:rounded-[36px] md:px-10 md:py-28 xl:px-14">
         <div className="mx-auto max-w-3xl">
           <div className="mb-10 md:mb-12">
             <h2 className={`${headingClass(isAr)} text-ink-foreground`}>{t.contact.title}</h2>
@@ -443,17 +358,6 @@ function SectionHead({ title, lead, aside, isAr }) {
       </div>
       {aside}
     </div>
-  );
-}
-
-/* Quiet blueprint grid that fades out toward the content — the only
-   decoration in the hero, so the phone and the headline carry it. */
-function HeroBackdrop() {
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute inset-0 [background-image:linear-gradient(oklch(var(--foreground)/0.05)_1px,transparent_1px),linear-gradient(90deg,oklch(var(--foreground)/0.05)_1px,transparent_1px)] [background-size:44px_44px] [mask-image:radial-gradient(ellipse_70%_60%_at_70%_40%,black,transparent)]"
-    />
   );
 }
 
