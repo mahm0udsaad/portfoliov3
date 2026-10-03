@@ -16,6 +16,7 @@ import ProjectDeck, { MoreWork } from "@/components/home/project-deck";
 import SmoothScroll from "@/components/home/smooth-scroll";
 import { DESIGN_WORK } from "@/lib/design-work";
 import { HOME_CONTENT } from "@/lib/home-content";
+import { applyProjectOrder, getProjectOrder } from "@/lib/project-order";
 import { AR_FAQ, EN_FAQ, faqSchema, homeGraph, JsonLd } from "@/lib/seo";
 
 const PRIMARY_BTN =
@@ -25,8 +26,10 @@ const FEATURED = 5;
 const SECONDARY_BTN =
   "inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3.5 text-[15px] font-semibold transition-colors hover:border-foreground/40";
 
-export default function HomePage({ locale = "en" }) {
+export default async function HomePage({ locale = "en" }) {
   const t = HOME_CONTENT[locale];
+  // Order and visibility come from /admin/projects; falls back to code order.
+  const projects = applyProjectOrder(t.projects, await getProjectOrder());
   const isAr = locale === "ar";
   const faq = isAr ? AR_FAQ : EN_FAQ;
   const newest = t.films.releases[0];
@@ -122,12 +125,12 @@ export default function HomePage({ locale = "en" }) {
               </Link>
             }
           />
-          <ProjectDeck projects={t.projects.slice(0, FEATURED)} visitLabel={t.work.visit} />
+          <ProjectDeck projects={projects.slice(0, FEATURED)} visitLabel={t.work.visit} />
 
           <h3 data-reveal className="mb-6 mt-16 font-serif text-[22px] font-semibold md:mt-24 md:text-[26px]">
             {t.work.more}
           </h3>
-          <MoreWork projects={t.projects.slice(FEATURED)} visitLabel={t.work.visit} />
+          <MoreWork projects={projects.slice(FEATURED)} visitLabel={t.work.visit} />
         </div>
       </section>
 

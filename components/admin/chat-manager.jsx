@@ -4,6 +4,8 @@ import { useEffect, useRef, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
+  ArrowDown,
+  ArrowUp,
   GripVertical,
   Pencil,
   Trash2,
@@ -114,6 +116,20 @@ export default function ChatManager({ messages }) {
     run(reorderMessages, fd);
   }
 
+  // Arrow buttons: same save path as drag, and they work on touch screens.
+  function moveBy(index, delta) {
+    const to = index + delta;
+    const current = itemsRef.current;
+    if (to < 0 || to >= current.length) return;
+    const next = [...current];
+    const [moved] = next.splice(index, 1);
+    next.splice(to, 0, moved);
+    setItems(next);
+    const fd = new FormData();
+    fd.append("ids", next.map((m) => m.id).join(","));
+    run(reorderMessages, fd);
+  }
+
   return (
     <div>
       {error && (
@@ -153,6 +169,8 @@ export default function ChatManager({ messages }) {
             onDragStart={handleDragStart}
             onDragEnter={handleDragEnter}
             onDragEnd={handleDragEnd}
+            onUp={index > 0 ? () => moveBy(index, -1) : null}
+            onDown={index < items.length - 1 ? () => moveBy(index, 1) : null}
             onPreview={() =>
               setPreview({ src: m.image_url, alt: m.alt || "Screenshot" })
             }
@@ -264,6 +282,8 @@ function MessageRow({
   onDragStart,
   onDragEnter,
   onDragEnd,
+  onUp,
+  onDown,
   onPreview,
   onTogglePublished,
   onEdit,
@@ -420,6 +440,26 @@ function MessageRow({
       </button>
 
       <div className="flex items-center gap-1">
+        <button
+          type="button"
+          onClick={onUp ?? undefined}
+          disabled={!onUp || busy}
+          aria-label="Move up"
+          title="Move up"
+          className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-30"
+        >
+          <ArrowUp className="h-4 w-4" />
+        </button>
+        <button
+          type="button"
+          onClick={onDown ?? undefined}
+          disabled={!onDown || busy}
+          aria-label="Move down"
+          title="Move down"
+          className="grid h-9 w-9 place-items-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground disabled:opacity-30"
+        >
+          <ArrowDown className="h-4 w-4" />
+        </button>
         <button
           type="button"
           onClick={onEdit}

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, LayoutGrid } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { getAllChatMessages } from "@/lib/chat-messages";
 import AdminSignOut from "@/components/admin-sign-out";
@@ -42,6 +42,13 @@ export default async function AdminChatPage() {
             >
               <ArrowLeft className="w-4 h-4" />
               Bookings
+            </Link>
+            <Link
+              href="/admin/projects"
+              className="hidden sm:inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+            >
+              <LayoutGrid className="w-4 h-4" />
+              Projects
             </Link>
             <span className="text-sm text-muted-foreground hidden sm:inline">
               {user.email}
