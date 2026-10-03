@@ -152,7 +152,7 @@ export default function WorkTabs({ tabs, locale, labels }) {
                 ) : (
                   <ProjectCard project={item} visitLabel={labels.visit} />
                 )}
-                <span data-deck-shade aria-hidden className="pointer-events-none absolute inset-0 rounded-[24px] bg-[oklch(0.15_0.05_268)] opacity-0" />
+                <span data-deck-shade aria-hidden className="pointer-events-none absolute inset-0 rounded-[24px] bg-[oklch(0.2_0.035_176)] opacity-0" />
               </div>
             </li>
           ))}

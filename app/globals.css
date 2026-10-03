@@ -4,35 +4,35 @@
 
 @layer base {
   :root {
-    /* Night-ultramarine studio palette, lifted from the launch films —
-       raw oklch components: L C H */
-    --background: 0.977 0.005 265; /* paper */
-    --foreground: 0.25 0.095 268; /* ink */
-    --card: 1 0 0;
-    --card-foreground: 0.25 0.095 268;
-    --popover: 1 0 0;
-    --popover-foreground: 0.25 0.095 268;
-    /* Cobalt — links, focus, active states */
-    --primary: 0.5 0.21 266;
-    --primary-foreground: 0.985 0.004 265;
-    /* Ink = deep ultramarine, used for dark pills, CTAs and dark sections */
-    --ink: 0.25 0.095 268;
-    --ink-foreground: 0.977 0.005 265;
-    /* Signal yellow — reserved for "new" and the main CTA on dark */
-    --signal: 0.86 0.165 88;
-    --signal-foreground: 0.25 0.095 268;
-    --secondary: 0.955 0.008 265;
-    --secondary-foreground: 0.25 0.095 268;
-    --muted: 0.955 0.008 265;
-    --muted-foreground: 0.5 0.035 268;
-    --accent: 0.94 0.03 266;
-    --accent-foreground: 0.45 0.2 266;
-    --destructive: 0.55 0.2 25;
-    --destructive-foreground: 0.98 0.004 265;
-    --border: 0.905 0.014 268;
-    --input: 0.89 0.016 268;
-    --ring: 0.5 0.21 266;
-    --shadow: 0.25 0.095 268;
+    /* Cream & forest palette — sampled from the brand image: cream paper,
+       forest-green ink, sage glass, copper coin. Raw oklch: L C H */
+    --background: 0.955 0.021 78; /* cream #f8efe2 */
+    --foreground: 0.3 0.047 165; /* forest */
+    --card: 0.978 0.012 80; /* light cream */
+    --card-foreground: 0.3 0.047 165;
+    --popover: 0.978 0.012 80;
+    --popover-foreground: 0.3 0.047 165;
+    /* Mid green — links, focus, active states */
+    --primary: 0.43 0.06 161;
+    --primary-foreground: 0.972 0.014 80;
+    /* Ink = forest green: dark pills, CTAs, text */
+    --ink: 0.3 0.047 165;
+    --ink-foreground: 0.972 0.014 80;
+    /* Copper — the coin. Reserved for "new" and the main CTA on dark */
+    --signal: 0.72 0.125 57;
+    --signal-foreground: 0.247 0.04 176;
+    --secondary: 0.925 0.03 80;
+    --secondary-foreground: 0.3 0.047 165;
+    --muted: 0.925 0.03 80; /* cream2 */
+    --muted-foreground: 0.47 0.035 140; /* moss */
+    --accent: 0.9 0.032 132; /* sage light */
+    --accent-foreground: 0.38 0.05 160;
+    --destructive: 0.55 0.18 28;
+    --destructive-foreground: 0.97 0.014 80;
+    --border: 0.875 0.028 80;
+    --input: 0.86 0.03 80;
+    --ring: 0.43 0.06 161;
+    --shadow: 0.247 0.04 176;
     --radius: 0.9rem;
     --radius-sm: 8px;
     --radius-md: 12px;
@@ -43,23 +43,23 @@
   /* Dark "screening room" scope: any component inside re-reads the tokens,
      so cards, borders and muted text adapt without per-component variants. */
   .theme-ink {
-    --background: 0.25 0.095 268;
-    --foreground: 0.977 0.005 265;
-    --card: 0.29 0.1 268;
-    --card-foreground: 0.977 0.005 265;
-    --muted: 0.3 0.09 268;
-    --muted-foreground: 0.78 0.04 268;
-    --border: 0.38 0.08 268;
-    --accent: 0.33 0.1 268;
-    --accent-foreground: 0.86 0.165 88;
-    --primary: 0.86 0.165 88;
-    --primary-foreground: 0.25 0.095 268;
-    --ring: 0.86 0.165 88;
-    --ink: 0.977 0.005 265;
-    --ink-foreground: 0.25 0.095 268;
-    --shadow: 0.12 0.06 268;
-    background-color: oklch(0.25 0.095 268);
-    color: oklch(0.977 0.005 265);
+    --background: 0.247 0.04 176; /* frame #062720 */
+    --foreground: 0.955 0.021 78;
+    --card: 0.29 0.045 170;
+    --card-foreground: 0.955 0.021 78;
+    --muted: 0.3 0.04 170;
+    --muted-foreground: 0.8 0.038 133; /* sage light */
+    --border: 0.38 0.04 165;
+    --accent: 0.33 0.045 165;
+    --accent-foreground: 0.72 0.125 57;
+    --primary: 0.72 0.125 57;
+    --primary-foreground: 0.247 0.04 176;
+    --ring: 0.72 0.125 57;
+    --ink: 0.955 0.021 78;
+    --ink-foreground: 0.247 0.04 176;
+    --shadow: 0.12 0.03 176;
+    background-color: oklch(0.247 0.04 176);
+    color: oklch(0.955 0.021 78);
   }
 }
 
@@ -339,7 +339,7 @@ html.intro-done .hero-device {
   position: relative;
   border-radius: 44px;
   padding: 10px;
-  background: oklch(0.15 0.04 268);
+  background: oklch(0.2 0.035 176);
   box-shadow:
     0 0 0 1px oklch(1 0 0 / 0.12),
     0 40px 80px -20px oklch(var(--shadow) / 0.45),
@@ -350,7 +350,7 @@ html.intro-done .hero-device {
   overflow: hidden;
   border-radius: 34px;
   aspect-ratio: 9 / 16;
-  background: oklch(0.15 0.04 268);
+  background: oklch(0.2 0.035 176);
 }
 
 /* Signal tag pulse — the one ambient motion on the page, marking "new". */
@@ -369,8 +369,8 @@ html.intro-done .hero-device {
    and opacity only, so it stays on the compositor. */
 .hero-stage {
   background:
-    radial-gradient(120% 80% at 50% 120%, oklch(0.42 0.2 266 / 0.55), transparent 60%),
-    oklch(0.22 0.09 268);
+    radial-gradient(120% 80% at 50% 120%, oklch(0.45 0.06 150 / 0.55), transparent 60%),
+    oklch(0.247 0.04 176);
 }
 .hero-glow {
   position: absolute;
@@ -385,12 +385,12 @@ html.intro-done .hero-device {
 .hero-glow--a {
   top: -35vmax;
   inset-inline-start: -25vmax;
-  background: radial-gradient(circle, oklch(0.55 0.22 266 / 0.7), transparent 65%);
+  background: radial-gradient(circle, oklch(0.72 0.04 132 / 0.45), transparent 65%);
 }
 .hero-glow--b {
   bottom: -40vmax;
   inset-inline-end: -30vmax;
-  background: radial-gradient(circle, oklch(0.86 0.165 88 / 0.22), transparent 60%);
+  background: radial-gradient(circle, oklch(0.72 0.125 57 / 0.25), transparent 60%);
 }
 @keyframes glow-drift {
   0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
