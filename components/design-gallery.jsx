@@ -64,7 +64,7 @@ export default function DesignGallery({ items, locale = "en", labels = {} }) {
   );
 }
 
-function Lightbox({ item, locale, closeLabel, onClose }) {
+export function Lightbox({ item, locale, closeLabel, onClose }) {
   const closeRef = useRef(null);
 
   useEffect(() => {

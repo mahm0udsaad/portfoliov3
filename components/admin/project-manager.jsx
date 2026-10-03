@@ -6,12 +6,10 @@ import { useRouter } from "next/navigation";
 import { ArrowDown, ArrowUp, Check, Eye, EyeOff, GripVertical, Loader2 } from "lucide-react";
 import { saveProjectOrder } from "@/app/actions/project-order";
 
-const FEATURED = 5;
-
 /* Reorder homepage projects: drag the grip on desktop, or use the arrows on
    a phone (HTML5 drag-and-drop doesn't fire on touch). Every change saves on
    its own after a short pause, so rapid arrow taps become one write. */
-export default function ProjectManager({ projects }) {
+export default function ProjectManager({ projects, categories }) {
   const router = useRouter();
   const [items, setItems] = useState(projects);
   const [status, setStatus] = useState("idle"); // idle | saving | saved | error
@@ -33,6 +31,7 @@ export default function ProjectManager({ projects }) {
       const fd = new FormData();
       fd.append("ids", latest.map((p) => p.id).join(","));
       fd.append("hidden", latest.filter((p) => !p.published).map((p) => p.id).join(","));
+      if (categories) fd.append("categories", latest.map((p) => `${p.id}:${p.category}`).join(","));
       const res = await saveProjectOrder(fd);
       if (res?.success) {
         setError("");
@@ -57,22 +56,15 @@ export default function ProjectManager({ projects }) {
     queueSave(itemsRef.current.map((p) => (p.id === id ? { ...p, published: !p.published } : p)));
   }
 
-  // Index (in the full list) of the last featured card: the fifth visible one.
-  let visibleSeen = 0;
-  let featuredEndIndex = -1;
-  items.forEach((p, i) => {
-    if (p.published) {
-      visibleSeen += 1;
-      if (visibleSeen === FEATURED) featuredEndIndex = i;
-    }
-  });
+  function setCategory(id, category) {
+    queueSave(itemsRef.current.map((p) => (p.id === id ? { ...p, category } : p)));
+  }
 
   return (
     <div>
       <div className="mb-5 flex items-center justify-between gap-4">
         <p className="text-sm text-muted-foreground">
-          {items.filter((p) => p.published).length} of {items.length} shown. The first {FEATURED} shown
-          projects are the featured deck.
+          {items.filter((p) => p.published).length} of {items.length} shown.
         </p>
         <SaveStatus status={status} />
       </div>
@@ -90,7 +82,8 @@ export default function ProjectManager({ projects }) {
               p={p}
               index={index}
               total={items.length}
-              featured={p.published && index <= featuredEndIndex}
+              categories={categories}
+              onCategory={(c) => setCategory(p.id, c)}
               dragging={draggingId === p.id}
               onDragStart={() => {
                 dragIndex.current = index;
@@ -118,13 +111,6 @@ export default function ProjectManager({ projects }) {
               }}
               onToggle={() => toggle(p.id)}
             />
-            {index === featuredEndIndex && index < items.length - 1 ? (
-              <div className="my-4 flex items-center gap-3 text-[12.5px] font-semibold text-muted-foreground">
-                <span className="h-px flex-1 bg-border" />
-                Below this line: “More work” row
-                <span className="h-px flex-1 bg-border" />
-              </div>
-            ) : null}
           </li>
         ))}
       </ol>
@@ -132,7 +118,7 @@ export default function ProjectManager({ projects }) {
   );
 }
 
-function Row({ p, index, total, featured, dragging, onDragStart, onDragEnter, onDragEnd, onUp, onDown, onToggle }) {
+function Row({ p, index, total, categories, onCategory, dragging, onDragStart, onDragEnter, onDragEnd, onUp, onDown, onToggle }) {
   const [dragOn, setDragOn] = useState(false);
 
   return (
@@ -170,9 +156,22 @@ function Row({ p, index, total, featured, dragging, onDragStart, onDragEnter, on
 
       <span className="min-w-0 flex-1">
         <span className="block truncate font-semibold">{p.title}</span>
-        <span className="block truncate text-[13px] text-muted-foreground">
-          {!p.published ? "Hidden" : featured ? "Featured deck" : "More work"}
-        </span>
+        {categories ? (
+          <select
+            value={p.category}
+            onChange={(e) => onCategory(e.target.value)}
+            aria-label={`Tab for ${p.title}`}
+            className="mt-1 h-8 rounded-lg border border-border bg-background px-2 text-[13px] text-muted-foreground"
+          >
+            {categories.map((c) => (
+              <option key={c.key} value={c.key}>
+                {c.label}
+              </option>
+            ))}
+          </select>
+        ) : (
+          <span className="block truncate text-[13px] text-muted-foreground">{p.published ? "Shown" : "Hidden"}</span>
+        )}
       </span>
 
       <span className="flex shrink-0 items-center gap-1">

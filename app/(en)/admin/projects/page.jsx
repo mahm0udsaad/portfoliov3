@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowLeft, MessageCircle } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
-import { HOME_CONTENT } from "@/lib/home-content";
+import { HOME_CONTENT, PROJECT_CATEGORIES } from "@/lib/home-content";
 import { applyProjectOrder, getAllProjectOrderRows } from "@/lib/project-order";
 import AdminSignOut from "@/components/admin-sign-out";
 import ProjectManager from "@/components/admin/project-manager";
@@ -24,10 +24,11 @@ export default async function AdminProjectsPage() {
     redirect("/admin/login");
   }
 
-  const { rows, tableMissing, error } = await getAllProjectOrderRows();
+  const { rows, tableMissing, error, hasCategory } = await getAllProjectOrderRows();
   const projects = applyProjectOrder(HOME_CONTENT.en.projects, rows, { includeHidden: true }).map(
-    ({ id, title, image, published }) => ({ id, title, image, published }),
+    ({ id, title, image, published, category }) => ({ id, title, image, published, category }),
   );
+  const categories = PROJECT_CATEGORIES.map((key) => ({ key, label: HOME_CONTENT.en.work.tabs[key] }));
 
   return (
     <div className="min-h-screen bg-background text-foreground">
@@ -63,8 +64,9 @@ export default async function AdminProjectsPage() {
             Project order
           </h1>
           <p className="mt-2 max-w-[560px] text-sm text-muted-foreground">
-            Drag the grip or use the arrows to reorder, and the eye to hide a project. Changes save
-            automatically and go live on both the English and Arabic homepages.
+            Drag the grip or use the arrows to reorder, pick the tab each project appears under, and use
+            the eye to hide one. Changes save automatically and go live on the English and Arabic
+            homepages. Order applies inside each tab.
           </p>
         </div>
 
@@ -82,7 +84,17 @@ export default async function AdminProjectsPage() {
           </div>
         ) : null}
 
-        {!tableMissing && !error ? <ProjectManager projects={projects} /> : null}
+        {!tableMissing && !error && !hasCategory ? (
+          <div className="mb-6 rounded-2xl border border-border bg-card p-5 text-sm text-muted-foreground">
+            To move projects between tabs, run{" "}
+            <code className="font-mono">supabase/migrations/0005_project_category.sql</code> in the Supabase SQL
+            editor. Ordering and hiding already work.
+          </div>
+        ) : null}
+
+        {!tableMissing && !error ? (
+          <ProjectManager projects={projects} categories={hasCategory ? categories : null} />
+        ) : null}
       </main>
     </div>
   );

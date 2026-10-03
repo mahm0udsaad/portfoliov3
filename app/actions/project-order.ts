@@ -4,6 +4,8 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { getSupabaseAdmin } from "@/lib/supabase-admin";
 
+const CATEGORIES = new Set(["systems", "websites", "apps", "designs"]);
+
 export type ProjectOrderResult = { success: boolean; message?: string };
 
 async function requireAdmin() {
@@ -36,11 +38,25 @@ export async function saveProjectOrder(formData: FormData): Promise<ProjectOrder
     );
     if (ids.length === 0) return { success: false, message: "No order provided." };
 
+    // "id:category" pairs; only sent once migration 0005 has added the column.
+    const rawCategories = formData.get("categories");
+    const categories = new Map<string, string>();
+    for (const pair of String(rawCategories ?? "").split(",")) {
+      const [id, cat] = pair.split(":");
+      if (id && CATEGORIES.has(cat)) categories.set(id, cat);
+    }
+
     const now = new Date().toISOString();
     const { error } = await getSupabaseAdmin()
       .from("project_order")
       .upsert(
-        ids.map((id, i) => ({ id, sort_order: i + 1, published: !hidden.has(id), updated_at: now })),
+        ids.map((id, i) => ({
+          id,
+          sort_order: i + 1,
+          published: !hidden.has(id),
+          updated_at: now,
+          ...(rawCategories !== null ? { category: categories.get(id) ?? null } : {}),
+        })),
         { onConflict: "id" },
       );
     if (error) throw new Error(error.message);

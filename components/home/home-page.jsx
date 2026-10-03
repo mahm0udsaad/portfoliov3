@@ -3,7 +3,6 @@ import { ArrowUpRight, Github, Linkedin, Mail, Plus } from "lucide-react";
 import ContactForm from "@/components/contact";
 import HeroVideos from "@/components/hero-videos";
 import VideoFeature from "@/components/video-feature";
-import DesignGallery from "@/components/design-gallery";
 import MobileNav from "@/components/mobile-nav";
 import ScrollIntro from "@/components/scroll-intro";
 import SkillOrbit from "@/components/skill-orbit";
@@ -12,17 +11,15 @@ import WhatsAppIcon from "@/components/ui/whatsapp-icon";
 import NewReleases from "@/components/home/new-releases";
 import Hero from "@/components/home/hero";
 import ServicesRail from "@/components/home/services-rail";
-import ProjectDeck, { MoreWork } from "@/components/home/project-deck";
+import WorkTabs from "@/components/home/work-tabs";
 import SmoothScroll from "@/components/home/smooth-scroll";
 import { DESIGN_WORK } from "@/lib/design-work";
-import { HOME_CONTENT } from "@/lib/home-content";
+import { HOME_CONTENT, PROJECT_CATEGORIES } from "@/lib/home-content";
 import { applyProjectOrder, getProjectOrder } from "@/lib/project-order";
 import { AR_FAQ, EN_FAQ, faqSchema, homeGraph, JsonLd } from "@/lib/seo";
 
 const PRIMARY_BTN =
   "inline-flex items-center justify-center gap-2 rounded-full bg-ink px-7 py-4 text-[15.5px] font-semibold text-ink-foreground transition-[background-color,transform] duration-200 hover:bg-primary hover:text-primary-foreground active:scale-[0.98]";
-const FEATURED = 5;
-
 const SECONDARY_BTN =
   "inline-flex items-center justify-center gap-2 rounded-full border border-border px-6 py-3.5 text-[15px] font-semibold transition-colors hover:border-foreground/40";
 
@@ -30,6 +27,16 @@ export default async function HomePage({ locale = "en" }) {
   const t = HOME_CONTENT[locale];
   // Order and visibility come from /admin/projects; falls back to code order.
   const projects = applyProjectOrder(t.projects, await getProjectOrder());
+  const workTabs = PROJECT_CATEGORIES.map((key) => ({
+    key,
+    label: t.work.tabs[key],
+    short: t.work.tabsShort?.[key] ?? t.work.tabs[key],
+    items: [
+      ...projects.filter((p) => p.category === key),
+      // Packaging, print and social pieces live in the Designs tab.
+      ...(key === "designs" ? DESIGN_WORK.map((d) => ({ ...d, kind: "design" })) : []),
+    ],
+  })).filter((tab) => tab.items.length > 0);
   const isAr = locale === "ar";
   const faq = isAr ? AR_FAQ : EN_FAQ;
   const newest = t.films.releases[0];
@@ -107,7 +114,7 @@ export default async function HomePage({ locale = "en" }) {
         end={t.services.end}
       />
 
-      {/* WORK — featured deck, then the rest */}
+      {/* WORK — tabbed by category */}
       <section id="work" className="px-4 pb-20 pt-16 sm:px-6 md:px-10 md:pb-28 md:pt-24 xl:px-14">
         <div className="mx-auto max-w-[1180px]">
           <SectionHead
@@ -125,12 +132,11 @@ export default async function HomePage({ locale = "en" }) {
               </Link>
             }
           />
-          <ProjectDeck projects={projects.slice(0, FEATURED)} visitLabel={t.work.visit} />
-
-          <h3 data-reveal className="mb-6 mt-16 font-serif text-[22px] font-semibold md:mt-24 md:text-[26px]">
-            {t.work.more}
-          </h3>
-          <MoreWork projects={projects.slice(FEATURED)} visitLabel={t.work.visit} />
+          <WorkTabs
+            locale={locale}
+            tabs={workTabs}
+            labels={{ visit: t.work.visit, viewDesign: t.work.viewDesign, close: t.work.close, tablist: t.work.title }}
+          />
         </div>
       </section>
 
@@ -189,14 +195,6 @@ export default async function HomePage({ locale = "en" }) {
               {t.films.secondary}
             </Link>
           </div>
-        </div>
-      </section>
-
-      {/* DESIGN */}
-      <section id="design" className="px-4 py-20 sm:px-6 md:px-10 md:py-28 xl:px-14">
-        <div className="mx-auto max-w-[1180px]">
-          <SectionHead isAr={isAr} title={t.design.title} lead={t.design.lead} />
-          <DesignGallery items={DESIGN_WORK} locale={locale} labels={t.design.labels} />
         </div>
       </section>
 
