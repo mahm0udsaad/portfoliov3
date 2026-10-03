@@ -103,7 +103,7 @@ function VoiceMessage({ note, playLabel, pauseLabel }) {
   }
 
   return (
-    <div className="w-[260px] max-w-[82%] rounded-[var(--radius-lg)] rounded-ss-[5px] border border-border bg-card px-3 pb-2 pt-2.5 shadow-[0_6px_20px_oklch(0.23_0.01_70_/_0.08)] sm:w-[320px]">
+    <div className="w-[260px] max-w-[82%] rounded-[var(--radius-lg)] rounded-ss-[5px] border border-border bg-card px-3 pb-2 pt-2.5 shadow-[0_6px_20px_oklch(var(--shadow)_/_0.08)] sm:w-[320px]">
       <p className="flex min-w-0 items-baseline gap-1.5 text-[11px] leading-tight">
         <span aria-hidden>{note.flag}</span>
         <span className="select-none font-semibold blur-[3px]" aria-hidden>
@@ -177,7 +177,7 @@ function VoiceMessage({ note, playLabel, pauseLabel }) {
 
 function ImageMessage({ message, label, onOpen, viewLabel }) {
   return (
-    <figure className="w-[190px] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card p-1.5 shadow-[0_8px_28px_oklch(0.23_0.01_70_/_0.10)] sm:w-[220px]">
+    <figure className="w-[190px] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card p-1.5 shadow-[0_8px_28px_oklch(var(--shadow)_/_0.10)] sm:w-[220px]">
       <button
         type="button"
         onClick={() => onOpen(message)}
@@ -203,7 +203,7 @@ function ImageMessage({ message, label, onOpen, viewLabel }) {
 
 function TextMessage({ children, time }) {
   return (
-    <div className="max-w-[78%] rounded-[var(--radius-lg)] rounded-se-[5px] bg-ink px-4 py-3 text-ink-foreground shadow-[0_6px_20px_oklch(0.23_0.01_70_/_0.10)] sm:max-w-[68%]">
+    <div className="max-w-[78%] rounded-[var(--radius-lg)] rounded-se-[5px] bg-ink px-4 py-3 text-ink-foreground shadow-[0_6px_20px_oklch(var(--shadow)_/_0.10)] sm:max-w-[68%]">
       <p className="text-[13px] leading-relaxed sm:text-[14px]">{children}</p>
       <time className="mt-1.5 block text-end font-mono text-[9px] uppercase tracking-[0.08em] text-ink-foreground/65">
         {time}
@@ -265,9 +265,9 @@ function Lightbox({ image, onClose, closeLabel }) {
 
 export default function ClientChat({ locale = "en", labels = {}, messages = null }) {
   const text = {
-    eyebrow: "Live client feedback",
-    heading: "Work that gets",
-    headingEm: "talked about.",
+    eyebrow: "Real messages from clients",
+    heading: "Clients talk.",
+    headingEm: "Press play and listen.",
     chatTitle: "After launch",
     chatMeta: "Real reactions · shared with permission",
     today: "Recent messages",
@@ -353,19 +353,19 @@ export default function ClientChat({ locale = "en", labels = {}, messages = null
     >
       <div className="relative mx-auto flex h-full max-w-[1040px] flex-col justify-center pb-5 pt-20 md:py-8">
         <div data-chat-intro className="mb-4 shrink-0 text-center md:mb-5">
-          <div className="mb-3 inline-flex items-center gap-2 rounded-[var(--radius-full)] border border-primary/25 bg-background px-3.5 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-primary md:text-[12px]">
+          <div className="mb-3 inline-flex items-center gap-2 rounded-[var(--radius-full)] border border-primary/25 bg-background px-3.5 py-1.5 text-[12.5px] font-semibold text-primary md:text-[13px]">
             <span className="h-2 w-2 rounded-[var(--radius-full)] bg-primary" />
             {text.eyebrow}
           </div>
-          <h2 className="font-serif text-[28px] font-normal leading-[1.04] tracking-tight sm:text-[34px] md:text-[42px]">
-            {text.heading} <em className="text-primary">{text.headingEm}</em>
+          <h2 className="font-display-tight font-serif text-[28px] font-semibold leading-[1.1] tracking-tight sm:text-[34px] md:text-[42px]">
+            {text.heading} {text.headingEm}
           </h2>
         </div>
 
         <div className="mx-auto h-[min(72svh,660px)] min-h-[440px] w-full max-w-[940px] shrink-0">
           <div
             data-chat-shell
-            className="flex h-full min-h-0 flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card shadow-[0_24px_70px_oklch(0.23_0.01_70_/_0.14)]"
+            className="flex h-full min-h-0 flex-col overflow-hidden rounded-[var(--radius-lg)] border border-border bg-card shadow-[0_24px_70px_oklch(var(--shadow)_/_0.14)]"
           >
             <div className="flex shrink-0 items-center gap-3 bg-ink px-4 py-3 text-ink-foreground sm:px-5">
               <div className="grid h-10 w-10 shrink-0 place-items-center rounded-[var(--radius-full)] bg-primary text-primary-foreground">

@@ -4,35 +4,62 @@
 
 @layer base {
   :root {
-    /* Warm editorial palette — raw oklch components: L C H */
-    --background: 0.97 0.006 85;
-    --foreground: 0.23 0.01 70;
+    /* Night-ultramarine studio palette, lifted from the launch films —
+       raw oklch components: L C H */
+    --background: 0.977 0.005 265; /* paper */
+    --foreground: 0.25 0.095 268; /* ink */
     --card: 1 0 0;
-    --card-foreground: 0.23 0.01 70;
+    --card-foreground: 0.25 0.095 268;
     --popover: 1 0 0;
-    --popover-foreground: 0.23 0.01 70;
-    /* Muted forest-green accent */
-    --primary: 0.45 0.09 160;
-    --primary-foreground: 0.97 0.006 85;
-    /* Ink = warm charcoal, used for dark pills / nav CTA / form header */
-    --ink: 0.23 0.01 70;
-    --ink-foreground: 0.97 0.006 85;
-    --secondary: 0.95 0.006 85;
-    --secondary-foreground: 0.23 0.01 70;
-    --muted: 0.955 0.006 85;
-    --muted-foreground: 0.5 0.01 70;
-    --accent: 0.93 0.025 160;
-    --accent-foreground: 0.42 0.09 160;
-    --destructive: 0.55 0.18 25;
-    --destructive-foreground: 0.98 0.006 85;
-    --border: 0.89 0.008 85;
-    --input: 0.88 0.008 85;
-    --ring: 0.45 0.09 160;
+    --popover-foreground: 0.25 0.095 268;
+    /* Cobalt — links, focus, active states */
+    --primary: 0.5 0.21 266;
+    --primary-foreground: 0.985 0.004 265;
+    /* Ink = deep ultramarine, used for dark pills, CTAs and dark sections */
+    --ink: 0.25 0.095 268;
+    --ink-foreground: 0.977 0.005 265;
+    /* Signal yellow — reserved for "new" and the main CTA on dark */
+    --signal: 0.86 0.165 88;
+    --signal-foreground: 0.25 0.095 268;
+    --secondary: 0.955 0.008 265;
+    --secondary-foreground: 0.25 0.095 268;
+    --muted: 0.955 0.008 265;
+    --muted-foreground: 0.5 0.035 268;
+    --accent: 0.94 0.03 266;
+    --accent-foreground: 0.45 0.2 266;
+    --destructive: 0.55 0.2 25;
+    --destructive-foreground: 0.98 0.004 265;
+    --border: 0.905 0.014 268;
+    --input: 0.89 0.016 268;
+    --ring: 0.5 0.21 266;
+    --shadow: 0.25 0.095 268;
     --radius: 0.9rem;
     --radius-sm: 8px;
     --radius-md: 12px;
     --radius-lg: 24px;
     --radius-full: 999px;
+  }
+
+  /* Dark "screening room" scope: any component inside re-reads the tokens,
+     so cards, borders and muted text adapt without per-component variants. */
+  .theme-ink {
+    --background: 0.25 0.095 268;
+    --foreground: 0.977 0.005 265;
+    --card: 0.29 0.1 268;
+    --card-foreground: 0.977 0.005 265;
+    --muted: 0.3 0.09 268;
+    --muted-foreground: 0.78 0.04 268;
+    --border: 0.38 0.08 268;
+    --accent: 0.33 0.1 268;
+    --accent-foreground: 0.86 0.165 88;
+    --primary: 0.86 0.165 88;
+    --primary-foreground: 0.25 0.095 268;
+    --ring: 0.86 0.165 88;
+    --ink: 0.977 0.005 265;
+    --ink-foreground: 0.25 0.095 268;
+    --shadow: 0.12 0.06 268;
+    background-color: oklch(0.25 0.095 268);
+    color: oklch(0.977 0.005 265);
   }
 }
 
@@ -41,9 +68,19 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  :focus-visible {
+    outline: 2px solid oklch(var(--ring));
+    outline-offset: 3px;
+  }
+  ::selection {
+    background: oklch(var(--signal));
+    color: oklch(var(--signal-foreground));
   }
 }
+
 
 html {
   scroll-behavior: smooth;
@@ -56,7 +93,7 @@ body::-webkit-scrollbar-track {
   background-color: rgba(221, 221, 221, 0);
 }
 body::-webkit-scrollbar-thumb {
-  background: oklch(0.45 0.09 160);
+  background: oklch(var(--primary));
   border-radius: 3rem;
 }
 
@@ -95,7 +132,7 @@ body::-webkit-scrollbar-thumb {
   background: transparent;
 }
 .chat-thread::-webkit-scrollbar-thumb {
-  background: oklch(0.45 0.09 160 / 0.25);
+  background: oklch(var(--primary) / 0.25);
   border-radius: 3rem;
 }
 
@@ -271,4 +308,60 @@ body::-webkit-scrollbar-thumb {
   .hero-enter > :nth-child(4) { animation-delay: 0.26s; }
   .hero-enter > :nth-child(5) { animation-delay: 0.36s; }
   .hero-enter > :nth-child(6) { animation-delay: 0.46s; }
+
+  /* The headline arrives line by line — the page's one orchestrated moment. */
+  .hero-enter > h1 { animation: none; }
+  .hero-enter > h1 > :first-child { animation: hero-rise 0.6s 0.05s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .hero-line { animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .hero-line:nth-child(1) { animation-delay: 0.1s; }
+  .hero-line:nth-child(2) { animation-delay: 0.22s; }
+  .hero-line:nth-child(3) { animation-delay: 0.34s; }
+  .hero-device { animation: device-in 1s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
 }
+
+@keyframes device-in {
+  from { opacity: 0; transform: translateY(40px) rotate(3deg) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Display type: Bricolage's optical-size axis tightens at large sizes. */
+.font-display-tight {
+  font-variation-settings: "opsz" 96, "wdth" 96;
+  letter-spacing: -0.022em;
+}
+[dir="rtl"] .font-display-tight {
+  font-variation-settings: normal;
+  letter-spacing: 0;
+  line-height: 1.32;
+}
+
+/* Phone frame around the hero reel. */
+.device {
+  position: relative;
+  border-radius: 44px;
+  padding: 10px;
+  background: oklch(var(--ink));
+  box-shadow:
+    0 0 0 1px oklch(var(--ink) / 0.9),
+    0 40px 80px -20px oklch(var(--shadow) / 0.45),
+    0 18px 36px -18px oklch(var(--shadow) / 0.35);
+}
+.device__screen {
+  position: relative;
+  overflow: hidden;
+  border-radius: 34px;
+  aspect-ratio: 9 / 16;
+  background: oklch(var(--ink));
+}
+
+/* Signal tag pulse — the one ambient motion on the page, marking "new". */
+@keyframes signal-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 oklch(var(--signal) / 0.55); }
+  50% { box-shadow: 0 0 0 7px oklch(var(--signal) / 0); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .signal-pulse {
+    animation: signal-pulse 2.4s ease-in-out infinite;
+  }
+}
+

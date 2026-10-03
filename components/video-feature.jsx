@@ -16,7 +16,7 @@ export default function VideoFeature({ videoUrl, poster, title, caption, playLab
         type="button"
         onClick={() => setActive(true)}
         aria-label={playLabel ?? `Play ${title}`}
-        className={`group relative block aspect-video w-full overflow-hidden rounded-[22px] border border-border bg-ink shadow-[0_20px_50px_oklch(0.23_0.01_70_/_0.14)] ${
+        className={`group relative block aspect-video w-full overflow-hidden rounded-[22px] border border-border bg-black shadow-[0_20px_50px_oklch(var(--shadow)_/_0.14)] ${
           active ? "cursor-default" : "cursor-pointer"
         }`}
       >
@@ -42,9 +42,9 @@ export default function VideoFeature({ videoUrl, poster, title, caption, playLab
               sizes="(max-width: 768px) 92vw, 860px"
               className="object-cover"
             />
-            <span className="absolute inset-0 bg-ink/25 transition-colors group-hover:bg-ink/10" />
+            <span className="absolute inset-0 bg-black/25 transition-colors group-hover:bg-black/10" />
             <span className="absolute inset-0 flex items-center justify-center">
-              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-background/90 text-ink shadow-lg transition-transform group-hover:scale-110">
+              <span className="flex h-16 w-16 items-center justify-center rounded-full bg-signal text-signal-foreground shadow-lg transition-transform group-hover:scale-110">
                 <Play className="h-7 w-7 translate-x-0.5 fill-current rtl:-translate-x-0.5" />
               </span>
             </span>

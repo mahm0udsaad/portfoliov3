@@ -1,12 +1,19 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { IBM_Plex_Sans_Arabic } from "next/font/google";
+import { Alexandria, IBM_Plex_Sans_Arabic } from "next/font/google";
 import "../globals.css";
 
 const plexArabic = IBM_Plex_Sans_Arabic({
   subsets: ["arabic", "latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
+  display: "swap",
+});
+
+// Arabic display face — geometric and bold, matching the launch films.
+const alexandria = Alexandria({
+  subsets: ["arabic", "latin"],
+  variable: "--font-serif",
   display: "swap",
 });
 
@@ -87,8 +94,7 @@ export default function ArabicRootLayout({
   return (
     <html lang="ar" dir="rtl">
       <body
-        className={`${plexArabic.variable} font-sans`}
-        style={{ "--font-serif": "var(--font-sans)" } as React.CSSProperties}
+        className={`${plexArabic.variable} ${alexandria.variable} font-sans`}
       >
         {children}
         <Analytics />

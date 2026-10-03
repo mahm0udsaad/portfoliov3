@@ -48,8 +48,8 @@ function Ring({ ringRef, skills, startIndex, radius, active }) {
               <div
                 className={`flex h-11 items-center gap-2 rounded-full border px-[10px] transition-[max-width,background-color,color,border-color,box-shadow] duration-500 ${
                   isActive
-                    ? "border-ink bg-ink text-ink-foreground shadow-[0_12px_32px_oklch(0.23_0.01_70_/_0.3)]"
-                    : "border-border bg-card shadow-[0_8px_24px_oklch(0.23_0.01_70_/_0.12)]"
+                    ? "border-ink bg-ink text-ink-foreground shadow-[0_12px_32px_oklch(var(--shadow)_/_0.3)]"
+                    : "border-border bg-card shadow-[0_8px_24px_oklch(var(--shadow)_/_0.12)]"
                 }`}
               >
                 <Image
@@ -162,7 +162,7 @@ export default function SkillOrbit({ label }) {
       <div aria-hidden className="absolute inset-[26%] rounded-full border border-dashed border-border/70" />
 
       {/* centerpiece */}
-      <div className="absolute inset-[34%] overflow-hidden rounded-full shadow-[0_24px_70px_oklch(0.23_0.01_70_/_0.22)]">
+      <div className="absolute inset-[34%] overflow-hidden rounded-full shadow-[0_24px_70px_oklch(var(--shadow)_/_0.22)]">
         <Image
           src="/visuals/skills-core.jpg"
           alt={label ?? "Technical stack"}

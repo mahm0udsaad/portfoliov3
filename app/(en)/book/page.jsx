@@ -75,7 +75,7 @@ export default function BookPage() {
           <Link href="/book" className="text-foreground font-semibold">
             Course
           </Link>
-          <Link href="/#projects" className="hover:text-foreground transition-colors">
+          <Link href="/#work" className="hover:text-foreground transition-colors">
             Projects
           </Link>
           <Link href="/#about" className="hover:text-foreground transition-colors">
@@ -187,7 +187,7 @@ export default function BookPage() {
 
         {/* RIGHT — form */}
         <div id="reserve" className="lg:sticky lg:top-8 scroll-mt-24">
-          <div className="bg-card border border-border rounded-[22px] shadow-[0_24px_60px_oklch(0.23_0.01_70_/_0.08)] overflow-hidden">
+          <div className="bg-card border border-border rounded-[22px] shadow-[0_24px_60px_oklch(var(--shadow)_/_0.08)] overflow-hidden">
             <div className="bg-ink text-ink-foreground px-[30px] py-6">
               <div className="flex items-baseline justify-between gap-3 mb-1.5">
                 <p className="font-serif text-2xl">Reserve your seat</p>
@@ -252,7 +252,7 @@ export default function BookPage() {
       {/* Sticky mobile CTA — keeps the reserve action one tap away */}
       <a
         href="#reserve"
-        className="lg:hidden fixed bottom-4 inset-x-4 z-40 flex items-center justify-center gap-2 bg-ink text-ink-foreground py-4 rounded-full font-semibold text-base shadow-[0_10px_30px_oklch(0.23_0.01_70_/_0.25)]"
+        className="lg:hidden fixed bottom-4 inset-x-4 z-40 flex items-center justify-center gap-2 bg-ink text-ink-foreground py-4 rounded-full font-semibold text-base shadow-[0_10px_30px_oklch(var(--shadow)_/_0.25)]"
       >
         Reserve my seat — free <span className="text-lg">→</span>
       </a>

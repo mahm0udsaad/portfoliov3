@@ -1,19 +1,22 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/next";
-import { Instrument_Sans, Instrument_Serif } from "next/font/google";
+import localFont from "next/font/local";
+import { Bricolage_Grotesque } from "next/font/google";
 import "../globals.css";
 
-const instrumentSans = Instrument_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
+// Body: Geist, self-hosted from app/fonts (no extra request to Google).
+const geist = localFont({
+  src: "../fonts/GeistVF.woff",
+  weight: "100 900",
   variable: "--font-sans",
   display: "swap",
 });
 
-const instrumentSerif = Instrument_Serif({
+// Display: Bricolage Grotesque. Components use the `font-serif` utility as
+// the display role, so it is bound to --font-serif.
+const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
+  axes: ["opsz", "wdth"],
   variable: "--font-serif",
   display: "swap",
 });
@@ -86,7 +89,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${instrumentSans.variable} ${instrumentSerif.variable} font-sans`}
+        className={`${geist.variable} ${bricolage.variable} font-sans`}
       >
         {children}
         <Analytics />

@@ -9,7 +9,7 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
    full-screen sheet with big serif section links, the language switch and the
    main CTA. The sheet sits under the sticky header (z-40 < header z-50) so
    the toggle stays reachable while it is open. */
-export default function MobileNav({ links, cta, lang, menuLabel = "Menu", closeLabel = "Close menu" }) {
+export default function MobileNav({ links, cta, lang, menuLabel = "Menu", closeLabel = "Close menu", newTag = "New" }) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function MobileNav({ links, cta, lang, menuLabel = "Menu", closeL
   }, [open]);
 
   return (
-    <div className="md:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
@@ -42,7 +42,7 @@ export default function MobileNav({ links, cta, lang, menuLabel = "Menu", closeL
           this fixed overlay inside the header box. */}
       {open &&
         createPortal(
-          <div className="fixed inset-0 z-40 flex flex-col bg-background pt-[92px] md:hidden">
+          <div className="fixed inset-0 z-40 flex flex-col bg-background pt-[92px] lg:hidden">
           <nav className="flex-1 overflow-y-auto px-7">
             {links.map((link, i) => (
               <Link
@@ -52,13 +52,15 @@ export default function MobileNav({ links, cta, lang, menuLabel = "Menu", closeL
                 className="group flex items-center justify-between border-b border-border py-5"
                 style={{ animation: `pop 0.35s ${i * 0.05}s cubic-bezier(0.22,1,0.36,1) backwards` }}
               >
-                <span className="font-serif text-[30px] leading-none tracking-tight">
+                <span className="flex items-center gap-3 font-serif text-[30px] font-semibold leading-none tracking-tight">
                   {link.label}
+                  {link.isNew ? (
+                    <span className="rounded-full bg-signal px-2.5 py-0.5 font-sans text-[11px] font-bold tracking-normal text-signal-foreground">
+                      {newTag}
+                    </span>
+                  ) : null}
                 </span>
                 <span className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-muted-foreground">
-                    0{i + 1}
-                  </span>
                   <ArrowUpRight className="h-5 w-5 text-muted-foreground transition-colors group-hover:text-primary rtl:-scale-x-100" />
                 </span>
               </Link>
@@ -82,8 +84,6 @@ export default function MobileNav({ links, cta, lang, menuLabel = "Menu", closeL
               className="flex h-14 items-center justify-center gap-2 rounded-full bg-ink text-base font-semibold text-ink-foreground transition-colors active:bg-primary"
             >
               {cta.label}
-              <span className="text-lg rtl:hidden">→</span>
-              <span className="hidden text-lg rtl:inline">←</span>
             </Link>
           </div>
           </div>,

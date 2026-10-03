@@ -25,7 +25,7 @@ export default function DesignGallery({ items, locale = "en", labels = {} }) {
             type="button"
             onClick={() => setOpen(item)}
             aria-label={`${text.view} — ${item.title[locale]}`}
-            className="group block w-full break-inside-avoid overflow-hidden rounded-[18px] border border-border bg-card text-start shadow-[0_10px_30px_oklch(0.23_0.01_70_/_0.08)] transition-shadow hover:shadow-[0_18px_44px_oklch(0.23_0.01_70_/_0.16)]"
+            className="group block w-full break-inside-avoid overflow-hidden rounded-[18px] border border-border bg-card text-start shadow-[0_10px_30px_oklch(var(--shadow)_/_0.08)] transition-shadow hover:shadow-[0_18px_44px_oklch(var(--shadow)_/_0.16)]"
           >
             <div className="relative overflow-hidden bg-muted">
               <Image
@@ -38,10 +38,10 @@ export default function DesignGallery({ items, locale = "en", labels = {} }) {
               />
             </div>
             <div className="p-4">
-              <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-primary">
+              <div className="text-[12.5px] font-semibold text-primary">
                 {item.tag[locale]}
               </div>
-              <h3 className="mt-1.5 font-serif text-[19px] leading-tight">
+              <h3 className="mt-1 font-serif text-[19px] font-semibold leading-tight">
                 {item.title[locale]}
               </h3>
               <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">

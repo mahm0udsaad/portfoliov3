@@ -48,6 +48,10 @@ const config: Config = {
   				DEFAULT: 'oklch(var(--destructive) / <alpha-value>)',
   				foreground: 'oklch(var(--destructive-foreground) / <alpha-value>)'
   			},
+  			signal: {
+  				DEFAULT: 'oklch(var(--signal) / <alpha-value>)',
+  				foreground: 'oklch(var(--signal-foreground) / <alpha-value>)'
+  			},
   			border: 'oklch(var(--border) / <alpha-value>)',
   			input: 'oklch(var(--input) / <alpha-value>)',
   			ring: 'oklch(var(--ring) / <alpha-value>)'

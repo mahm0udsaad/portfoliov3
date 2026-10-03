@@ -5,7 +5,7 @@ import { bookCall } from "@/app/actions/book-call";
 
 const defaultLabels = {
   heading: "Book a quick call",
-  subheading: "Drop your number, pick a time — I'll call you. That's it.",
+  subheading: "Leave your number and pick a time. I'll call you.",
   phone: "Your phone number",
   dayLabel: "Which day?",
   timeLabel: "What time?",
@@ -91,7 +91,7 @@ const ContactForm = ({ labels = {} }) => {
 
   return (
     <div className="mx-auto max-w-2xl">
-      <h3 className="mb-2 text-center font-serif text-3xl font-normal">
+      <h3 className="mb-2 text-center font-serif text-[28px] font-semibold tracking-tight">
         {t.heading}
       </h3>
       <p className="mb-7 text-center text-[15px] text-muted-foreground">
@@ -125,10 +125,10 @@ const ContactForm = ({ labels = {} }) => {
 
         {/* Day — one tap */}
         <fieldset>
-          <legend className="mb-2.5 flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          <legend className="mb-2.5 flex items-center gap-2 text-[14px] font-semibold text-muted-foreground">
             <CalendarCheck2 className="h-4 w-4" /> {t.dayLabel}
           </legend>
-          <div className="grid grid-cols-4 gap-2">
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {days.map((d) => (
               <button
                 key={d.iso}
@@ -149,7 +149,7 @@ const ContactForm = ({ labels = {} }) => {
 
         {/* Time — one tap */}
         <fieldset>
-          <legend className="mb-2.5 text-[13px] font-semibold uppercase tracking-[0.1em] text-muted-foreground">
+          <legend className="mb-2.5 text-[14px] font-semibold text-muted-foreground">
             {t.timeLabel}
           </legend>
           <div className="grid grid-cols-4 gap-2">
@@ -183,8 +183,7 @@ const ContactForm = ({ labels = {} }) => {
             </>
           ) : (
             <>
-              {t.send} <span className="text-lg rtl:hidden">→</span>
-              <span className="hidden text-lg rtl:inline">←</span>
+              {t.send}
             </>
           )}
         </button>

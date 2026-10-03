@@ -17,7 +17,7 @@ export default function ProjectStack({ projects, visitLabel, counterLabel }) {
              Cycles 0-2 so a long list never pushes cards off screen. */
           style={{ top: `${96 + (i % 3) * 12}px` }}
         >
-          <article className="overflow-hidden rounded-[22px] border border-border bg-card shadow-[0_-18px_50px_oklch(0.23_0.01_70_/_0.16)]">
+          <article className="overflow-hidden rounded-[22px] border border-border bg-card shadow-[0_-18px_50px_oklch(var(--shadow)_/_0.16)]">
             <div className="relative aspect-[16/10] overflow-hidden bg-muted">
               <Image
                 src={project.image}

@@ -41,7 +41,7 @@ export default function HeroVideos({ clips, watchHint, altLabel }) {
       <div
         ref={trackRef}
         onScroll={onTrackScroll}
-        className="hide-scrollbar mt-10 -mx-6 flex snap-x snap-mandatory items-end gap-4 overflow-x-auto px-[10%] pb-2 md:mx-0 md:mt-16 md:snap-none md:justify-center md:gap-6 md:overflow-visible md:px-0"
+        className="hide-scrollbar mt-10 -mx-4 flex sm:-mx-6 snap-x snap-mandatory items-end gap-4 overflow-x-auto px-[10%] pb-2 md:mx-0 md:mt-16 md:snap-none md:justify-center md:gap-6 md:overflow-visible md:px-0"
       >
         {clips.map((clip, i) => {
           const isActive = active.has(i);
@@ -51,7 +51,7 @@ export default function HeroVideos({ clips, watchHint, altLabel }) {
               type="button"
               onClick={() => activate(i)}
               aria-label="Play sample video"
-              className={`group relative aspect-[9/16] w-[80%] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-[22px] border border-border bg-ink shadow-[0_20px_50px_oklch(0.23_0.01_70_/_0.12)] transition-transform md:w-1/3 md:max-w-[210px] ${
+              className={`group relative aspect-[9/16] w-[80%] max-w-[360px] shrink-0 snap-center overflow-hidden rounded-[22px] border border-border bg-black shadow-[0_20px_50px_oklch(var(--shadow)_/_0.12)] transition-transform md:w-1/3 md:max-w-[210px] ${
                 i === 1 ? "md:-translate-y-8 md:scale-[1.06] z-10" : ""
               } ${isActive ? "cursor-default" : "cursor-pointer"}`}
             >
@@ -79,9 +79,9 @@ export default function HeroVideos({ clips, watchHint, altLabel }) {
                     className="object-cover"
                   />
                   {/* Dim + play button overlay */}
-                  <span className="absolute inset-0 bg-ink/25 transition-colors group-hover:bg-ink/10" />
+                  <span className="absolute inset-0 bg-black/25 transition-colors group-hover:bg-black/10" />
                   <span className="absolute inset-0 flex items-center justify-center">
-                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-background/90 text-ink shadow-lg transition-transform group-hover:scale-110">
+                    <span className="flex h-14 w-14 items-center justify-center rounded-full bg-signal text-signal-foreground shadow-lg transition-transform group-hover:scale-110">
                       <Play className="h-6 w-6 translate-x-0.5 fill-current rtl:-translate-x-0.5" />
                     </span>
                   </span>

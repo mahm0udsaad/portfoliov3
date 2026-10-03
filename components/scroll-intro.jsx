@@ -195,9 +195,9 @@ export default function ScrollIntro({
           if (composer) {
             timeline.fromTo(
               composer,
-              { borderTopColor: "oklch(0.89 0.008 85)" },
+              { borderTopColor: "oklch(0.905 0.014 268)" },
               {
-                borderTopColor: "oklch(0.45 0.09 160 / 0.65)",
+                borderTopColor: "oklch(0.5 0.21 266 / 0.65)",
                 duration: 0.45,
               },
               messageEnd - 0.05,
